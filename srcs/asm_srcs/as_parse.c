@@ -31,15 +31,23 @@ int as_parse(int fd)
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
-            if (section == 0 && !as_parse_name(line, &section, &code))
+            if ((section == 1 && !as_parse_comment(line, &section, &code)) ||
+            (section == 0 && !as_parse_name(line, &section, &code)))
+            {
+                free(line);
                 return (0);
+            }
             ft_printf("%s\n", line);
         }
         free(line);
     }
+    //
+    // max length of comment or name?
+    as_reverse_list(&code);
+    as_print_list(code);
+    //
     free(line);
     return (1);
 }
-
     // make sure there is a .name and .comment
     // as specified in the header

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   as_parse_name.c                                    :+:      :+:    :+:   */
+/*   as_parse_comment.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,20 +15,20 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int as_parse_name(char *line, int *section, t_list_num **code)
+int as_parse_comment(char *line, int *section, t_list_num **code)
 {
-	if (!(ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))))
+	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))))
 	{
 		int         i;
 		t_list_num  *new;
 
-		i = ft_strlen(NAME_CMD_STRING);
+		i = ft_strlen(COMMENT_CMD_STRING);
 		while (ft_isspace(line[i]) || line[i] == '"')
 			i++;
 		while (line[i] != '"')
 		{
 			if (!(new = (t_list_num *)malloc(sizeof(*new))))
-				return (as_error(code, 0));
+				return (as_error(code, 2));
 			new->next = *code;
 			*code = new;
 			(*code)->num = line[i];
@@ -37,5 +37,5 @@ int as_parse_name(char *line, int *section, t_list_num **code)
 		(*section)++;
 		return (1);
 	}
-	return (as_error(code, 1));
+	return (as_error(code, 3));
 }
