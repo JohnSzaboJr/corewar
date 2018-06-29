@@ -51,3 +51,4 @@ int as_parse(int fd)
 }
     // make sure there is a .name and .comment
     // as specified in the header
+    // control length of name and comment
