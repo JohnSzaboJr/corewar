@@ -15,7 +15,7 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int as_error(t_list_num **code, int error_code)
+int as_error(t_list_byte **code, int error_code)
 {
     as_free(code);
     if (error_code == 0)
@@ -28,7 +28,5 @@ int as_error(t_list_num **code, int error_code)
         ft_printf("%s\n", "ERROR: comment incorrectly specified in source");
     if (error_code == 4)
         ft_printf("%s\n", "ERROR: name is too long");
-    if (error_code == 5)
-        ft_printf("%s\n", "ERROR: name not given");
     return (0);
 }

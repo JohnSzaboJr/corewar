@@ -15,23 +15,23 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int as_parse_comment(char *line, int *section, t_list_num **code)
+int as_parse_comment(char *line, int *section, t_list_byte **code)
 {
 	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))))
 	{
 		int         i;
-		t_list_num  *new;
+		t_list_byte  *new;
 
 		i = ft_strlen(COMMENT_CMD_STRING);
 		while (ft_isspace(line[i]) || line[i] == '"')
 			i++;
 		while (line[i] != '"')
 		{
-			if (!(new = (t_list_num *)malloc(sizeof(*new))))
+			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
 				return (as_error(code, 2));
 			new->next = *code;
 			*code = new;
-			(*code)->num = line[i];
+			(*code)->byte = line[i];
 			i++;
 		}
 		(*section)++;

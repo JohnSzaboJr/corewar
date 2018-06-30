@@ -15,49 +15,38 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int as_parse_name(char *line, int *section, t_list_num **code)
+int as_parse_name(char *line, int *section, t_list_byte **code)
 {
+	int			i;
+	int			length;
+	t_list_byte	*new;
+
 	if (!(ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))))
 	{
-		int         i;
-		int			j;
-		t_list_num  *new;
-
-		i = ft_strlen(NAME_CMD_STRING);
-		while (ft_isspace(line[i]))
-			i++;
-		if (line[i] == '"')
-			i++;
-		else
-			return (as_error(code, 1));
-		j = i;
-		while (line[i] && line[i] != '"')
-			i++;
-		if (!(i - j))
-			return (as_error(code, 1));
-		ft_printf("value of i - j: %d\n", i - j);
-
-		if ((i - j) > PROG_NAME_LENGTH)
-			return (as_error(code, 4));
-		if (!(line[i]))
-			return (as_error(code, 5));
-		// mi van ha nincs idezojel, v egyaltalan nincs ott semmi?
-		// mi van ha nincs szokoz a .name utan?
-		// tobb idezojeeeel!?
-		// hiba ha zaro idexojel utan van valami!
-		// error handling: jo-e a hossz meghatarozas? how many bytes?
-		i = j;
+		if (!as_parse_name_check(&i, line, code, &length))
+			return (0);
 		while (line[i] != '"')
 		{
-			if (!(new = (t_list_num *)malloc(sizeof(*new))))
+			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
 				return (as_error(code, 0));
 			new->next = *code;
 			*code = new;
-			(*code)->num = line[i];
+			(*code)->byte = line[i];
 			i++;
+		}
+		length = PROG_NAME_LENGTH - length;
+		while (length)
+		{
+			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
+				return (as_error(code, 0));
+			new->next = *code;
+			*code = new;
+			(*code)->byte = 0;
+			length--;
 		}
 		(*section)++;
 		return (1);
 	}
 	return (as_error(code, 1));
 }
+// save it at appropriate bytes (128)

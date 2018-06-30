@@ -15,12 +15,23 @@
 #include "asm.h"
 #include <fcntl.h>
 
-void	as_print_list(t_list_num *list)
+void	as_print_list(t_list_byte *list)
 {
+	int i;
+
+	i = 0;
+	ft_putstr("output: \n\n");
 	while (list)
 	{
-		ft_printf("%x ", list->num);
+		if (!(list->byte - (list->byte % 16)))
+			ft_putchar('0');
+		ft_printf("%x ", list->byte);
 		list = list->next;
+		i++;
+		if (!(i % 8))
+			ft_putchar(' ');
+		if (!(i % 16))
+			ft_putchar('\n');
 	}
 	ft_printf("\n");
 }

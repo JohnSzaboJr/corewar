@@ -15,11 +15,11 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int	as_reverse_list(t_list_num **list)
+int	as_reverse_list(t_list_byte **list)
 {
-	t_list_num *next;
-	t_list_num *tmp;
-	t_list_num *node;
+	t_list_byte *next;
+	t_list_byte *tmp;
+	t_list_byte *node;
 
 	next = NULL;
 	tmp = NULL;

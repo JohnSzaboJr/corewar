@@ -14,9 +14,9 @@
 #include "op.h"
 #include "asm.h"
 
-int	as_free(t_list_num **list)
+int	as_free(t_list_byte **list)
 {
-	t_list_num *tmp;
+	t_list_byte *tmp;
 
 	while (*list)
 	{

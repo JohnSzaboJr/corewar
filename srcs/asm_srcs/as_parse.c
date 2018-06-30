@@ -19,7 +19,7 @@ int as_parse(int fd)
 {
     char        *line;
     int         section;
-    t_list_num  *code;
+    t_list_byte *code;
 
     line = NULL;
     code = NULL;
@@ -31,8 +31,8 @@ int as_parse(int fd)
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
-            if ((section == 1 && !as_parse_comment(line, &section, &code)) ||
-            (section == 0 && !as_parse_name(line, &section, &code)))
+            if ((section == 0 && !as_parse_name(line, &section, &code)))
+            // || (section == 0 && !as_parse_name(line, &section, &code)))
             {
                 free(line);
                 return (0);
