@@ -32,8 +32,8 @@ int as_parse(int fd)
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
-            // if ((section == 2 && !as_parse_commands(line, &section, &code)) ||
-            if ((section == 1 && !as_parse_comment(line, &section, &code)) ||
+            if ((section == 2 && !as_parse_commands(line, &section, &code, &label)) ||
+            (section == 1 && !as_parse_comment(line, &section, &code)) ||
             (section == 0 && !as_parse_name(line, &section, &code)))
             {
                 free(line);
@@ -45,7 +45,7 @@ int as_parse(int fd)
     }
     //
     as_reverse_list(&code);
-    as_print_list(code);
+    as_print_list(code, label);
     //
     free(line);
     return (1);
@@ -54,3 +54,4 @@ int as_parse(int fd)
     // as specified in the header
     // control length of name and comment
     // store size at the end.
+    // line number errors! - maybe all errors in colors?

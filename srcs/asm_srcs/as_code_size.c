@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   as_parse_commands.c                                :+:      :+:    :+:   */
+/*   as_code_size.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,35 +15,15 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int as_parse_commands(char *line, int *section, t_list_byte **code, t_list_label **label)
+int as_code_size(t_list_byte *code)
 {
-	int				i;
-	t_list_label	*new;
+	int i;
 
 	i = 0;
-	while (line[i] && ft_strchr(LABEL_CHARS, line[i]))
-		i++;
-	if (i && line[i] == LABEL_CHAR)
+	while (code)
 	{
-		if (!(new = (t_list_label *)malloc(sizeof(*new))))
-			return (as_error(code, 8));
-		if (!(new->name = ft_strnew(i)))
-			return (as_error(code, 8));
-		ft_strncpy(new->name, line, i);
-		new->pos = as_code_size(*code);
-		new->next = *label;
-		*label = new;
+		code = code->next;
+		i++;
 	}
-	else
-		i = 0;
-
-	//
-	ft_printf("%s\n", op_tab[0].opname);
-
-
-	// parse potential labels (check if there label char)
-	// save label name and byte position
-	// can label names be the same as known commands?	
-	(*section)++;
-	return (1);
+	return (i);
 }

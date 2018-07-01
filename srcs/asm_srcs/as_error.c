@@ -34,6 +34,8 @@ int as_error(t_list_byte **code, int error_code)
         ft_printf("%s\n", "ERROR: comment is too long");
     if (error_code == 7)
         ft_printf("%s\n", "ERROR: malloc error in as_save_comment");
+    if (error_code == 8)
+        ft_printf("%s\n", "ERROR: malloc error in as_parse_commands");
     return (0);
 // put these in a header?
 }

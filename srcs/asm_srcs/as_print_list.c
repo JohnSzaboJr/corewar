@@ -15,7 +15,7 @@
 #include "asm.h"
 #include <fcntl.h>
 
-void	as_print_list(t_list_byte *list)
+void	as_print_list(t_list_byte *list, t_list_label *label)
 {
 	int			i;
 	int			j;
@@ -81,5 +81,11 @@ void	as_print_list(t_list_byte *list)
 			k = 1;
 		j = 0;
 	}
-	ft_printf("\n");
+	ft_printf("\n\n");
+	while (label)
+	{
+		ft_printf("label name: %s\n", label->name);
+		ft_printf("label pos: %d\n\n", label->pos);
+		label = label->next;
+	}
 }
