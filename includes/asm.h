@@ -19,6 +19,13 @@ typedef struct				s_list_byte
 	struct s_list_byte		*next;
 }							t_list_byte;
 
+typedef struct				s_list_label
+{
+	char					*name;
+	int						pos;
+	struct s_list_byte		*next;
+}							t_list_label;
+
 int							as_arg_num(int argc);
 int							as_open(char *filename, int *fd);
 int							as_parse(int fd);

@@ -29,6 +29,17 @@ void	as_print_list(t_list_byte *list)
 	k = 0;
 	l = 1;
 	beg = 1;
+	//
+	node = list;
+	while (list)
+	{
+		list = list->next;
+		i++;
+	}
+	ft_printf("\nallocated bytes: %d\n", i);
+	list = node;
+	i = 0;
+	//
 	ft_putstr("output: \n\n");
 	while (list)
 	{

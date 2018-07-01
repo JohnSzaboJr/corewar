@@ -17,12 +17,14 @@
 
 int as_parse(int fd)
 {
-    char        *line;
-    int         section;
-    t_list_byte *code;
+    char            *line;
+    int             section;
+    t_list_byte     *code;
+    t_list_label    *label;
 
     line = NULL;
     code = NULL;
+    label = NULL;
     section = 0;
     if (!as_store_magic(&code))
         return (0);
@@ -30,6 +32,7 @@ int as_parse(int fd)
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
+            // if ((section == 2 && !as_parse_commands(line, &section, &code)) ||
             if ((section == 1 && !as_parse_comment(line, &section, &code)) ||
             (section == 0 && !as_parse_name(line, &section, &code)))
             {

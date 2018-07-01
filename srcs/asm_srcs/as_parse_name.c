@@ -26,7 +26,7 @@ int as_parse_name(char *line, int *section, t_list_byte **code)
 		if (!as_parse_name_check(&i, line, code, &length) ||
 			!as_save_name(&i, line, code, &new))
 			return (0);
-		length = PROG_NAME_LENGTH - length + 8;
+		length = PROG_NAME_LENGTH - length + 4 + 4;
 		while (length)
 		{
 			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
