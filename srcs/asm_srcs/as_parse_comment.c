@@ -17,22 +17,24 @@
 
 int as_parse_comment(char *line, int *section, t_list_byte **code)
 {
+	int			i;
+	int			length;
+	t_list_byte	*new;
+
 	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))))
 	{
-		int         i;
-		t_list_byte  *new;
-
-		i = ft_strlen(COMMENT_CMD_STRING);
-		while (ft_isspace(line[i]) || line[i] == '"')
-			i++;
-		while (line[i] != '"')
+		if (!as_parse_comment_check(&i, line, code, &length) ||
+			!as_save_comment(&i, line, code, &new))
+			return (0);
+		length = COMMENT_LENGTH - length + 4;
+		while (length)
 		{
 			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
-				return (as_error(code, 2));
+				return (as_error(code, 0));
 			new->next = *code;
 			*code = new;
-			(*code)->byte = line[i];
-			i++;
+			(*code)->byte = 0;
+			length--;
 		}
 		(*section)++;
 		return (1);

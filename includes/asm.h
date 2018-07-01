@@ -30,5 +30,8 @@ int							as_error(t_list_byte **code, int error_code);
 void						as_print_list(t_list_byte *list);
 int							as_reverse_list(t_list_byte **list);
 int							as_parse_name_check(int *i, char *line, t_list_byte **code, int *length);
+int							as_save_name(int *i, char *line, t_list_byte **code, t_list_byte **new);
+int							as_parse_comment_check(int *i, char *line, t_list_byte **code, int *length);
+int							as_save_comment(int *i, char *line, t_list_byte **code, t_list_byte **new);
 
 #endif

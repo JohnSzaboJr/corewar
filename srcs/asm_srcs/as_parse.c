@@ -26,13 +26,12 @@ int as_parse(int fd)
     section = 0;
     if (!as_store_magic(&code))
         return (0);
-    // store size as well.
     while (get_next_line(fd, &line))
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
-            if ((section == 0 && !as_parse_name(line, &section, &code)))
-            // || (section == 0 && !as_parse_name(line, &section, &code)))
+            if ((section == 1 && !as_parse_comment(line, &section, &code)) ||
+            (section == 0 && !as_parse_name(line, &section, &code)))
             {
                 free(line);
                 return (0);
@@ -42,7 +41,6 @@ int as_parse(int fd)
         free(line);
     }
     //
-    // max length of comment or name?
     as_reverse_list(&code);
     as_print_list(code);
     //
@@ -52,3 +50,4 @@ int as_parse(int fd)
     // make sure there is a .name and .comment
     // as specified in the header
     // control length of name and comment
+    // store size at the end.
