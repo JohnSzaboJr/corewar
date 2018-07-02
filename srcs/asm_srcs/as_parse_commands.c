@@ -15,7 +15,7 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int as_parse_commands(char *line, int *section, t_list_byte **code, t_list_label **label)
+int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label **label)
 {
 	int				i;
 	t_list_label	*new;
@@ -33,17 +33,20 @@ int as_parse_commands(char *line, int *section, t_list_byte **code, t_list_label
 		new->pos = as_code_size(*code);
 		new->next = *label;
 		*label = new;
+		i++;
 	}
 	else
 		i = 0;
+	while (line[i] && ft_isspace(line[i]))
+		i++;
+	as_get_command(line, i, code, line_nr);
 
-	//
-	ft_printf("%s\n", op_tab[0].opname);
 
+	
 
+	// I have to free labels as well!!! (also on errors)
 	// parse potential labels (check if there label char)
 	// save label name and byte position
 	// can label names be the same as known commands?	
-	(*section)++;
 	return (1);
 }

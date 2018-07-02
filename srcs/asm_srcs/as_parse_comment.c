@@ -15,15 +15,18 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int as_parse_comment(char *line, int *section, t_list_byte **code)
+int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
 {
 	int			i;
 	int			length;
 	t_list_byte	*new;
 
-	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))))
+	(*section)++;
+	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))) &&
+		(ft_isspace(line[ft_strlen(COMMENT_CMD_STRING)]) ||
+		line[ft_strlen(COMMENT_CMD_STRING)] == '"'))
 	{
-		if (!as_parse_comment_check(&i, line, code, &length) ||
+		if (as_parse_comment_check(&i, line, code, line_nr) &&
 			!as_save_comment(&i, line, code, &new))
 			return (0);
 		length = COMMENT_LENGTH - length + 4;
@@ -36,7 +39,6 @@ int as_parse_comment(char *line, int *section, t_list_byte **code)
 			(*code)->byte = 0;
 			length--;
 		}
-		(*section)++;
 		return (1);
 	}
 	return (as_error(code, 3));

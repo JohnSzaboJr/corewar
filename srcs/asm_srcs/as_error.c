@@ -13,23 +13,27 @@
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "as_errors.h"
+#include "colors.h"
 #include <fcntl.h>
 
 int as_error(t_list_byte **code, int error_code)
 {
     as_free(code);
+    ft_printf(BOLDYELLOW "\nsystem error:" RESET);
+	ft_printf(BOLDWHITE ERROR0 RESET);
     if (error_code == 0)
-        ft_printf("%s\n", "ERROR: malloc error in as_parse_name");
+        ft_printf(WHITE " (as_save_name)\n" RESET);
     if (error_code == 1)
-        ft_printf("%s\n", "ERROR: name incorrectly specified in source");
+        ft_printf("%s\n", "");
     if (error_code == 2)
         ft_printf("%s\n", "ERROR: malloc error in as_parse_comment");
     if (error_code == 3)
         ft_printf("%s\n", "ERROR: comment incorrectly specified in source");
     if (error_code == 4)
-        ft_printf("%s\n", "ERROR: name is too long");
+        ft_printf("%s\n", "");
     if (error_code == 5)
-        ft_printf("%s\n", "ERROR: malloc error in as_save_name");
+        ft_printf("%s\n", "");
     if (error_code == 6)
         ft_printf("%s\n", "ERROR: comment is too long");
     if (error_code == 7)

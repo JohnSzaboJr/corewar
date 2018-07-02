@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   as_parse_comment_check.c                           :+:      :+:    :+:   */
+/*   as_war1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/30 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/30 14:35:38 by jszabo           ###   ########.fr       */
+/*   Created: 2018/07/02 14:31:23 by jszabo            #+#    #+#             */
+/*   Updated: 2018/07/02 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "colors.h"
 #include <fcntl.h>
 
-int as_parse_comment_check(int *i, char *line, t_list_byte **code, int line_nr)
+int as_war1(char *message, int line_nr, char *line, int column_nr)
 {
-	int j;
-	
-	*i = ft_strlen(COMMENT_CMD_STRING);
-	j = *i;
-	while (ft_isspace(line[*i]))
-		(*i)++;
-	if (j == *i || line[*i] != '"')
-		return (as_error(code, 3));
-	if (line[*i] == '"')
-		(*i)++;
-	j = *i;
-	while (line[*i] && line[*i] != '"')
-		(*i)++;
-	if (!(line[*i]) || (line[(*i) + 1]))
-		return (as_error(code, 3));
-	*length = ((*i) - j);
-	if (*length > COMMENT_LENGTH)
-		return (as_error(code, 6));
-	*i = j;
+	ft_printf(BOLDWHITE "\nline %d, column %d:" RESET, line_nr, column_nr);
+	ft_printf(BOLDMAGENTA " warning:" RESET);
+	ft_printf(BOLDWHITE "%s" RESET, message);
+	ft_printf("%s\n", line);
+	column_nr--;
+	while (column_nr)
+    {
+    	ft_putchar(' ');
+    	column_nr--;
+    }
+	ft_printf(GREEN "^\n" RESET);
 	return (1);
 }

@@ -13,20 +13,25 @@
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "colors.h"
+#include "as_errors.h"
 #include <fcntl.h>
 
-int as_parse_name(char *line, int *section, t_list_byte **code)
+int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
 {
 	int			i;
 	int			length;
 	t_list_byte	*new;
 
-	if (!(ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))))
+	(*section)++;
+	if (!(ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))) &&
+		(ft_isspace(line[ft_strlen(NAME_CMD_STRING)]) ||
+		line[ft_strlen(NAME_CMD_STRING)] == '"'))
 	{
-		if (!as_parse_name_check(&i, line, code, &length) ||
+		if (as_parse_name_check(&i, line, code, line_nr) &&
 			!as_save_name(&i, line, code, &new))
 			return (0);
-		length = PROG_NAME_LENGTH - length + 4 + 4;
+		length = PROG_NAME_LENGTH - as_code_size(*code) + 13;
 		while (length)
 		{
 			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
@@ -36,8 +41,8 @@ int as_parse_name(char *line, int *section, t_list_byte **code)
 			(*code)->byte = 0;
 			length--;
 		}
-		(*section)++;
 		return (1);
 	}
-	return (as_error(code, 1));
+	as_record_error(code);
+	return (as_err1(ERROR1, line_nr, line, 1));
 }

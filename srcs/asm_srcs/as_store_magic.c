@@ -13,6 +13,8 @@
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "colors.h"
+#include "as_errors.h"
 #include <fcntl.h>
 
 int as_store_magic(t_list_byte **code)
@@ -27,7 +29,10 @@ int as_store_magic(t_list_byte **code)
 	{
 		if (!(new = (t_list_byte *)malloc(sizeof(*new))))
 		{
-			ft_printf("%s\n", "ERROR: couldn't compile due to malloc error in as_store_magic");
+			ft_printf(BOLDYELLOW "\nsystem error:" RESET);
+			ft_printf(BOLDWHITE ERROR0 RESET);
+			ft_printf(WHITE " (as_store_magic)\n" RESET);
+			as_free(code);
 			return (0);
 		}
 		new->byte = magic % 256;
@@ -36,6 +41,5 @@ int as_store_magic(t_list_byte **code)
 		*code = new;
 		i--;
 	}
-	as_reverse_list(code);
 	return (1);
 }

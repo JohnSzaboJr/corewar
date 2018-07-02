@@ -30,7 +30,11 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 	l = 1;
 	beg = 1;
 	//
+	if (list->byte == 'Y')
+		return ;
+	//
 	node = list;
+	list = list->next;
 	while (list)
 	{
 		list = list->next;
@@ -41,6 +45,7 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 	i = 0;
 	//
 	ft_putstr("output: \n\n");
+	list = list->next;
 	while (list)
 	{
 		node = list;

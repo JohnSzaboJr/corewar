@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   as_open.c                                          :+:      :+:    :+:   */
+/*   as_check_name_space.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/07/25 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/25 14:35:38 by jszabo           ###   ########.fr       */
+/*   Created: 2018/07/02 14:31:23 by jszabo            #+#    #+#             */
+/*   Updated: 2018/07/02 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "as_errors.h"
 #include <fcntl.h>
 
-int as_open(char *filename, int *fd)
+int	as_check_name_space(int j, int *i, int line_nr, char *line)
 {
-    if (0 > ((*fd) = open(filename, O_RDONLY)))
-    {
-        ft_printf("%s\n", "ERROR: invalid filepath");
-        return (0);
-    }
-    return (1);
+	if (j == *i)
+		as_war1(WARNING1, line_nr, line, j + 1);
+	return (1);
 }
