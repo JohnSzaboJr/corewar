@@ -54,7 +54,7 @@ void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
 int							as_parse_name_check(int *i, char *line, t_list_byte **code, int line_nr);
 int							as_save_name(int *i, char *line, t_list_byte **code, t_list_byte **new);
-int							as_parse_comment_check(int *i, char *line, t_list_byte **code, int *length);
+int							as_parse_comment_check(int *i, char *line, t_list_byte **code, int line_nr);
 int							as_save_comment(int *i, char *line, t_list_byte **code, t_list_byte **new);
 int							as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label **label);
 int							as_code_size(t_list_byte *code);
@@ -68,5 +68,9 @@ int							as_check_name_quot1(int *i, int line_nr, char *line, int *error);
 int							as_check_name_quot2(int *i, int line_nr, char *line, int *error);
 int							as_skip_name(char *line, int *i, int *j);
 int							as_check_after_name(int *i, int line_nr, char *line);
+int							as_check_comment_space(int j, int *i, int line_nr, char *line);
+int							as_check_comment_quot1(int *i, int line_nr, char *line, int *error);
+int							as_check_comment_quot2(int *i, int line_nr, char *line, int *error);
+int							as_check_after_comment(int *i, int line_nr, char *line);
 
 #endif

@@ -13,6 +13,8 @@
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "colors.h"
+#include "as_errors.h"
 #include <fcntl.h>
 
 int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
@@ -29,11 +31,11 @@ int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
 		if (as_parse_comment_check(&i, line, code, line_nr) &&
 			!as_save_comment(&i, line, code, &new))
 			return (0);
-		length = COMMENT_LENGTH - length + 4;
+		length = COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 17;
 		while (length)
 		{
 			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
-				return (as_error(code, 0));
+				return (as_error(code, 1));
 			new->next = *code;
 			*code = new;
 			(*code)->byte = 0;
@@ -41,5 +43,6 @@ int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
 		}
 		return (1);
 	}
-	return (as_error(code, 3));
+	as_record_error(code);
+	return (as_err1(ERROR7, line_nr, line, 1));
 }

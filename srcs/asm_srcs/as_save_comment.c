@@ -13,18 +13,30 @@
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "colors.h"
+#include "as_errors.h"
 #include <fcntl.h>
 
 int as_save_comment(int *i, char *line, t_list_byte **code, t_list_byte **new)
 {
-	while (line[*i] != '"')
+	int l;
+
+	l = 0;
+	while (l < COMMENT_LENGTH && line[*i] != '"')
 	{
 		if (!((*new) = (t_list_byte *)malloc(sizeof(**new))))
-			return (as_error(code, 7));
+		{
+			ft_printf(BOLDYELLOW "\nsystem error:" RESET);
+			ft_printf(BOLDWHITE ERROR0 RESET);
+			ft_printf(WHITE " (as_save_comment)\n" RESET);
+			as_free(code);
+			return (0);
+		}
 		(*new)->next = *code;
 		*code = *new;
 		(*code)->byte = line[*i];
 		(*i)++;
+		l++;
 	}
 	return (1);
 }
