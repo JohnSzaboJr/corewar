@@ -26,8 +26,14 @@ int as_get_params(char *line, t_list_label **label, t_list_byte **code, int line
     as_skip_space(line, &i);
     as_skip_command(line, &i);
     as_skip_space(line, &i);
+    if (!line[i])
+    {
+        as_err2(ERROR9, line_nr, line, i + 1);
+        as_record_error(code);
+    }
     
-    //
+    //ide masik tipusu hiba kell majd h ne legyen note veletlenul se!
+    //atnezni a megnyitott fileokat, h milyen hosszuak a functionok
     ft_printf("%s\n", line + i);
     if ((*label) && (*code))
         line_nr = 0;
@@ -38,18 +44,22 @@ int as_get_params(char *line, t_list_label **label, t_list_byte **code, int line
 int as_get_command(char *line, int i, t_list_byte **code, int line_nr)
 {
     int         j;
+    int         error;
     t_list_byte *new;
 
     j = 15;
+    error = 0;
     while (j >= 0)
     {
         if (!ft_strncmp(op_tab[j].opname, line + i, ft_strlen(op_tab[j].opname)))
             break ;
         j--;
     }
-    if (j == -1 || !ft_isspace(line[i + ft_strlen(op_tab[j].opname)]))
+    if (j > -1 && !line[i + ft_strlen(op_tab[j].opname)])
+        j = 0;
+    else if (j == -1 || !ft_isspace(line[i + ft_strlen(op_tab[j].opname)]))
     {
-        as_err2(ERROR8, line_nr, line, i + 1);
+        error = as_err2(ERROR8, line_nr, line, i + 1);
         as_record_error(code);
     }
     else
@@ -60,5 +70,5 @@ int as_get_command(char *line, int i, t_list_byte **code, int line_nr)
         new->next = *code;
         *code = new;
     }
-    return (1);
+    return (error) ? (-1) : (1);
 }

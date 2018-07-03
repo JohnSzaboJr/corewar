@@ -20,9 +20,11 @@
 int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label **label)
 {
 	int				i;
+	int				ret;
 	t_list_label	*new;
 
 	i = 0;
+	ret = 0;
 	if (as_skip_label(line, &i) && line[i] == LABEL_CHAR)
 	{
 		if (!(new = (t_list_label *)malloc(sizeof(*new))))
@@ -44,13 +46,16 @@ int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label 
 	else
 		i = 0;
 	as_skip_space(line, &i);
-	if (!as_get_command(line, i, code, line_nr) ||
-	!as_get_params(line, label, code, line_nr))
+	if (!(ret = as_get_command(line, i, code, line_nr)))
 	{
 		as_free_label(label);
 		return (0);	
 	}
-
+	if (ret > -1 && !as_get_params(line, label, code, line_nr))
+	{
+		as_free_label(label);
+		return (0);	
+	}
 
 	
 

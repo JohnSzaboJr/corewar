@@ -17,16 +17,8 @@
 
 int	as_skip_command(char *line, int *i)
 {
-	int	j;
-
-	j = 15;
-	 while (j >= 0)
-    {
-        if (!ft_strncmp(op_tab[j].opname, line + *i, ft_strlen(op_tab[j].opname)))
-            break ;
-        j--;
-    }
-	*i = *i + ft_strlen(op_tab[j].opname);
+	while (line[*i] && !ft_isspace(line[*i]))
+		(*i)++;
 	return (1);
 }
 
