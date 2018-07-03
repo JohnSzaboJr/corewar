@@ -73,10 +73,7 @@ int as_parse(int fd)
     free(line);
     return (1);
 }
-    // make sure there is a .name and .comment
-    // as specified in the header
-    // control length of name and comment
+
     // store size at the end.
-    // line number errors! - maybe all errors in colors?
     // mi van ha directoryt ad meg
     // csinalni egy flaget h elnevezhesse aminek akarja

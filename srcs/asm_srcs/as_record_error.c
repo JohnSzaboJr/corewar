@@ -18,11 +18,13 @@
 int	as_record_error(t_list_byte **code)
 {
 	t_list_byte	*node;
+	static int	i = 0;
 
 	node = *code;
 	while ((*code)->next)
 		*code = (*code)->next;
 	(*code)->byte = 'Y';
 	*code = node;
-	return (1);
+	i++;
+	return (i);
 }

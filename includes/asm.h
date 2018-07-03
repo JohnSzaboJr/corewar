@@ -49,6 +49,8 @@ int							as_store_magic(t_list_byte **code);
 int							as_free(t_list_byte **list);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
+int							as_err2(char *message, int line_nr, char *line, int column_nr);
+void						as_putnspace(int n);
 int							as_error(t_list_byte **code, int error_code);
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
@@ -63,14 +65,18 @@ int							as_store_error(t_list_byte **code);
 int							as_check_error(t_list_byte *code);
 int							as_record_error(t_list_byte **code);
 int							as_skip_space(char *line, int *i);
+int							as_skip_label(char *line, int *i);
+int							as_skip_command(char *line, int *i);
+int							as_skip_name(char *line, int *i, int *j);
 int							as_check_name_space(int j, int *i, int line_nr, char *line);
 int							as_check_name_quot1(int *i, int line_nr, char *line, int *error);
 int							as_check_name_quot2(int *i, int line_nr, char *line, int *error);
-int							as_skip_name(char *line, int *i, int *j);
 int							as_check_after_name(int *i, int line_nr, char *line);
 int							as_check_comment_space(int j, int *i, int line_nr, char *line);
 int							as_check_comment_quot1(int *i, int line_nr, char *line, int *error);
 int							as_check_comment_quot2(int *i, int line_nr, char *line, int *error);
 int							as_check_after_comment(int *i, int line_nr, char *line);
+int							as_free_label(t_list_label **list);
+int							as_get_params(char *line, t_list_label **label, t_list_byte **code, int line_nr);
 
 #endif

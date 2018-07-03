@@ -27,18 +27,8 @@ int as_error(t_list_byte **code, int error_code)
     if (error_code == 1)
         ft_printf(WHITE " (as_parse_comment)\n" RESET);
     if (error_code == 2)
-        ft_printf("%s\n", "");
+        ft_printf(WHITE " (as_parse_commands)\n" RESET);
     if (error_code == 3)
-        ft_printf("%s\n", "");
-    if (error_code == 4)
-        ft_printf("%s\n", "");
-    if (error_code == 5)
-        ft_printf("%s\n", "");
-    if (error_code == 6)
-        ft_printf("%s\n", "");
-    if (error_code == 7)
-        ft_printf("%s\n", "");
-    if (error_code == 8)
-        ft_printf("%s\n", "ERROR: malloc error in as_parse_commands");
+        ft_printf(WHITE " (as_get_command)\n" RESET);
     return (0);
 }

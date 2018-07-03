@@ -21,6 +21,7 @@
 #define ERROR5      " missing quotation mark before comment\n"
 #define ERROR6      " missing quotation mark after comment\n"
 #define ERROR7      " comment specifier string incorrect\n"
+#define ERROR8      " unknown operation\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"

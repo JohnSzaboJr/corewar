@@ -14,6 +14,21 @@
 #include "op.h"
 #include "asm.h"
 
+int	as_free_label(t_list_label **list)
+{
+	t_list_label	*tmp;
+
+	while (*list)
+	{
+		tmp = *list;
+		if ((*list)->name)
+			free((*list)->name);
+		free(*list);
+		*list = tmp->next;
+	}
+	return (1);
+}
+
 int	as_free(t_list_byte **list)
 {
 	t_list_byte *tmp;
