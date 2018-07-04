@@ -17,6 +17,15 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
+int as_check_error(t_list_byte *code)
+{
+	while (code->next)
+		code = code->next;
+	if (code->byte == 'Y')
+		return (1);
+	return (0);
+}
+
 int	as_err_note(int line_nr, char *line, int column_nr)
 {
 	int	j;
@@ -43,22 +52,6 @@ int	as_err_note(int line_nr, char *line, int column_nr)
 		ft_printf(WHITE " did you mean '%s'?\n" RESET, op_tab[pos].opname);
 	}
 	return (1);
-}
-
-int as_error(t_list_byte **code, int error_code)
-{
-    as_free(code);
-    ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-	ft_printf(BOLDWHITE ERROR0 RESET);
-    if (error_code == 0)
-        ft_printf(WHITE " (as_parse_name)\n" RESET);
-    if (error_code == 1)
-        ft_printf(WHITE " (as_parse_comment)\n" RESET);
-    if (error_code == 2)
-        ft_printf(WHITE " (as_parse_commands)\n" RESET);
-    if (error_code == 3)
-        ft_printf(WHITE " (as_get_command)\n" RESET);
-    return (0);
 }
 
 int	as_err1(char *message, int line_nr, char *line, int column_nr)

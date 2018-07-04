@@ -13,15 +13,53 @@
 #include "libft.h"
 #include "op.h"
 #include "asm.h"
+#include "as_errors.h"
+#include "colors.h"
 #include <fcntl.h>
 
-void	as_putnspace(int n)
+int		as_add_byte(t_list_byte **code, unsigned char byte)
 {
-	while (n)
-    {
-		ft_putchar(' ');
-    	n--;
+	t_list_byte	*new;
+
+	if (!(new = (t_list_byte *)malloc(sizeof(*new))))
+	{
+		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
+		ft_printf(BOLDWHITE ERROR0 RESET);
+		ft_printf(WHITE " (as_add_byte)\n" RESET);
+		as_free(code);
+		return (0);
 	}
+	new->next = *code;
+	*code = new;
+	(*code)->byte = byte;
+	return (1);
+}
+
+int		as_add_label(t_list_label **label, char *line, int i, int pos)
+{
+	t_list_label	*new;
+
+	if (!(new = (t_list_label *)malloc(sizeof(*new))))
+	{
+		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
+		ft_printf(BOLDWHITE ERROR0 RESET);
+		ft_printf(WHITE " (as_add_label)\n" RESET);
+		as_free_label(label);
+		return (0);
+	}
+	new->next = *label;
+	*label = new;
+	if (!((*label)->name = ft_strnew(i)))
+	{
+		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
+		ft_printf(BOLDWHITE ERROR0 RESET);
+		ft_printf(WHITE " (as_add_label)\n" RESET);
+		as_free_label(label);
+		return (0);
+	}
+	ft_strncpy((*label)->name, line, i);
+	(*label)->pos = pos;
+	return (1);
 }
 
 int as_code_size(t_list_byte *code)

@@ -21,26 +21,16 @@ int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label 
 {
 	int				i;
 	int				ret;
-	t_list_label	*new;
 
 	i = 0;
 	ret = 0;
 	if (as_skip_label(line, &i) && line[i] == LABEL_CHAR && i <= LABEL_SIZE)
 	{
-		if (!(new = (t_list_label *)malloc(sizeof(*new))))
+		if (!as_add_label(label, line, i, as_code_size(*code)))
 		{
-			as_free_label(label);
-			return (as_error(code, 2));
+			as_free(code);
+			return (0);
 		}
-		if (!(new->name = ft_strnew(i)))
-		{
-			as_free_label(label);
-			return (as_error(code, 2));
-		}
-		ft_strncpy(new->name, line, i);
-		new->pos = as_code_size(*code);
-		new->next = *label;
-		*label = new;
 		i++;
 	}
 	else if (i > LABEL_SIZE)
@@ -65,9 +55,6 @@ int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label 
 
 	
 
-	// I have to free labels as well!!! (also on errors)
-	// parse potential labels (check if there label char)
-	// save label name and byte position
 	// can label names be the same as known commands?	
 	return (1);
 }
@@ -75,7 +62,6 @@ int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label 
 int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
 {
 	int			i;
-	t_list_byte	*new;
 
 	(*section)++;
 	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))) &&
@@ -83,16 +69,13 @@ int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
 		line[ft_strlen(COMMENT_CMD_STRING)] == '"'))
 	{
 		if (as_parse_comment_check(&i, line, code, line_nr) &&
-			!as_save_comment(&i, line, code, &new))
+			!as_save_comment(&i, line, code))
 			return (0);
 		i = COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 17;
 		while (i)
 		{
-			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
-				return (as_error(code, 1));
-			new->next = *code;
-			*code = new;
-			(*code)->byte = 0;
+			if (!(as_add_byte(code, 0)))
+        		return (0);
 			i--;
 		}
 		return (1);
@@ -104,7 +87,6 @@ int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
 int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
 {
 	int			i;
-	t_list_byte	*new;
 
 	(*section)++;
 	if (!(ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))) &&
@@ -112,16 +94,13 @@ int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
 		line[ft_strlen(NAME_CMD_STRING)] == '"'))
 	{
 		if (as_parse_name_check(&i, line, code, line_nr) &&
-			!as_save_name(&i, line, code, &new))
+			!as_save_name(&i, line, code))
 			return (0);
 		i = PROG_NAME_LENGTH - as_code_size(*code) + 13;
 		while (i)
 		{
-			if (!(new = (t_list_byte *)malloc(sizeof(*new))))
-				return (as_error(code, 0));
-			new->next = *code;
-			*code = new;
-			(*code)->byte = 0;
+			if (!(as_add_byte(code, 0)))
+        		return (0);
 			i--;
 		}
 		return (1);
@@ -132,26 +111,14 @@ int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
 
 int as_store_error(t_list_byte **code)
 {
-	t_list_byte	*new;
-
-	if (!(new = (t_list_byte *)malloc(sizeof(*new))))
-	{
-		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-		ft_printf(BOLDWHITE ERROR0 RESET);
-		ft_printf(WHITE " (as_store_error)\n" RESET);
-		as_free(code);
-		return (0);
-	}
-	new->byte = 0;
-	new->next = *code;
-	*code = new;
+	if (!(as_add_byte(code, 0)))
+        return (0);
 	as_reverse_list(code);
 	return (1);
 }
 
 int as_store_magic(t_list_byte **code)
 {
-	t_list_byte	*new;
 	int			magic;
 	int			i;
 
@@ -159,18 +126,9 @@ int as_store_magic(t_list_byte **code)
 	magic = COREWAR_EXEC_MAGIC;
 	while (i)
 	{
-		if (!(new = (t_list_byte *)malloc(sizeof(*new))))
-		{
-			ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-			ft_printf(BOLDWHITE ERROR0 RESET);
-			ft_printf(WHITE " (as_store_magic)\n" RESET);
-			as_free(code);
-			return (0);
-		}
-		new->byte = magic % 256;
+		if (!(as_add_byte(code, magic % 256)))
+        	return (0);
 		magic = (magic - (magic % (256))) / (256);
-		new->next = *code;
-		*code = new;
 		i--;
 	}
 	return (1);

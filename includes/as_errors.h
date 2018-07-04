@@ -33,5 +33,6 @@
 #define WARNING5    " missing comment\n"
 #define WARNING6    " invalid character(s) after comment\n"
 #define WARNING7    " comment too long\n"
+#define WARNING8    " space before argument separator\n"
 
 #endif

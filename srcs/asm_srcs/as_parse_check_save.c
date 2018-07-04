@@ -17,48 +17,30 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-int as_save_comment(int *i, char *line, t_list_byte **code, t_list_byte **new)
+int as_save_comment(int *i, char *line, t_list_byte **code)
 {
 	int l;
 
 	l = 0;
 	while (l < COMMENT_LENGTH && line[*i] != '"')
 	{
-		if (!((*new) = (t_list_byte *)malloc(sizeof(**new))))
-		{
-			ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-			ft_printf(BOLDWHITE ERROR0 RESET);
-			ft_printf(WHITE " (as_save_comment)\n" RESET);
-			as_free(code);
-			return (0);
-		}
-		(*new)->next = *code;
-		*code = *new;
-		(*code)->byte = line[*i];
+		if (!(as_add_byte(code, line[*i])))
+        	return (0);
 		(*i)++;
 		l++;
 	}
 	return (1);
 }
 
-int as_save_name(int *i, char *line, t_list_byte **code, t_list_byte **new)
+int as_save_name(int *i, char *line, t_list_byte **code)
 {
 	int l;
 
 	l = 0;
 	while (l < PROG_NAME_LENGTH && line[*i] != '"')
 	{
-		if (!((*new) = (t_list_byte *)malloc(sizeof(**new))))
-		{
-			ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-			ft_printf(BOLDWHITE ERROR0 RESET);
-			ft_printf(WHITE " (as_save_name)\n" RESET);
-			as_free(code);
-			return (0);
-		}
-		(*new)->next = *code;
-		*code = *new;
-		(*code)->byte = line[*i];
+		if (!(as_add_byte(code, line[*i])))
+        	return (0);
 		(*i)++;
 		l++;
 	}
