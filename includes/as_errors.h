@@ -13,6 +13,8 @@
 #ifndef AS_ERRORS_H
 # define AS_ERRORS_H
 
+#define MAX_ERROR_SIZE 40
+#define LABEL_SIZE 20
 #define ERROR0      " malloc failure"
 #define ERROR1      " name specifier string incorrect\n"
 #define ERROR2      " missing quotation mark before name\n"
@@ -23,6 +25,7 @@
 #define ERROR7      " comment specifier string incorrect\n"
 #define ERROR8      " unknown operation\n"
 #define ERROR9      " missing parameters\n"
+#define ERROR10      " label too long\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"

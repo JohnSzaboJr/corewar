@@ -25,7 +25,7 @@ int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label 
 
 	i = 0;
 	ret = 0;
-	if (as_skip_label(line, &i) && line[i] == LABEL_CHAR)
+	if (as_skip_label(line, &i) && line[i] == LABEL_CHAR && i <= LABEL_SIZE)
 	{
 		if (!(new = (t_list_label *)malloc(sizeof(*new))))
 		{
@@ -41,6 +41,12 @@ int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label 
 		new->pos = as_code_size(*code);
 		new->next = *label;
 		*label = new;
+		i++;
+	}
+	else if (i > LABEL_SIZE)
+	{
+		as_err1(ERROR10, line_nr, line, i + 1);
+        as_record_error(code);
 		i++;
 	}
 	else
