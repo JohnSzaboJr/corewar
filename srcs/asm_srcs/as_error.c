@@ -26,6 +26,14 @@ int as_check_error(t_list_byte *code)
 	return (0);
 }
 
+int	as_err_note2(int line_nr, int column_nr)
+{
+	ft_printf(BOLDWHITE "\nline %d, column %d:" RESET, line_nr, column_nr);
+	ft_printf(BOLDBLACK " note:" RESET);
+	ft_printf(WHITE " choose a register number that fits in a byte to silence this warning\n" RESET);
+	return (1);
+}
+
 int	as_err_note(int line_nr, char *line, int column_nr)
 {
 	int	j;

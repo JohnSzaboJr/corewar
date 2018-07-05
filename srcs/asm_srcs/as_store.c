@@ -42,6 +42,8 @@ int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label 
 	else
 		i = 0;
 	as_skip_space(line, &i);
+	if (!line[i])
+		return (1);
 	if (!(ret = as_get_command(line, i, code, line_nr)))
 	{
 		as_free_label(label);

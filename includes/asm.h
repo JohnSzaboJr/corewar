@@ -50,6 +50,7 @@ int							as_free(t_list_byte **list);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err_note(int line_nr, char *line, int column_nr);
+int							as_err_note2(int line_nr, int column_nr);
 void						as_write_err(char *message, int line_nr, int column_nr, int e);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
