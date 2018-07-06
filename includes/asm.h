@@ -47,41 +47,55 @@ int							as_parse_name(char *line, int line_nr, int *section, t_list_byte **cod
 int							as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code);
 int							as_store_magic(t_list_byte **code);
 int							as_free(t_list_byte **list);
+
+int							as_record_error(int a);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err_note(int line_nr, char *line, int column_nr);
 int							as_err_note2(int line_nr, int column_nr);
+int							as_err_note3(int line_nr, int column_nr, int co, int k);
 void						as_write_err(char *message, int line_nr, int column_nr, int e);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
+
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
-int							as_parse_name_check(int *i, char *line, t_list_byte **code, int line_nr);
+int							as_parse_name_check(int *i, char *line, int line_nr);
 int							as_save_name(int *i, char *line, t_list_byte **code);
-int							as_parse_comment_check(int *i, char *line, t_list_byte **code, int line_nr);
+int							as_parse_comment_check(int *i, char *line, int line_nr);
 int							as_save_comment(int *i, char *line, t_list_byte **code);
 int							as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label **label);
 int							as_code_size(t_list_byte *code);
 int							as_get_command(char *line, int i, t_list_byte **code, int line_nr);
-int							as_store_error(t_list_byte **code);
-int							as_check_error(t_list_byte *code);
-int							as_record_error(t_list_byte **code);
+
 int							as_skip_space(char *line, int *i);
 int							as_skip_label(char *line, int *i);
 int							as_skip_command(char *line, int *i);
 int							as_skip_name(char *line, int *i, int *j);
-int							as_check_name_space(int j, int *i, int line_nr, char *line);
-int							as_check_name_quot1(int *i, int line_nr, char *line, t_list_byte **code);
-int							as_check_name_quot2(int *i, int line_nr, char *line, t_list_byte **code);
-int							as_check_comment_quot1(int *i, int line_nr, char *line, t_list_byte **code);
-int							as_check_comment_quot2(int *i, int line_nr, char *line, t_list_byte **code);
-int							as_check_after_name(int *i, int line_nr, char *line);
-int							as_check_comment_space(int j, int *i, int line_nr, char *line);
-int							as_check_after_comment(int *i, int line_nr, char *line);
+int							as_skip_rev_space(char *line, int *i);
+int							as_skip_to_params(char *line, int *i);
+int							as_skip_to_sep(char *line, int *i);
+void						as_skip_to_next_param(char *line, int line_nr, int *i);
+
 int							as_free_label(t_list_label **list);
 int							as_get_params(char *line, t_list_label **label, t_list_byte **code, int line_nr);
 int							as_cmd_comp(char *cmd, char *str);
 int							as_add_byte(t_list_byte **code, unsigned char byte);
 int							as_add_label(t_list_label **label, char *line, int i, int pos);
+
+int							as_check_r_chars(char *line, int i, int j, int line_nr);
+int							as_check_r_length(char *line, int i, int j, int line_nr);
+int							as_check_r_zero(char *line, int i, int j, int line_nr);
+int							as_check_r_params(int co, int k);
+int							as_check_r_params2(int co, int k, t_list_byte **encoding);
+int							as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line);
+int							as_reg(char *line, int line_nr, int *i, t_list_byte **code);
+
+int							as_k(int a);
+int							as_j(int a, int i);
+int							as_get_pos(unsigned char byte, int a);
+void						as_check_enough_params(t_list_byte **code, int line_nr, char *line, int i);
+void						as_check_valid_params(int line_nr, char *line);
+void						as_bw_params(int *i, char *line, t_list_byte **code, int line_nr);
 
 #endif

@@ -13,6 +13,7 @@
 #ifndef AS_ERRORS_H
 # define AS_ERRORS_H
 
+#define MAX_LINE_LENGTH 50
 #define MAX_ERROR_SIZE 40
 #define LABEL_SIZE 20
 #define ERROR0      " malloc failure"
@@ -30,6 +31,12 @@
 #define ERROR12      " register number missing from parameter\n"
 #define ERROR13      " register number is too long\n"
 #define ERROR14      " register number is zero\n"
+#define ERROR15      " incompatible parameter\n"
+#define ERROR16      " too many parameters for this type of operation\n"
+#define ERROR17      " line exceeds maximum length\n"
+#define ERROR18      " too few parameters for this type of operation, "
+#define ERROR19      " line exceeds maximum length\n"
+#define ERROR20      " invalid characters at the end of parameter\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"
@@ -38,5 +45,7 @@
 #define WARNING6    " invalid character(s) after comment\n"
 #define WARNING7    " comment too long\n"
 #define WARNING8    " space before argument separator\n"
+#define WARNING9    " unnecessary space before parameter\n"
+#define WARNING10    " space at the end of the line\n"
 
 #endif

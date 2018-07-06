@@ -30,9 +30,9 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 	l = 1;
 	beg = 1;
 	// include this in final error handling!
-	if (list->byte == 'Y')
+	i = as_record_error(0);
+	if (i)
 	{
-		i = as_record_error(&list) - 1;
 		if (i == 1)
 			ft_printf("%d error generated.\n", i);
 		else
@@ -40,19 +40,10 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 		return ;
 	}
 	//
-	node = list;
-	list = list->next;
-	while (list)
-	{
-		list = list->next;
-		i++;
-	}
-	ft_printf("\nallocated bytes: %d\n", i);
-	list = node;
+	ft_printf("\nallocated bytes: %d\n", as_code_size(list));
 	i = 0;
 	//
 	ft_putstr("output: \n\n");
-	list = list->next;
 	while (list)
 	{
 		node = list;

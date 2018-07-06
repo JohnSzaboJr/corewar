@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/01 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/01 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/06 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,121 +17,48 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
+static int  as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding)
+{
+    *i = 0;
+    as_k(1);
+    as_get_pos((*code)->byte, 1);
+    if (!(as_add_byte(code, 0)))
+        return (-1);
+    *encoding = *code;
+    if (!as_skip_to_params(line, i))
+        return (0);
+    return (1);
+}
+
 int as_get_params(char *line, t_list_label **label, t_list_byte **code, int line_nr)
 {
     int             i;
-    int             j;
-    int             k;
-    unsigned char   command;
+    int             params;
     t_list_byte     *encoding;
-    char            c;
 
-    i = 0;
-    j = 0;
-    k = 0;
-    command = (*code)->byte;
-    i = as_skip_label(line, &i) + 1;
-    as_skip_space(line, &i);
-    as_skip_command(line, &i);
-    as_skip_space(line, &i);
-    if (!line[i])
-    {
-        as_err1(ERROR9, line_nr, line, i + 1);
-        as_record_error(code);
-        return (1);
-    }
-    if (!(as_add_byte(code, 0)))
+    if (-1 == (params = as_init_i_k_pos_params(&i, code, line, &encoding)))
         return (0);
-    encoding = *code;
-
-    while (line[i])
+    while (line[i] && params)
     {   
-        j = i;
-        while (line[i] && line[i] != SEPARATOR_CHAR)
-            i++;
-        k++;
-        if (line[i] == SEPARATOR_CHAR && ft_isspace(line[i - 1]))
-            as_war1(WARNING8, line_nr, line, i);
-        if (line[j] == 'r')
-        {
-            if (!line[j + 1])
-            {
-                as_err1(ERROR12, line_nr, line, j + 1);
-                as_record_error(code);
-            }
-            else
-            {
-                while (ft_isspace(line[i - 1]))
-                    i--;
-                c = line[i];
-                line[i] = '\0';
-                if (line[j + 1] == '-' || ft_hasnondigits(line + j + 1))
-                {
-                    line[i] = c;
-                    as_err1(ERROR11, line_nr, line, j + 1);
-                    as_record_error(code);
-                }
-                else if (ft_atoi(line + j + 1) > 255 || ft_strlen(line + j + 1) > 3)
-                {
-                    line[i] = c;
-                    as_err1(ERROR13, line_nr, line, j + 2);
-                    as_record_error(code);
-                    as_err_note2(line_nr, j + 2);
-                }
-                else if (!ft_atoi(line + j + 1))
-                {
-                    line[i] = c;
-                    as_err1(ERROR14, line_nr, line, j + 2);
-                    as_record_error(code);
-                    as_err_note2(line_nr, j + 2);
-                }
-                else
-                {
-                    if (k == 1)
-                        encoding->byte = (unsigned char)64;
-                    if (k == 2)
-                        encoding->byte = encoding->byte + (unsigned char)16;
-                    if (k == 3)
-                        encoding->byte = encoding->byte + (unsigned char)4;
-                    if (!(as_add_byte(code, (unsigned char)ft_atoi(line + j + 1))))
-                        return (0);
-                    line[i] = c;
-                }
-                as_skip_space(line, &i);
-            }
-            // 
-            ft_printf("found register\n");
-        }
-        else if (line[j] == DIRECT_CHAR)
+        as_bw_params(&i, line, code, line_nr);
+        if (as_reg(line, line_nr, &i, code) && !as_s_reg(code, &encoding, line))
+            return (0);
+        if (line[as_j(0, 0)] == DIRECT_CHAR)
         {
             ft_printf("found direct\n");
         }
-        else if (ft_isdigit(line[j]) || line[j] == '-')
+        if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
         {
             ft_printf("found indirect\n");
         }
-        else
-        {
-            as_err1(ERROR11, line_nr, line, j + 1);
-            as_record_error(code);
-        }
-        if (line[i])
-            i++;
-        as_skip_space(line, &i);
-        // az a baj h enter is lehet!
-         // record how many spaces skipped?
-        // if not correct->warning
-        // invalid characters at end?
+        as_check_valid_params(line_nr, line);
+        as_skip_to_next_param(line, line_nr, &i);
     }
+    as_check_enough_params(code, line_nr, line, i);
 
-    // error: nem megfelelo tipus
-    // error: too few argumentsn for operation
-    // error: invalid argument
-    // szamon tartani h mennyit talaltunk! es error ha tul sok
+    //
     if (*label)
-        ft_printf("yeah\n");
-    if (!(line[i]))
-        ft_printf("-------------------------------------\n");
+        ft_printf("y\n");
     //
     return (1);
 }
@@ -152,10 +79,7 @@ int as_get_command(char *line, int i, t_list_byte **code, int line_nr)
     if (j > -1 && !line[i + ft_strlen(op_tab[j].opname)])
         j = 0;
     else if (j == -1 || !ft_isspace(line[i + ft_strlen(op_tab[j].opname)]))
-    {
         error = as_err1(ERROR8, line_nr, line, i + 1);
-        as_record_error(code);
-    }
     else if (!(as_add_byte(code, (unsigned char)op_tab[j].opcode)))
         return (0);
     return (error) ? (-1) : (1);

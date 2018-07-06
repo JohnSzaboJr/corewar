@@ -48,7 +48,7 @@ int as_parse(int fd)
     label = NULL;
     section = 0;
     line_nr = 1;
-    if (!as_store_magic(&code) || !as_store_error(&code))
+    if (!as_store_magic(&code))
         return (0);
     while (get_next_line(fd, &line))
 	{
