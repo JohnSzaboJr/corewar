@@ -35,7 +35,9 @@ int as_get_params(char *line, t_list_label **label, t_list_byte **code, int line
     int             i;
     int             params;
     t_list_byte     *encoding;
+    int             byte_pos;
 
+    byte_pos = as_code_size(*code) - 1;
     if (-1 == (params = as_init_i_k_pos_params(&i, code, line, &encoding)))
         return (0);
     while (line[i] && params)
@@ -43,7 +45,10 @@ int as_get_params(char *line, t_list_label **label, t_list_byte **code, int line
         as_bw_params(&i, line, code, line_nr);
         if (as_reg(line, line_nr, &i, code) && !as_s_reg(code, &encoding, line))
             return (0);
-        if (line[as_j(0, 0)] == DIRECT_CHAR)
+        if (as_dir(line) && as_dir_label(line, label, byte_pos, code) &&
+        !as_s_label(code, &encoding, line))
+            return (0);
+        if (as_dir(line))
         {
             ft_printf("found direct\n");
         }
@@ -57,7 +62,7 @@ int as_get_params(char *line, t_list_label **label, t_list_byte **code, int line
     as_check_enough_params(code, line_nr, line, i);
 
     //
-    if (*label)
+    if (!(*label))
         ft_printf("y\n");
     //
     return (1);

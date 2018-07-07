@@ -113,14 +113,6 @@ int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
 	return (as_err1(ERROR1, line_nr, line, 1));
 }
 
-// int as_store_error(t_list_byte **code)
-// {
-// 	if (!(as_add_byte(code, 0)))
-//         return (0);
-// 	as_reverse_list(code);
-// 	return (1);
-// }
-
 int as_store_magic(t_list_byte **code)
 {
 	int			magic;

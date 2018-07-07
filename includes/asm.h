@@ -91,11 +91,17 @@ int							as_check_r_params2(int co, int k, t_list_byte **encoding);
 int							as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line);
 int							as_reg(char *line, int line_nr, int *i, t_list_byte **code);
 
+int							as_dir(char *line);
+int							as_dir_label(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
+int							as_s_label(t_list_byte **code, t_list_byte **encoding, char *line);
+
 int							as_k(int a);
 int							as_j(int a, int i);
 int							as_get_pos(unsigned char byte, int a);
 void						as_check_enough_params(t_list_byte **code, int line_nr, char *line, int i);
 void						as_check_valid_params(int line_nr, char *line);
 void						as_bw_params(int *i, char *line, t_list_byte **code, int line_nr);
+
+int							as_line_nr(int a);
 
 #endif

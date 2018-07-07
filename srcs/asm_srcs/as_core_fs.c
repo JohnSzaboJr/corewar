@@ -15,6 +15,15 @@
 #include "asm.h"
 #include <fcntl.h>
 
+int as_line_nr(int a)
+{
+    static int  line_nr = 0;
+
+    if (a)
+        line_nr++;
+    return (line_nr);
+}
+
 int as_arg_num(int argc)
 {
     if (argc != 2)
@@ -65,6 +74,7 @@ int as_parse(int fd)
         }
         free(line);
         line_nr++;
+        as_line_nr(1);
     }
     //
     as_reverse_list(&code);
