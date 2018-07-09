@@ -40,6 +40,7 @@
 #define ERROR21      " direct reference missing from parameter\n"
 #define ERROR22      " missing label\n"
 #define ERROR23      " invalid label\n"
+#define ERROR24      " duplicate label\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"

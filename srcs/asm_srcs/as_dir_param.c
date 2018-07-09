@@ -81,7 +81,7 @@ int as_s_label(t_list_byte **code, t_list_byte **encoding, char *line)
     return (1);
 }
 
-static int  as_cmp_label(t_list_label *label, char *line, int k, int pos)
+int  as_cmp_label(t_list_label *label, char *line, int k, int pos)
 {
     while (label)
     {

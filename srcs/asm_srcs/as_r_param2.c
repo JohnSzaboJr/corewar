@@ -27,7 +27,7 @@ int as_check_r(char *line, int *i, int j, t_list_error **error)
         return (0);
     if (ret != -1 && !(ret = as_check_r_length(line, *i, j, error)))
         return (0);
-    if (ret != -1 && !(ret = as_check_r_zero(line, *i, j, error))
+    if (ret != -1 && !(ret = as_check_r_zero(line, *i, j, error)))
         return (0);
     return (ret == -1) ? (-1) : (1);
 }

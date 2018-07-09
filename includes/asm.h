@@ -70,6 +70,7 @@ void						as_write_err_sign(char *line, int column_nr);
 int							as_add_error(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_warning(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_note(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_label_error(t_list_error **error, char *message, char *line, int column_nr);
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
@@ -119,8 +120,10 @@ int							as_line_nr(int a);
 
 int							as_parse_el_name(char *line, int *section, t_list_error **error, int *byte_count);
 int							as_parse_el_comment(char *line, int *section, t_list_error **error, int *byte_count);
-int							as_parse_el_commands(char *line, t_list_byte **error, t_list_label **label, int *byte_count);
+int							as_parse_el_commands(char *line, t_list_error **error, t_list_label **label, int *byte_count);
 
 int							as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
 int							as_check_r(char *line, int *i, int j, t_list_error **error);
+int							as_cmp_label(t_list_label *label, char *line, int k, int pos);
+
 #endif
