@@ -64,16 +64,53 @@ static int  as_parse_errors_labels(int fd, t_list_label **label)
         free(line);
         as_line_nr(1);
     }
-    //
-    // - reverse error list
-    // - print them out one by one
-    // - count warnings and errors, and print how many generated
-    // - if error_num -> return (0);
-    //
+    free(line);
+    as_reverse_error(&error);
+    if (as_print_error(error))
+    {
+        as_free_error(&error);
+        return (0);
+    }
     as_free_error(&error);
+    return (1);
+}
+
+static int  as_parse(int fd, t_list_label **label)
+{
+    char            *line;
+    int             section;
+    t_list_byte     *code;
+
+    line = NULL;
+    code = NULL;
+    section = 0;
+    if (!as_store_magic(&code))
+        return (0);
+    while (get_next_line(fd, &line))
+	{
+        if (line[0] && line[0] != COMMENT_CHAR)
+        {
+            if ((section == 2 && !as_parse_commands(line, line_nr, &code, &label)) ||
+            (section == 1 && !as_parse_comment(line, line_nr, &section, &code)) ||
+            (section == 0 && !as_parse_name(line, line_nr, &section, &code)))
+            {
+                free(line);
+                return (0);
+            }
+        }
+        free(line);
+    }
+    //
+    as_reverse_list(&code);
+    as_print_list(code, label);
+    //
     free(line);
     return (1);
 }
+
+    // store size at the end.
+    // mi van ha directoryt ad meg
+    // csinalni egy flaget h elnevezhesse aminek akarja
 
 int         main(int argc, char **argv)
 {
@@ -88,10 +125,9 @@ int         main(int argc, char **argv)
         as_free_label(&label);
         return (1);
     }
-
     close(fd);
     fd = 0;
-    if (!as_open(argv[1], &fd) || !as_parse(fd))
+    if (!as_open(argv[1], &fd) || !as_parse(fd, &label))
         return (1);
     close(fd);
     as_free_label(&label);

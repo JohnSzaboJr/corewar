@@ -70,23 +70,17 @@ int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
 	int			i;
 
 	(*section)++;
-	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))) &&
-		(ft_isspace(line[ft_strlen(COMMENT_CMD_STRING)]) ||
-		line[ft_strlen(COMMENT_CMD_STRING)] == '"'))
+	if (as_parse_comment_check(&i, line, line_nr) &&
+		!as_save_comment(&i, line, code))
+		return (0);
+	i = COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 16;
+	while (i)
 	{
-		if (as_parse_comment_check(&i, line, line_nr) &&
-			!as_save_comment(&i, line, code))
-			return (0);
-		i = COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 16;
-		while (i)
-		{
-			if (!(as_add_byte(code, 0)))
-        		return (0);
-			i--;
-		}
-		return (1);
+		if (!(as_add_byte(code, 0)))
+    		return (0);
+		i--;
 	}
-	return (as_err1(ERROR7, line_nr, line, 1));
+	return (1);
 }
 
 int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
@@ -94,23 +88,18 @@ int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
 	int			i;
 
 	(*section)++;
-	if (!(ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))) &&
-		(ft_isspace(line[ft_strlen(NAME_CMD_STRING)]) ||
-		line[ft_strlen(NAME_CMD_STRING)] == '"'))
+	i = ft_strlen(COMMENT_CMD_STRING);
+	as_skip_space(line, i);
+	if (!as_save_name(&i, line, code))
+		return (0);
+	i = PROG_NAME_LENGTH - as_code_size(*code) + 12;
+	while (i)
 	{
-		if (as_parse_name_check(&i, line, line_nr) &&
-			!as_save_name(&i, line, code))
-			return (0);
-		i = PROG_NAME_LENGTH - as_code_size(*code) + 12;
-		while (i)
-		{
-			if (!(as_add_byte(code, 0)))
-        		return (0);
-			i--;
-		}
-		return (1);
+		if (!(as_add_byte(code, 0)))
+    		return (0);
+		i--;
 	}
-	return (as_err1(ERROR1, line_nr, line, 1));
+	return (1);
 }
 
 int as_store_magic(t_list_byte **code)

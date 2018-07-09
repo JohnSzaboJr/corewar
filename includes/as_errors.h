@@ -44,6 +44,7 @@
 #define ERROR25      " direct reference missing from parameter\n"
 #define ERROR26      " direct reference number is too long\n"
 #define ERROR27      " direct reference number is too long\n"
+#define ERROR28      " label reference not found\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"

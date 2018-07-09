@@ -123,3 +123,68 @@ int	as_reverse_list(t_list_byte **list)
 	*list = node;
 	return (1);
 }
+
+int	as_reverse_error(t_list_error **list)
+{
+	t_list_error *next;
+	t_list_error *tmp;
+	t_list_error *node;
+
+	next = NULL;
+	tmp = NULL;
+	node = *list;
+	while (node && node->next)
+		node = node->next;
+	while (*list)
+	{
+		next = (*list)->next;
+		(*list)->next = tmp;
+		tmp = *list;
+		*list = next;
+	}
+	*list = node;
+	return (1);
+}
+
+int	as_print_error(t_list_error *error)
+{
+	int	error_count;
+	int	warning_count;
+
+	error_count = 0;
+	warning_count = 0;
+	while (error)
+	{
+		if (error->type == 1 || error->type == 4)
+			error_count++;
+		if (error->type == 2)
+			warning_count++;
+		if (error->type == 1)
+			as_err1(error->message, error->line_nr, error->line, error->column_nr);
+		if (error->type == 2)
+			as_war1(error->message, error->line_nr, error->line, error->column_nr);
+		if (error->type == 4)
+			as_err1(ERROR28, error->line_nr, error->line, error->column_nr);
+	// print notes too...
+	// improve by saying "did you mean... label... defined here...?"
+		error = error->next;
+	}
+	if (!error_count && warning_count == 1)
+		ft_printf("\n%d warning generated.\n", warning_count);
+	if (!error_count && warning_count > 1)
+		ft_printf("\n%d warnings generated.\n", warning_count);
+	if (error_count == 1 && !warning_count)
+		ft_printf("\n%d error generated.\n", error_count);
+	if (error_count > 1 && !warning_count)
+		ft_printf("\n%d errors generated.\n", error_count);
+	if (error_count == 1 && warning_count == 1)
+		ft_printf("\n%d error and %d warning generated.\n", error_count, warning_count);
+	if (error_count > 1 && warning_count == 1)
+		ft_printf("\n%d errors and %d warning generated.\n", error_count, warning_count);
+	if (error_count == 1 && warning_count > 1)
+		ft_printf("\n%d error and %d warnings generated.\n", error_count, warning_count);
+	if (error_count > 1 && warning_count > 1)
+		ft_printf("\n%d errors and %d warnings generated.\n", error_count, warning_count);
+	// 2 fdre...
+	return (error_count);
+}

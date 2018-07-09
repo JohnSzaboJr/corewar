@@ -50,7 +50,6 @@ typedef struct	s_op
 
 extern t_op		op_tab[17];
 
-int							as_parse(int fd);
 int							as_parse_name(char *line, int line_nr, int *section, t_list_byte **code);
 int							as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code);
 int							as_store_magic(t_list_byte **code);
@@ -125,5 +124,7 @@ int							as_parse_el_commands(char *line, t_list_error **error, t_list_label **
 int							as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
 int							as_check_r(char *line, int *i, int j, t_list_error **error);
 int							as_cmp_label(t_list_label *label, char *line, int k, int pos);
+
+int							as_reverse_error(t_list_error **list);
 
 #endif
