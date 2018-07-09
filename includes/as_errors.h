@@ -41,6 +41,8 @@
 #define ERROR22      " missing label\n"
 #define ERROR23      " invalid label\n"
 #define ERROR24      " duplicate label\n"
+#define ERROR25      " direct reference missing from parameter\n"
+#define ERROR26      " direct reference number is too long\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"
@@ -52,5 +54,6 @@
 #define WARNING9    " unnecessary space before parameter\n"
 #define WARNING10    " space at the end of the line\n"
 #define NOTE1       " choose a register number that fits in a byte to silence this warning\n"
+#define NOTE2       " choose a register number that fits in 4 bytes to silence this warning\n"
 
 #endif

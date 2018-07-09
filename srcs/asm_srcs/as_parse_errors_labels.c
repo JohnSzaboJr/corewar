@@ -55,6 +55,110 @@ static void  as_bw_params_el(int *i, char *line, t_list_error **error)
         return (0);
 }
 
+static int as_check_dir_chars(char *line, int i, int j, t_list_error **error)
+{
+    char    c;
+    int     k;
+
+    k = i;
+    while (line[i] != DIRECT_CHAR && !ft_isspace(line[i]))
+        i--;
+    if (k != i && line[i] != DIRECT_CHAR)
+    {
+        if (!as_add_error(error, ERROR20, line, k))
+            return (0);
+        return (-1);
+    }
+    i = k;
+    c = line[i];
+    line[i] = '\0';
+    if (ft_hasnondigits(line + j + 1))
+    {
+        line[i] = c;
+        if (!as_add_error(error, ERROR11, line, j + 1))
+            return (0);
+        return (-1);
+    }
+    line[i] = c;
+    return (1);
+}
+
+int as_check_dir_length(char *line, int i, int j, t_list_error **error)
+{
+    char c;
+
+    c = line[i];
+    line[i] = '\0';
+    if (ft_atoll(line + j + 1) > 2147483647 ||
+    ft_atoll(line + j + 1) < -2147483648 
+    ft_strlen(line + j + 1) > 11)
+    {
+        line[i] = c;
+        if (!as_add_note(error, NOTE1, line, j + 2))
+            return (0);
+        if (!as_add_error(error, ERROR26, line, j + 2))
+            return (0);
+        return (-1);
+    }
+    line[i] = c;
+    return (1);
+}
+
+static int as_check_dir(char *line, int *i, int j, t_list_error **error)
+{
+    int ret;
+
+    ret = 0;
+    as_skip_rev_space(line, i);
+    if (!(ret = as_check_dir_chars(line, *i, j, error)))
+        return (0);
+    if (ret != -1 && !(ret = as_check_dir_length(line, *i, j, error)))
+        return (0);
+    return (ret == -1) ? (-1) : (1);
+}
+
+static int as_check_dir_params(int co, int k)
+{
+    if (k <= op_tab[co].param_count && op_tab[co].param_type[k - 1] != T_DIR &&
+        op_tab[co].param_type[k - 1] != T_REG + T_DIR &&
+        op_tab[co].param_type[k - 1] != T_IND + T_DIR 
+        op_tab[co].param_type[k - 1] != T_REG + T_DIR + T_IND)
+        return (0);
+    return (1);
+}
+
+static int  as_check_errors_el_dir(char *line, int *i, t_list_error **error, int *params_size)
+{
+    int j;
+    int ret;
+
+    ret = 0;
+    j = as_j(0, 0);
+    if (!line[j + 1] || ft_isspace(line[j + 1]) || line[j + 1] == SEPARATOR_CHAR)
+    {
+        ret = -1;
+        if (!as_add_error(error, ERROR25, line, j + 2))
+            return (0);
+    }
+    else if (line[j + 1])
+    {
+        if (!(ret = as_check_dir(line, i, j, error)))
+            return (0);
+        if (ret != -1 && !as_check_dir_params(as_get_pos(0, 0), as_k(0)))
+        {
+            ret = -1;
+            if (!as_add_error(error, ERROR15, line, j + 1))
+                return (0);
+            //as_err_note3(line_nr, j + 1, as_get_pos(0, 0), as_k(0));
+        }
+    }
+    if (ret != -1)
+        *params_size = *params_size + DIR_SIZE;
+    else if (ret != -1 && as_get_pos(0, 0) == 10)
+        *params_size = *params_size + IND_SIZE;
+    return (1);
+}
+
 static int  as_check_errors_el_r(char *line, int *i, t_list_error **error, int *params_size)
 {
     int j;
@@ -164,7 +268,8 @@ static int as_parse_el_params(char *line, t_list_label **label, t_list_error **e
             params_size = params_size + 2;
         else if (as_dir(line) && ret == -1)
         {
-            ft_printf("found direct\n");
+            !as_check_errors_el_dir(line, i, error, &params_size))
+                return (0);
         }
         if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
         {
