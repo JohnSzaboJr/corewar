@@ -65,9 +65,12 @@ static int  as_parse_errors_labels(int fd, t_list_label **label)
         as_line_nr(1);
     }
     //
-    as_reverse_list(&code);
-    as_print_list(code, label);
+    // - reverse error list
+    // - print them out one by one
+    // - count warnings and errors, and print how many generated
+    // - if error_num -> return (0);
     //
+    as_free_error(&error);
     free(line);
     return (1);
 }
@@ -79,17 +82,11 @@ int         main(int argc, char **argv)
 
     fd = 0;
     label = NULL;
-    // atirni a programot innen.
-    // 2x nyitni meg es parsingolni a file-t.
-    // elso korben elmenteni az osszes hibat, warningot
-    // es labelt, positionnal
-    // masodik korben elmenteni a bytokat
-
     if (!as_arg_num(argc) || !as_open(argv[1], &fd) ||
     !as_parse_errors_labels(fd, &label))
     {
         as_free_label(&label);
-        return (1):
+        return (1);
     }
 
     close(fd);
@@ -97,6 +94,7 @@ int         main(int argc, char **argv)
     if (!as_open(argv[1], &fd) || !as_parse(fd))
         return (1);
     close(fd);
+    as_free_label(&label);
     return (0);
 }
-// free labels! free code!
+// free code!

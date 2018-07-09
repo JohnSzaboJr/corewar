@@ -17,30 +17,35 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-void    as_check_valid_params(int line_nr, char *line)
+int    as_check_valid_params(t_list_error **error, char *line)
 {
     if (line[as_j(0, 0)] != 'r' && line[as_j(0, 0)] != DIRECT_CHAR &&
     !(ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-'))
-        as_err1(ERROR11, line_nr, line, as_j(0, 0) + 1);
+    {
+        if (!as_add_error(error, ERROR11, line, as_j(0, 0) + 1))
+            return (0);
+    }
+    return (1);
 }
 
-void    as_check_enough_params(t_list_byte **code, int line_nr, char *line, int i)
+int   as_check_enough_params(t_list_error **error, char *line, int i)
 {
     int pos;
     int k;
 
-    pos = as_get_pos((*code)->byte, 0);
+    pos = as_get_pos(0, 0);
     k = as_k(0);
-    if (!k)
-        as_err1(ERROR9, line_nr, line, i + 1);
-    else if (k < op_tab[pos].param_count)
+    if (!k && !as_add_error(error, ERROR9, line, i + 1))
+        return (0);
+    if (k && k < op_tab[pos].param_count)
     {
-        as_write_err(ERROR18, line_nr, i + 1, 1);
-        ft_printf(BOLDWHITE "expected %d, have %d\n" RESET, op_tab[pos].param_count, k);
-	    as_write_err_line(line, i + 1);
-	    as_write_err_sign(line, i + 1);
-        as_record_error(1);
+        if (!as_add_error(error, ERROR18, line, i + 1))
+            return (0);
+        // ft_printf(BOLDWHITE "expected %d, have %d\n" RESET, op_tab[pos].param_count, k);
+	    // as_write_err_line(line, i + 1);
+	    // as_write_err_sign(line, i + 1);
     }
+    return (1);
 }
 
 int     as_get_pos(unsigned char byte, int a)

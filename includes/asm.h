@@ -89,7 +89,7 @@ int							as_skip_name(char *line, int *i, int *j);
 int							as_skip_rev_space(char *line, int *i);
 int							as_skip_to_params(char *line, int *i);
 int							as_skip_to_sep(char *line, int *i);
-void						as_skip_to_next_param(char *line, int line_nr, int *i);
+int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 
 int							as_free_label(t_list_label **list);
 int							as_get_params(char *line, t_list_label **label, t_list_byte **code, int line_nr);
@@ -112,8 +112,8 @@ int							as_s_label(t_list_byte **code, t_list_byte **encoding, char *line);
 int							as_k(int a);
 int							as_j(int a, int i);
 int							as_get_pos(unsigned char byte, int a);
-void						as_check_enough_params(t_list_byte **code, int line_nr, char *line, int i);
-void						as_check_valid_params(int line_nr, char *line);
+int							as_check_enough_params(t_list_error **error, char *line, int i);
+int							as_check_valid_params(t_list_error **error, char *line);
 void						as_bw_params(int *i, char *line, t_list_byte **code, int line_nr);
 
 int							as_line_nr(int a);

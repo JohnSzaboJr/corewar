@@ -90,16 +90,17 @@ int as_check_dir_length(char *line, int i, int j, t_list_error **error)
     c = line[i];
     line[i] = '\0';
     if (ft_atoll(line + j + 1) > 2147483647 ||
-    ft_atoll(line + j + 1) < -2147483648 
+    ft_atoll(line + j + 1) < -2147483648 ||
     ft_strlen(line + j + 1) > 11)
     {
         line[i] = c;
-        if (!as_add_note(error, NOTE1, line, j + 2))
+        if (!as_add_note(error, NOTE2, line, j + 2))
             return (0);
         if (!as_add_error(error, ERROR26, line, j + 2))
             return (0);
         return (-1);
     }
+    // itt is ellenorizni h valojaban 2 vagy 4???
     line[i] = c;
     return (1);
 }
@@ -121,9 +122,91 @@ static int as_check_dir_params(int co, int k)
 {
     if (k <= op_tab[co].param_count && op_tab[co].param_type[k - 1] != T_DIR &&
         op_tab[co].param_type[k - 1] != T_REG + T_DIR &&
-        op_tab[co].param_type[k - 1] != T_IND + T_DIR 
+        op_tab[co].param_type[k - 1] != T_IND + T_DIR &&
         op_tab[co].param_type[k - 1] != T_REG + T_DIR + T_IND)
         return (0);
+    return (1);
+}
+
+static int as_check_ind_chars(char *line, int i, int j, t_list_error **error)
+{
+    char    c;
+
+    c = line[i];
+    line[i] = '\0';
+    if (ft_hasnondigits(line + j))
+    {
+        line[i] = c;
+        if (!as_add_error(error, ERROR11, line, j + 1))
+            return (0);
+        return (-1);
+    }
+    line[i] = c;
+    return (1);
+}
+
+int as_check_ind_length(char *line, int i, int j, t_list_error **error)
+{
+    char c;
+
+    c = line[i];
+    line[i] = '\0';
+    if (ft_atoll(line + j + 1) > 32767 ||
+    ft_atoll(line + j + 1) < -32768 ||
+    ft_strlen(line + j + 1) > 6)
+    {
+        line[i] = c;
+        if (!as_add_note(error, NOTE3, line, j + 2))
+            return (0);
+        if (!as_add_error(error, ERROR27, line, j + 2))
+            return (0);
+        return (-1);
+    }
+    line[i] = c;
+    return (1);
+}
+
+static int as_check_ind(char *line, int *i, int j, t_list_error **error)
+{
+    int ret;
+
+    ret = 0;
+    as_skip_rev_space(line, i);
+    if (!(ret = as_check_ind_chars(line, *i, j, error)))
+        return (0);
+    if (ret != -1 && !(ret = as_check_ind_length(line, *i, j, error)))
+        return (0);
+    return (ret == -1) ? (-1) : (1);
+}
+
+static int as_check_ind_params(int co, int k)
+{
+    if (k <= op_tab[co].param_count && op_tab[co].param_type[k - 1] != T_IND &&
+        op_tab[co].param_type[k - 1] != T_REG + T_IND &&
+        op_tab[co].param_type[k - 1] != T_IND + T_DIR &&
+        op_tab[co].param_type[k - 1] != T_REG + T_DIR + T_IND)
+        return (0);
+    return (1);
+}
+
+static int  as_check_errors_el_ind(char *line, int *i, t_list_error **error, int *params_size)
+{
+    int j;
+    int ret;
+
+    ret = 0;
+    j = as_j(0, 0);
+    if (!(ret = as_check_ind(line, i, j, error)))
+        return (0);
+    if (ret != -1 && !as_check_ind_params(as_get_pos(0, 0), as_k(0)))
+    {
+        ret = -1;
+        if (!as_add_error(error, ERROR15, line, j + 1))
+            return (0);
+        //as_err_note3(line_nr, j + 1, as_get_pos(0, 0), as_k(0));
+    }
+    if (ret != -1)
+        *params_size = *params_size + IND_SIZE;
     return (1);
 }
 
@@ -268,22 +351,19 @@ static int as_parse_el_params(char *line, t_list_label **label, t_list_error **e
             params_size = params_size + 2;
         else if (as_dir(line) && ret == -1)
         {
-            !as_check_errors_el_dir(line, i, error, &params_size))
+            if (!as_check_errors_el_dir(line, i, error, &params_size))
                 return (0);
         }
         if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
         {
-            ft_printf("found indirect\n");
+            if (!as_check_errors_el_ind(line, i, error, &params_size))
+                return (0);
         }
-        as_check_valid_params(line_nr, line);
-        as_skip_to_next_param(line, line_nr, &i);
+        if (!as_check_valid_params(error, line) || !as_skip_to_next_param(line, error, &i))
+            return (0);
     }
-    as_check_enough_params(code, line_nr, line, i);
-
-    //
-    if (!(*label))
-        ft_printf("y\n");
-    //
+    if (!as_check_enough_params(error, line, i))
+        return (0);
     *byte_count = *byte_count + params_size;
     return (1);
 }

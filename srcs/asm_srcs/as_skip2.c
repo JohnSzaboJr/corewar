@@ -16,18 +16,19 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-void  as_skip_to_next_param(char *line, int line_nr, int *i)
+int  as_skip_to_next_param(char *line, t_list_error **error, int *i)
 {
     int s;
 
     s = as_skip_space(line, i);
-    if (!line[*i] && s)
-        as_war1(WARNING10, line_nr, line, (*i));
+    if (!line[*i] && s && !as_add_warning(error, WARNING10, line, (*i)))
+        return (0);
     if (line[*i])
         (*i)++;
     s = as_skip_space(line, i);
-    if (s > 1)
-        as_war1(WARNING9, line_nr, line, (*i));
+    if (s > 1 && !as_add_warning(error, WARNING9, line, (*i)))
+        return (0);
+    return (1);
 }
 
 int  as_skip_to_params(char *line, int *i)
