@@ -14,6 +14,23 @@
 #include "op.h"
 #include "asm.h"
 
+int	as_free_error(t_list_error **list)
+{
+	t_list_label	*tmp;
+
+	while (*list)
+	{
+		tmp = *list;
+		if ((*list)->line)
+			free((*list)->line);
+		if ((*list)->message)
+			free((*list)->message);
+		free(*list);
+		*list = tmp->next;
+	}
+	return (1);
+}
+
 int	as_free_label(t_list_label **list)
 {
 	t_list_label	*tmp;

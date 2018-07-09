@@ -17,14 +17,19 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-static int as_check_r(char *line, int *i, int j, int line_nr)
+int as_check_r(char *line, int *i, int j, t_list_error **error)
 {
+    int ret;
+
+    ret = 0;
     as_skip_rev_space(line, i);
-    if (!as_check_r_chars(line, *i, j, line_nr) || 
-    !as_check_r_length(line, *i, j, line_nr) ||
-    !as_check_r_zero(line, *i, j, line_nr))
+    if (!(ret = as_check_r_chars(line, *i, j, error)))
         return (0);
-    return (1);
+    if (ret != -1 && !(ret = as_check_r_length(line, *i, j, error)))
+        return (0);
+    if (ret != -1 && !(ret = as_check_r_zero(line, *i, j, error))
+        return (0);
+    return (ret == -1) ? (-1) : (1);
 }
 
 static int  as_check_errors_r(int line_nr, char *line, int *i, t_list_byte **code)

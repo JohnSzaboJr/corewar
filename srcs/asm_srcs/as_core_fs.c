@@ -24,26 +24,6 @@ int as_line_nr(int a)
     return (line_nr);
 }
 
-int as_arg_num(int argc)
-{
-    if (argc != 2)
-    {
-        ft_printf("%s\n", "usage: ./asm [champion filename]");
-        return (0);
-    }
-    return (1);
-}
-
-int as_open(char *filename, int *fd)
-{
-    if (0 > ((*fd) = open(filename, O_RDONLY)))
-    {
-        ft_printf("%s%s\n", "error: no such file: ", filename);
-        return (0);
-    }
-    return (1);
-}
-
 int as_parse(int fd)
 {
     char            *line;

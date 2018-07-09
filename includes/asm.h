@@ -26,6 +26,16 @@ typedef struct				s_list_label
 	struct s_list_label		*next;
 }							t_list_label;
 
+typedef struct				s_list_error
+{
+	int						type;
+	char					*line;
+	char					*message;
+	int						line_nr;
+	int						column_nr;
+	struct s_list_label		*next;
+}							t_list_error;
+
 typedef struct	s_op
 {
 	char		*opname;
@@ -40,13 +50,13 @@ typedef struct	s_op
 
 extern t_op		op_tab[17];
 
-int							as_arg_num(int argc);
-int							as_open(char *filename, int *fd);
 int							as_parse(int fd);
 int							as_parse_name(char *line, int line_nr, int *section, t_list_byte **code);
 int							as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code);
 int							as_store_magic(t_list_byte **code);
+
 int							as_free(t_list_byte **list);
+int							as_free_error(t_list_error **list);
 
 int							as_record_error(int a);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
@@ -57,12 +67,15 @@ int							as_err_note3(int line_nr, int column_nr, int co, int k);
 void						as_write_err(char *message, int line_nr, int column_nr, int e);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
+int							as_add_error(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_warning(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_note(t_list_error **error, char *message, char *line, int column_nr);
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
-int							as_parse_name_check(int *i, char *line, int line_nr);
+int							as_parse_name_check(int *i, char *line, t_list_error **error);
 int							as_save_name(int *i, char *line, t_list_byte **code);
-int							as_parse_comment_check(int *i, char *line, int line_nr);
+int							as_parse_comment_check(int *i, char *line, t_list_error **error);
 int							as_save_comment(int *i, char *line, t_list_byte **code);
 int							as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label **label);
 int							as_code_size(t_list_byte *code);
@@ -83,9 +96,9 @@ int							as_cmd_comp(char *cmd, char *str);
 int							as_add_byte(t_list_byte **code, unsigned char byte);
 int							as_add_label(t_list_label **label, char *line, int i, int pos);
 
-int							as_check_r_chars(char *line, int i, int j, int line_nr);
-int							as_check_r_length(char *line, int i, int j, int line_nr);
-int							as_check_r_zero(char *line, int i, int j, int line_nr);
+int							as_check_r_chars(char *line, int i, int j, t_list_error **error);
+int							as_check_r_length(char *line, int i, int j, t_list_error **error);
+int							as_check_r_zero(char *line, int i, int j, t_list_error **error);
 int							as_check_r_params(int co, int k);
 int							as_check_r_params2(int co, int k, t_list_byte **encoding);
 int							as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line);
@@ -104,4 +117,10 @@ void						as_bw_params(int *i, char *line, t_list_byte **code, int line_nr);
 
 int							as_line_nr(int a);
 
+int							as_parse_el_name(char *line, int *section, t_list_error **error, int *byte_count);
+int							as_parse_el_comment(char *line, int *section, t_list_error **error, int *byte_count);
+int							as_parse_el_commands(char *line, t_list_byte **error, t_list_label **label, int *byte_count);
+
+int							as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
+int							as_check_r(char *line, int *i, int j, t_list_error **error);
 #endif

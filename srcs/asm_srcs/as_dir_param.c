@@ -17,37 +17,6 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-//  int as_check_dir(char *line, int *i, int j, int line_nr)
-// {
-//     as_skip_rev_space(line, i);
-//     if (!as_check_r_chars(line, *i, j, line_nr) || 
-//     !as_check_r_length(line, *i, j, line_nr) ||
-//     !as_check_r_zero(line, *i, j, line_nr))
-//         return (0);
-//     return (1);
-// }
-
-//  int  as_check_errors_dir(int line_nr, char *line, int *i, t_list_byte **code)
-// {
-//     int j;
-
-//     j = as_j(0, 0);
-//     if (!line[j + 1] || ft_isspace(line[j + 1]) || line[j + 1] == SEPARATOR_CHAR)
-//         as_err1(ERROR12, line_nr, line, j + 2);
-//     else if (line[j + 1])
-//     {
-//         if (!as_check_dir(line, i, j, line_nr))
-//             return (0);
-//         else if (!as_check_r_params(as_get_pos((*code)->byte, 0), as_k(0)))
-//         {
-//             as_err1(ERROR15, line_nr, line, j + 1);
-//             as_err_note3(line_nr, j + 1, as_get_pos((*code)->byte, 0), as_k(0));
-//             return (0);
-//         }
-//     }
-//     return (1);
-// }
-
 static int  as_tmp_label(int get, int a)
 {
     static int  pos = 0;
@@ -57,12 +26,33 @@ static int  as_tmp_label(int get, int a)
     return (pos);
 }
 
+static void  as_convert_label(t_list_byte **code)
+{
+    int         label_bytes;
+    t_list_byte *node;
+    int         i;
+
+    i = 0;
+    node = *code;
+    label_bytes = as_tmp_label(0, 0);
+    if (label_bytes)
+    {
+        while (i < 2)
+        {
+            (*code)->byte = ((-label_bytes) >> (8 * i)) & 0xff;
+            (*code) = (*code)->next;
+            i++;
+        }
+        (*code) = node;
+    }
+}
+
 
 int as_s_label(t_list_byte **code, t_list_byte **encoding, char *line)
 {
-    int k;
-    int i;
-    int pos;
+    int         k;
+    int         i;
+    int         pos;
 
     i = 0;
     k = as_k(0);
@@ -80,17 +70,14 @@ int as_s_label(t_list_byte **code, t_list_byte **encoding, char *line)
     if (line[i] == LABEL_CHAR)
         i++;
     as_skip_space(line, &i);
-    i = (!ft_strncmp(line + 1, "sti", 3)) ? (2) : (4);
+    i = 2;
     while (i)
     {
         if (!as_add_byte(code, 0))
             return (0);
         i--;
     }
-    // itt kell hozzaadni, ha van valodi eredmeny.
-    if (as_tmp_label(0, 0))
-        ft_printf("pos to save here: %d\n", as_tmp_label(0, 0));
-
+    as_convert_label(code);
     return (1);
 }
 
@@ -106,6 +93,14 @@ static int  as_cmp_label(t_list_label *label, char *line, int k, int pos)
         label = label->next;
     }
     as_tmp_label(0, 1);
+    // ha nem talal ilyet, akkor a helyi negativat rakja a tmp-be
+    // amikor a labelt mentjuk az elejen, megnezzuk h van-e negativ
+    // ha van, annak megfelelo helyre rakunk egyet
+    // es a negativ szamot 0-ra valtoztatjuk
+    // ha a vegen maradt negativ, akkor az annak megfelelo label
+    // nem letezett!
+    // hogyan rakunk standard errort? (line nr, column nr, line)
+    // also: warning - unused label???
     return (0);
 }
 
@@ -149,18 +144,7 @@ int as_dir_label(char *line, t_list_label **label, int byte_pos, t_list_byte **c
     // mi van ha a label char utan space van?
 
 
-    // ha LABEL_CHAR a kovetkezo:
-    // while LABEL_CHARS i++
-    // ha 0 LABEL_CHARS, es utana (skip space), vege vagy SEPARATOR_CHAR:
-    // missing label ERROR
-    // ha 0 LABEL_CHARS, es utana (skip space) mas karakterek
-    // invalid label ERROR
-    // a LABEL_CHARS utan '\0' charactert rakni
-    // megnezni a line vegso reszet
-    // 3 opcio: 
-    // 1: ez egy letezo label, pozitiv value-val
-
-    // ekkor a recordingolni a relativ helyet, es az encodingot is
+ 
     // 2: ez egy letezo label, negative value-val
     // ekkor csinalni egy uj labelt, az itt levo negative valueval
     // csinalni neki ures helyet
@@ -194,6 +178,7 @@ int as_dir_label(char *line, t_list_label **label, int byte_pos, t_list_byte **c
 // az elejen:
 // ha DIRECT_CHAR &&
 // ha nincs error azzal hogy: label_check
+// errorokat a standard errorra???
 
 int as_dir(char *line)
 {

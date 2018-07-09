@@ -1,0 +1,36 @@
+//  int as_check_dir(char *line, int *i, int j, int line_nr)
+// {
+//     as_skip_rev_space(line, i);
+//     if (!as_check_r_chars(line, *i, j, line_nr) || 
+//     !as_check_r_length(line, *i, j, line_nr) ||
+//     !as_check_r_zero(line, *i, j, line_nr))
+//         return (0);
+//     return (1);
+// }
+
+//  int  as_check_errors_dir(int line_nr, char *line, int *i, t_list_byte **code)
+// {
+//     int j;
+
+//     j = as_j(0, 0);
+//     if (!line[j + 1] || ft_isspace(line[j + 1]) || line[j + 1] == SEPARATOR_CHAR)
+//         as_err1(ERROR12, line_nr, line, j + 2);
+//     else if (line[j + 1])
+//     {
+//         if (!as_check_dir(line, i, j, line_nr))
+//             return (0);
+//         else if (!as_check_r_params(as_get_pos((*code)->byte, 0), as_k(0)))
+//         {
+//             as_err1(ERROR15, line_nr, line, j + 1);
+//             as_err_note3(line_nr, j + 1, as_get_pos((*code)->byte, 0), as_k(0));
+//             return (0);
+//         }
+//     }
+//     return (1);
+// }
+
+- Tesztelni, hogy a direct mikor mentodik 4 byte-ra? Labelek eseteben mindig 2?
+    // i = (!ft_strncmp(line + 1, "sti", 3)) ? (2) : (4);?
+-    // a vegen tesztelni kell az osszes potencialis hibat a lista alapjan
+    // es osszehasonlitani a masik asm reakcioival
+- 

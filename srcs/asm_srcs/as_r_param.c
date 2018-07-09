@@ -17,7 +17,7 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-int as_check_r_chars(char *line, int i, int j, int line_nr)
+int as_check_r_chars(char *line, int i, int j, t_list_error **error)
 {
     char    c;
     int     k;
@@ -26,21 +26,26 @@ int as_check_r_chars(char *line, int i, int j, int line_nr)
     while (line[i] != 'r' && !ft_isspace(line[i]))
         i--;
     if (k != i && line[i] != 'r')
-        as_err1(ERROR20, line_nr, line, k);
+    {
+        if (!as_add_error(error, ERROR20, line, k))
+            return (0);
+        return (-1);
+    }
     i = k;
     c = line[i];
     line[i] = '\0';
     if (line[j + 1] == '-' || ft_hasnondigits(line + j + 1))
     {
         line[i] = c;
-        as_err1(ERROR11, line_nr, line, j + 1);
-        return (0);
+        if (!as_add_error(error, ERROR11, line, j + 1))
+            return (0);
+        return (-1);
     }
     line[i] = c;
     return (1);
 }
 
-int as_check_r_length(char *line, int i, int j, int line_nr)
+int as_check_r_length(char *line, int i, int j, t_list_error **error)
 {
     char c;
 
@@ -49,15 +54,17 @@ int as_check_r_length(char *line, int i, int j, int line_nr)
     if (ft_atoi(line + j + 1) > 255 || ft_strlen(line + j + 1) > 3)
     {
         line[i] = c;
-        as_err1(ERROR13, line_nr, line, j + 2);
-        as_err_note2(line_nr, j + 2);
-        return (0);
+        if (!as_add_note(error, NOTE1, line, j + 2))
+            return (0);
+        if (!as_add_error(error, ERROR13, line, j + 2))
+            return (0);
+        return (-1);
     }
     line[i] = c;
     return (1);
 }
 
-int as_check_r_zero(char *line, int i, int j, int line_nr)
+int as_check_r_zero(char *line, int i, int j, t_list_error **error)
 {
     char c;
 
@@ -66,9 +73,11 @@ int as_check_r_zero(char *line, int i, int j, int line_nr)
     if (!ft_atoi(line + j + 1))
     {
         line[i] = c;
-        as_err1(ERROR14, line_nr, line, j + 2);
-        as_err_note2(line_nr, j + 2);
-        return (0);
+        if (!as_add_note(error, NOTE1, line, j + 2))
+            return (0);
+        if (!as_add_error(error, ERROR14, line, j + 2))
+            return (0);
+        return (-1);
     }
     line[i] = c;
     return (1);

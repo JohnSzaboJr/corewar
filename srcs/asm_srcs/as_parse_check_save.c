@@ -17,14 +17,12 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-static int	as_check_quot(int *i, int line_nr, char *line, char *error)
+static int	as_check_quot(int *i, t_list_error **error, char *line, char *message)
 {
-	if (!(line[*i]) || line[*i] != '"')
-	{
-		as_err1(error, line_nr, line, (*i) + 1);
-		return (1);
-	}
-	return (0);
+	if ((!(line[*i]) || line[*i] != '"') &&
+	!as_add_error(error, message, line, (*i) + 1))
+		return (0);
+	return (1);
 }
 
 int			as_save_comment(int *i, char *line, t_list_byte **code)
@@ -57,46 +55,46 @@ int			as_save_name(int *i, char *line, t_list_byte **code)
 	return (1);
 }
 
-int			as_parse_comment_check(int *i, char *line, int line_nr)
+int			as_parse_comment_check(int *i, char *line, t_list_error **error)
 {
 	int	j;
 
 	*i = ft_strlen(COMMENT_CMD_STRING);
 	j = *i;
 	as_skip_space(line, i);
-	if (j == *i)
-		as_war1(WARNING4, line_nr, line, j + 1);
-	as_check_quot(i, line_nr, line, ERROR5);
+	if ((j == *i && !as_add_warning(error, WARNING4, line, j + 1)) ||
+	!as_check_quot(i, error, line, ERROR5))
+		return (0);
 	as_skip_name(line, i, &j);
-	if (!((*i) - j))
-		as_war1(WARNING5, line_nr, line, (*i) + 1);
-	as_check_quot(i, line_nr, line, ERROR6);
-	if (line[*i] && (line[(*i) + 1]))
-		as_war1(WARNING6, line_nr, line, (*i) + 2);
-	if (((*i) - j) > COMMENT_LENGTH)
-		as_war1(WARNING7, line_nr, line, (*i) + 1);
+	if ((!((*i) - j) && !as_add_warning(error, WARNING5, line, (*i) + 1)) ||
+	!as_check_quot(i, error, line, ERROR6) ||
+	((line[*i] && (line[(*i) + 1])) &&
+	!as_add_warning(error, WARNING6, line, (*i) + 2)) ||
+	((((*i) - j) > PROG_NAME_LENGTH) &&
+	!as_add_warning(error, WARNING7, line, (*i) + 1)))
+		return (0);
 	*i = j;
-	return (as_record_error(0)) ? (0) : (1);
+	return (1);
 }
 
-int			as_parse_name_check(int *i, char *line, int line_nr)
+int			as_parse_name_check(int *i, char *line, t_list_error **error)
 {
 	int			j;
 
 	*i = ft_strlen(NAME_CMD_STRING);
 	j = *i;
 	as_skip_space(line, i);
-	if (j == *i)
-		as_war1(WARNING1, line_nr, line, j + 1);
-	as_check_quot(i, line_nr, line, ERROR2);
+	if ((j == *i && !as_add_warning(error, WARNING1, line, j + 1)) ||
+	!as_check_quot(i, error, line, ERROR2))
+		return (0);
 	as_skip_name(line, i, &j);
-	if (!((*i) - j))
-		as_err1(ERROR3, line_nr, line, (*i) + 1);
-	as_check_quot(i, line_nr, line, ERROR4);
-	if (line[*i] && (line[(*i) + 1]))
-		as_war1(WARNING2, line_nr, line, (*i) + 2);
-	if (((*i) - j) > PROG_NAME_LENGTH)
-		as_war1(WARNING3, line_nr, line, (*i) + 1);
+	if ((!((*i) - j) && !as_add_error(error, ERROR3, line, (*i) + 1)) ||
+	!as_check_quot(i, error, line, ERROR4) ||
+	((line[*i] && (line[(*i) + 1])) &&
+	!as_add_warning(error, WARNING2, line, (*i) + 2)) ||
+	((((*i) - j) > PROG_NAME_LENGTH) &&
+	!as_add_warning(error, WARNING3, line, (*i) + 1)))
+		return (0);
 	*i = j;
-	return (as_record_error(0)) ? (0) : (1);
+	return (1);
 }

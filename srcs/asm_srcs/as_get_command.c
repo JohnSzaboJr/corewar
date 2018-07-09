@@ -17,7 +17,7 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-static int  as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding)
+int  as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding)
 {
     *i = 0;
     as_k(1);
