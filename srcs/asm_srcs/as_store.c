@@ -17,82 +17,96 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-int as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label **label)
+static int	as_get_params(char *line, t_list_label **label, t_list_byte **code)
+{
+    int             i;
+    int             params;
+    t_list_byte     *encoding;
+    int             byte_pos;
+
+    byte_pos = as_code_size(*code) - 1;
+    if (-1 == (params = as_init_i_k_pos_params(&i, code, line, &encoding)))
+        return (0);
+    while (line[i] && params)
+    {   
+        as_bw_params(&i, line, code, line_nr);
+        if (as_reg(line, line_nr, &i, code) && !as_s_reg(code, &encoding, line))
+            return (0);
+        if (as_dir(line) && as_dir_label(line, label, byte_pos, code) &&
+        !as_s_label(code, &encoding, line))
+            return (0);
+        if (as_dir(line))
+        {
+            ft_printf("found direct\n");
+        }
+        if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
+        {
+            ft_printf("found indirect\n");
+        }
+        as_check_valid_params(line_nr, line);
+        as_skip_to_next_param(line, line_nr, &i);
+    }
+    as_check_enough_params(code, line_nr, line, i);
+
+    //
+    if (!(*label))
+        ft_printf("y\n");
+    //
+    return (1);
+}
+
+static int	as_get_command(char *line, int i, t_list_byte **code)
+{
+    int         j;
+
+    j = 15;
+    while (j >= 0)
+    {
+        if (!ft_strncmp(op_tab[j].opname, line + i, ft_strlen(op_tab[j].opname)))
+            break ;
+        j--;
+    }
+    if (!(as_add_byte(code, (unsigned char)op_tab[j].opcode)))
+        return (0);
+    return (1);
+}
+
+int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 {
 	int				i;
-	int				ret;
 
 	i = 0;
-	ret = 0;
-	if (ft_strlen(line) > MAX_LINE_LENGTH)
-	{
-		as_err1(ERROR17, line_nr, line, 1);
-		return (1);
-	}
-	if (as_skip_label(line, &i) && line[i] == LABEL_CHAR && i <= LABEL_SIZE)
-	{
-		if (!as_add_label(label, line, i, as_code_size(*code)))
-		{
-			as_free(code);
-			return (0);
-		}
-		i++;
-	}
-	else if (i > LABEL_SIZE)
-	{
-		as_err1(ERROR10, line_nr, line, i + 1);
-		i++;
-	}
-	else
-		i = 0;
+	as_skip_label(line, &i);
+	i = (line[i] == LABEL_CHAR) ? (i + 1) : (0);
 	as_skip_space(line, &i);
 	if (!line[i])
 		return (1);
-	if (!(ret = as_get_command(line, i, code, line_nr)))
-	{
-		as_free_label(label);
-		return (0);	
-	}
-	if (ret > -1 && !as_get_params(line, label, code, line_nr))
-	{
-		as_free_label(label);
-		return (0);	
-	}
-
-	
-
-	// can label names be the same as known commands?	
-	return (1);
-}
-
-int as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code)
-{
-	int			i;
-
-	(*section)++;
-	if (as_parse_comment_check(&i, line, line_nr) &&
-		!as_save_comment(&i, line, code))
+	if (!as_get_command(line, i, code) ||
+	!as_get_params(line, label, code))
 		return (0);
-	i = COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 16;
-	while (i)
-	{
-		if (!(as_add_byte(code, 0)))
-    		return (0);
-		i--;
-	}
 	return (1);
 }
 
-int as_parse_name(char *line, int line_nr, int *section, t_list_byte **code)
+int as_store_name_comment(char *line, int *section, t_list_byte **code)
 {
 	int			i;
+	int			l;
+	int			length;
 
+	l = 0;
 	(*section)++;
-	i = ft_strlen(COMMENT_CMD_STRING);
+	i = (*section) ? ft_strlen(COMMENT_CMD_STRING) : ft_strlen(NAME_CMD_STRING);
+	length = (*section) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
 	as_skip_space(line, i);
-	if (!as_save_name(&i, line, code))
-		return (0);
-	i = PROG_NAME_LENGTH - as_code_size(*code) + 12;
+	while (l < length && line[i] != '"')
+	{
+		if (!(as_add_byte(code, line[i])))
+        	return (0);
+		i++;
+		l++;
+	}
+	i = (*section) ? (COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 16) :
+	(PROG_NAME_LENGTH - as_code_size(*code) + 12);
 	while (i)
 	{
 		if (!(as_add_byte(code, 0)))

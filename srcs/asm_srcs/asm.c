@@ -90,9 +90,8 @@ static int  as_parse(int fd, t_list_label **label)
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
-            if ((section == 2 && !as_parse_commands(line, line_nr, &code, &label)) ||
-            (section == 1 && !as_parse_comment(line, line_nr, &section, &code)) ||
-            (section == 0 && !as_parse_name(line, line_nr, &section, &code)))
+            if ((section == 2 && !as_store_commands(line, &code, &label)) ||
+            (section == 0 || section == 1 && !as_store_name_comment(line, &section, &code)))
             {
                 free(line);
                 return (0);

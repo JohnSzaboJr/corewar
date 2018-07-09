@@ -50,9 +50,13 @@ typedef struct	s_op
 
 extern t_op		op_tab[17];
 
-int							as_parse_name(char *line, int line_nr, int *section, t_list_byte **code);
-int							as_parse_comment(char *line, int line_nr, int *section, t_list_byte **code);
+// Functions to store information
+
 int							as_store_magic(t_list_byte **code);
+int							as_store_name_comment(char *line, int *section, t_list_byte **code);
+int							as_store_commands(char *line, t_list_byte **code, t_list_label **label);
+
+// Functions to free data
 
 int							as_free(t_list_byte **list);
 int							as_free_error(t_list_error **list);
@@ -74,12 +78,8 @@ int							as_add_label_error(t_list_error **error, char *message, char *line, in
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
 int							as_parse_name_check(int *i, char *line, t_list_error **error);
-int							as_save_name(int *i, char *line, t_list_byte **code);
 int							as_parse_comment_check(int *i, char *line, t_list_error **error);
-int							as_save_comment(int *i, char *line, t_list_byte **code);
-int							as_parse_commands(char *line, int line_nr, t_list_byte **code, t_list_label **label);
 int							as_code_size(t_list_byte *code);
-int							as_get_command(char *line, int i, t_list_byte **code, int line_nr);
 
 int							as_skip_space(char *line, int *i);
 int							as_skip_label(char *line, int *i);
@@ -91,7 +91,6 @@ int							as_skip_to_sep(char *line, int *i);
 int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 
 int							as_free_label(t_list_label **list);
-int							as_get_params(char *line, t_list_label **label, t_list_byte **code, int line_nr);
 int							as_cmd_comp(char *cmd, char *str);
 int							as_add_byte(t_list_byte **code, unsigned char byte);
 int							as_add_label(t_list_label **label, char *line, int i, int pos);

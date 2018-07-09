@@ -25,36 +25,6 @@ static int	as_check_quot(int *i, t_list_error **error, char *line, char *message
 	return (1);
 }
 
-int			as_save_comment(int *i, char *line, t_list_byte **code)
-{
-	int l;
-
-	l = 0;
-	while (l < COMMENT_LENGTH && line[*i] != '"')
-	{
-		if (!(as_add_byte(code, line[*i])))
-        	return (0);
-		(*i)++;
-		l++;
-	}
-	return (1);
-}
-
-int			as_save_name(int *i, char *line, t_list_byte **code)
-{
-	int l;
-
-	l = 0;
-	while (l < PROG_NAME_LENGTH && line[*i] != '"')
-	{
-		if (!(as_add_byte(code, line[*i])))
-        	return (0);
-		(*i)++;
-		l++;
-	}
-	return (1);
-}
-
 int			as_parse_comment_check(int *i, char *line, t_list_error **error)
 {
 	int	j;
