@@ -16,7 +16,7 @@
 
 int	as_free_error(t_list_error **list)
 {
-	t_list_label	*tmp;
+	t_list_error	*tmp;
 
 	while (*list)
 	{

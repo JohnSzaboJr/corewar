@@ -30,7 +30,7 @@ static int  as_params_parse_init(int *i, char *line, int *params_size, int *ret)
     as_skip_space(line, i);
     while (j >= 0)
     {
-        if (!ft_strncmp(op_tab[j].opname, line + i, ft_strlen(op_tab[j].opname)))
+        if (!ft_strncmp(op_tab[j].opname, line + *i, ft_strlen(op_tab[j].opname)))
             break ;
         j--;
     }
@@ -42,7 +42,7 @@ static int  as_params_parse_init(int *i, char *line, int *params_size, int *ret)
     return (1);
 }
 
-static void  as_bw_params_el(int *i, char *line, t_list_error **error)
+static int as_bw_params_el(int *i, char *line, t_list_error **error)
 {
     as_j(1, *i);
     as_skip_to_sep(line, i);
@@ -53,6 +53,7 @@ static void  as_bw_params_el(int *i, char *line, t_list_error **error)
     if (line[*i] == SEPARATOR_CHAR && ft_isspace(line[*i - 1]) &&
     !as_add_warning(error, WARNING8, line, *i))
         return (0);
+    return (1);
 }
 
 static int as_check_dir_chars(char *line, int i, int j, t_list_error **error)
@@ -283,7 +284,7 @@ static int  as_cmp_label_el(t_list_label *label, char *line, int k)
     return (0);
 }
 
-static int as_dir_el_label(char *line, t_list_label **label, t_list_error **error, int byte_count)
+static int as_dir_el_label(char *line, t_list_label **label, t_list_error **error)
 {
     int     j;
     int     k;
@@ -341,22 +342,23 @@ static int as_parse_el_params(char *line, t_list_label **label, t_list_error **e
     while (line[i] && params)
     {   
         ret = 0;
-        as_bw_params_el(&i, line, error);
-        if ((line[as_j(0, 0)] == 'r') &&
-        !as_check_errors_el_r(line, i, error, &params_size))
+        if (!as_bw_params_el(&i, line, error))
             return (0);
-        if (as_dir(line) && !(ret = as_dir_el_label(line, label, error, byte_count)))
+        if ((line[as_j(0, 0)] == 'r') &&
+        !as_check_errors_el_r(line, &i, error, &params_size))
+            return (0);
+        if (as_dir(line) && !(ret = as_dir_el_label(line, label, error)))
             return (0);
         if (as_dir(line) && ret != -1)
             params_size = params_size + 2;
         else if (as_dir(line) && ret == -1)
         {
-            if (!as_check_errors_el_dir(line, i, error, &params_size))
+            if (!as_check_errors_el_dir(line, &i, error, &params_size))
                 return (0);
         }
         if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
         {
-            if (!as_check_errors_el_ind(line, i, error, &params_size))
+            if (!as_check_errors_el_ind(line, &i, error, &params_size))
                 return (0);
         }
         if (!as_check_valid_params(error, line) || !as_skip_to_next_param(line, error, &i))
@@ -479,7 +481,7 @@ int as_parse_el_commands(char *line, t_list_error **error, t_list_label **label,
         }
 		else if (!as_add_label(label, line, i, *byte_count))
 		{
-			as_free(error);
+			as_free_error(error);
 			return (0);
 		}
 		i++;

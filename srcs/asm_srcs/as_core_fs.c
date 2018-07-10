@@ -17,7 +17,7 @@
 
 int as_line_nr(int a)
 {
-    static int  line_nr = 0;
+    static int  line_nr = 1;
 
     if (a)
         line_nr++;

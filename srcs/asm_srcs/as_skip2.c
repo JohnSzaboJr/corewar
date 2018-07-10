@@ -33,7 +33,9 @@ int  as_skip_to_next_param(char *line, t_list_error **error, int *i)
 
 int  as_skip_to_params(char *line, int *i)
 {
-    *i = as_skip_label(line, i) + 1;
+    *i = as_skip_label(line, i);
+    if (line[*i] == LABEL_CHAR)
+        (*i)++;
     as_skip_space(line, i);
     as_skip_command(line, i);
     as_skip_space(line, i);

@@ -29,17 +29,6 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 	k = 0;
 	l = 1;
 	beg = 1;
-	// include this in final error handling!
-	i = as_record_error(0);
-	if (i)
-	{
-		if (i == 1)
-			ft_printf("%d error generated.\n", i);
-		else
-			ft_printf("%d errors generated.\n", i);
-		return ;
-	}
-	//
 	ft_printf("\nallocated bytes: %d\n", as_code_size(list));
 	i = 0;
 	//

@@ -108,7 +108,6 @@ int as_add_label_error(t_list_error **error, char *message, char *line, int colu
 
 int	as_err1(char *message, int line_nr, char *line, int column_nr)
 {
-	as_record_error(1);
 	as_write_err(message, line_nr, column_nr, 1);
 	as_write_err_line(line, column_nr);
 	as_write_err_sign(line, column_nr);
@@ -123,13 +122,4 @@ int as_war1(char *message, int line_nr, char *line, int column_nr)
 	as_write_err_line(line, column_nr);
 	as_write_err_sign(line, column_nr);
 	return (1);
-}
-
-int	as_record_error(int a)
-{
-	static int	i = 0;
-
-	if (a)
-		i++;
-	return (i);
 }

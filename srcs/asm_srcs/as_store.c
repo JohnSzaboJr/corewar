@@ -20,38 +20,32 @@
 static int	as_get_params(char *line, t_list_label **label, t_list_byte **code)
 {
     int             i;
-    int             params;
     t_list_byte     *encoding;
     int             byte_pos;
 
     byte_pos = as_code_size(*code) - 1;
-    if (-1 == (params = as_init_i_k_pos_params(&i, code, line, &encoding)))
+    if (!as_init_i_k_pos_params(&i, code, line, &encoding))
         return (0);
-    while (line[i] && params)
+    while (line[i])
     {   
-        as_bw_params(&i, line, code, line_nr);
-        if (as_reg(line, line_nr, &i, code) && !as_s_reg(code, &encoding, line))
+        as_j(1, i);
+    	as_skip_to_sep(line, &i);
+		as_k(2);
+        if ((line[as_j(0, 0)] == 'r') && !as_s_reg(code, &encoding, line))
             return (0);
-        if (as_dir(line) && as_dir_label(line, label, byte_pos, code) &&
-        !as_s_label(code, &encoding, line))
+		if (as_dir_label(line) && as_dir_encoding(&encoding) &&
+		!as_dir_label2(line, label, byte_pos, code))
             return (0);
-        if (as_dir(line))
-        {
-            ft_printf("found direct\n");
-        }
-        if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
-        {
-            ft_printf("found indirect\n");
-        }
-        as_check_valid_params(line_nr, line);
-        as_skip_to_next_param(line, line_nr, &i);
+        if (as_dir(line) && !as_dir_label(line) && as_dir_encoding(&encoding) &&
+		!as_store_dir(line, code))
+			return (0);
+        if (((ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')) &&
+		as_ind_encoding(&encoding) && !as_store_ind(line, code))
+			return (0);
+        as_skip_space(line, &i);
+		if (line[i])
+			i++;
     }
-    as_check_enough_params(code, line_nr, line, i);
-
-    //
-    if (!(*label))
-        ft_printf("y\n");
-    //
     return (1);
 }
 
@@ -97,7 +91,7 @@ int as_store_name_comment(char *line, int *section, t_list_byte **code)
 	(*section)++;
 	i = (*section) ? ft_strlen(COMMENT_CMD_STRING) : ft_strlen(NAME_CMD_STRING);
 	length = (*section) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
-	as_skip_space(line, i);
+	as_skip_space(line, &i);
 	while (l < length && line[i] != '"')
 	{
 		if (!(as_add_byte(code, line[i])))

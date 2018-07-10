@@ -53,7 +53,7 @@ static int  as_parse_errors_labels(int fd, t_list_label **label)
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
-            if ((section == 2 && !as_parse_el_commands(line, &error, &label, &byte_count)) ||
+            if ((section == 2 && !as_parse_el_commands(line, &error, label, &byte_count)) ||
             (section == 1 && !as_parse_el_comment(line, &section, &error, &byte_count)) ||
             (section == 0 && !as_parse_el_name(line, &section, &error, &byte_count)))
             {
@@ -73,6 +73,7 @@ static int  as_parse_errors_labels(int fd, t_list_label **label)
     }
     as_free_error(&error);
     return (1);
+    // akkor is hiba ha tul nagy a file!!!
 }
 
 static int  as_parse(int fd, t_list_label **label)
@@ -90,8 +91,8 @@ static int  as_parse(int fd, t_list_label **label)
 	{
         if (line[0] && line[0] != COMMENT_CHAR)
         {
-            if ((section == 2 && !as_store_commands(line, &code, &label)) ||
-            (section == 0 || section == 1 && !as_store_name_comment(line, &section, &code)))
+            if ((section == 2 && !as_store_commands(line, &code, label)) ||
+            ((section == 0 || section == 1) && !as_store_name_comment(line, &section, &code)))
             {
                 free(line);
                 return (0);
@@ -101,7 +102,7 @@ static int  as_parse(int fd, t_list_label **label)
     }
     //
     as_reverse_list(&code);
-    as_print_list(code, label);
+    as_print_list(code, *label);
     //
     free(line);
     return (1);
