@@ -383,7 +383,7 @@ static int  as_parse_el_command(char *line, int i, t_list_error **error, int *by
     }
     if (j == -1 || !ft_isspace(line[i + ft_strlen(op_tab[j].opname)]))
     {
-        if (!as_add_error(error, ERROR8, line, i + 1))
+        if (!as_add_error_note1(error, ERROR8, line, i + 1))
             return (0);
         else
             return (-1);

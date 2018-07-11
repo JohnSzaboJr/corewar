@@ -24,12 +24,16 @@ static int as_malloc_error1(t_list_error **error, int a)
 	ft_printf(BOLDWHITE ERROR0 RESET);
 	if (a == 1)
 		ft_printf(WHITE " (as_add_error)\n" RESET);
-	if (a == 2)
+	else if (a == 2)
 		ft_printf(WHITE " (as_add_warning)\n" RESET);
-	if (a == 3)
+	else if (a == 3)
 		ft_printf(WHITE " (as_add_note)\n" RESET);
-	if (a == 4)
+	else if (a == 4)
 		ft_printf(WHITE " (as_add_label_error)\n" RESET);
+	else if (a == 5)
+		ft_printf(WHITE " (as_add_error_noline)\n" RESET);
+	else if (a == 6)
+		ft_printf(WHITE " (as_add_error_note1)\n" RESET);
 	as_free_error(error);
 	return (0);
 }
@@ -106,20 +110,37 @@ int as_add_label_error(t_list_error **error, char *message, char *line, int colu
 	return (1);
 }
 
-int	as_err1(char *message, int line_nr, char *line, int column_nr)
+int as_add_error_noline(t_list_error **error, char *message)
 {
-	as_write_err(message, line_nr, column_nr, 1);
-	as_write_err_line(line, column_nr);
-	as_write_err_sign(line, column_nr);
-	if (message[1] == 'u')
-		as_err_note(line_nr, line, column_nr);
+	t_list_error	*new;
+
+	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
+	!(new->message = ft_strnew(ft_strlen(message))))
+		return (as_malloc_error1(error, 5));
+	ft_strcpy(new->message, message);
+	new->line = NULL;
+	new->type = 5;
+	new->line_nr = 0;
+	new->column_nr = 0;
+	new->next = *error;
+	*error = new;
 	return (1);
 }
 
-int as_war1(char *message, int line_nr, char *line, int column_nr)
+int as_add_error_note1(t_list_error **error, char *message, char *line, int column_nr)
 {
-	as_write_err(message, line_nr, column_nr, 0);
-	as_write_err_line(line, column_nr);
-	as_write_err_sign(line, column_nr);
+	t_list_error	*new;
+
+	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
+	!(new->line = ft_strnew(ft_strlen(line))) ||
+	!(new->message = ft_strnew(ft_strlen(message))))
+		return (as_malloc_error1(error, 6));
+	ft_strcpy(new->line, line);
+	ft_strcpy(new->message, message);
+	new->type = 6;
+	new->line_nr = as_line_nr(0);
+	new->column_nr = column_nr;
+	new->next = *error;
+	*error = new;
 	return (1);
 }

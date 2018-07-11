@@ -155,16 +155,21 @@ int	as_print_error(t_list_error *error)
 	warning_count = 0;
 	while (error)
 	{
-		if (error->type == 1 || error->type == 4)
+		if (error->type == 1 || error->type == 4 || error->type == 5 || error->type == 6)
 			error_count++;
 		if (error->type == 2)
 			warning_count++;
-		if (error->type == 1)
+		if (error->type == 1 || error->type == 6)
 			as_err1(error->message, error->line_nr, error->line, error->column_nr);
 		if (error->type == 2)
 			as_war1(error->message, error->line_nr, error->line, error->column_nr);
 		if (error->type == 4)
 			as_err1(ERROR28, error->line_nr, error->line, error->column_nr);
+		if (error->type == 6)
+			as_err_note(error->line_nr, error->line, error->column_nr);
+		// ide jon a note 1	
+		if (error->type == 5)
+			as_err1(error->message, error->line_nr, NULL, 0);
 	// print notes too...
 	// improve by saying "did you mean... label... defined here...?"
 		error = error->next;

@@ -50,7 +50,7 @@ typedef struct	s_op
 
 extern t_op		op_tab[17];
 
-// Functions to store information
+// Functions to store information (filename)
 
 int							as_store_magic(t_list_byte **code);
 int							as_store_name_comment(char *line, int *section, t_list_byte **code);
@@ -62,8 +62,14 @@ int							as_free(t_list_byte **list);
 int							as_free_error(t_list_error **list);
 int							as_free_label(t_list_label **list);
 
+// Functions to print error/warning messages on stderr
+
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
+int							as_err2(char *message, char *filename);
+
+//
+
 int							as_err_note(int line_nr, char *line, int column_nr);
 int							as_err_note2(int line_nr, int column_nr);
 int							as_err_note3(int line_nr, int column_nr, int co, int k);
@@ -74,6 +80,8 @@ int							as_add_error(t_list_error **error, char *message, char *line, int colu
 int							as_add_warning(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_note(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_label_error(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_error_noline(t_list_error **error, char *message);
+int							as_add_error_note1(t_list_error **error, char *message, char *line, int column_nr);
 int							as_print_error(t_list_error *error);
 
 void						as_print_list(t_list_byte *list, t_list_label *label);

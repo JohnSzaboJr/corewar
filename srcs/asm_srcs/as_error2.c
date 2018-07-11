@@ -15,14 +15,37 @@
 #include "asm.h"
 #include "colors.h"
 #include "as_errors.h"
-#include <fcntl.h>
+#include <unistd.h>
+
+static void	as_errnbr(int n)
+{
+	char c;
+
+	if (n < 0)
+	{
+		if (n == -2147483648)
+		{
+			ft_putnbr(-214748364);
+			c = '8';
+			write(2, &c, 1);
+			return ;
+		}
+		c = '-';
+		write(2, &c, 1);
+		n *= -1;
+	}
+	if (n > 9)
+		ft_putnbr(n / 10);
+	c = n % 10 + 48;
+	write(2, &c, 1);
+}
 
 static void	as_putspace(char *line, int i)
 {
-	if (ft_isspace(line[i]))
-		ft_putchar(line[i]);
-	else
-		ft_putchar(' ');
+	char	c;
+
+	c = (ft_isspace(line[i])) ? (line[i]) : (' ');
+	write(2, &c, 1);
 }
 
 static void	as_err_line_dots(char *line)
@@ -31,45 +54,63 @@ static void	as_err_line_dots(char *line)
 
 	c = line[MAX_ERROR_SIZE - 1];
 	line[MAX_ERROR_SIZE - 1] = '\0';
-	ft_printf("%s", line);
-	ft_printf("...\n");
+	ft_putstr_fd(line, 2);
+	ft_putstr_fd("...\n", 2);
 	line[MAX_ERROR_SIZE - 1] = c;
 }
 
 void	as_write_err(char *message, int line_nr, int column_nr, int e)
 {
-    ft_printf(BOLDWHITE "\nline %d, column %d:" RESET, line_nr, column_nr);
+	if (column_nr)
+	{
+		ft_putstr_fd(BOLDWHITE, 2);
+		ft_putstr_fd("\nline ", 2);
+		as_errnbr(line_nr);
+		ft_putstr_fd(", column ", 2);
+		as_errnbr(column_nr);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(RESET, 2);
+	}
     if (e)
-	    ft_printf(BOLDRED " error:" RESET);
+		ft_putstr_fd(BOLDRED "error:" RESET, 2);
     else
-        ft_printf(BOLDMAGENTA " warning:" RESET);
-	ft_printf(BOLDWHITE "%s" RESET, message);
+		ft_putstr_fd(BOLDMAGENTA "warning:" RESET, 2);
+	ft_putstr_fd(BOLDWHITE, 2);
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd(RESET, 2);
+}
+
+static void	as_write_long_err(char *line, int column_nr)
+{
+	char c;
+
+	c = line[MAX_ERROR_SIZE + column_nr - 6];
+	line[MAX_ERROR_SIZE + column_nr - 6] = '\0';
+	ft_putstr_fd(line + column_nr - 5, 2);
+	ft_putstr_fd("...\n", 2);
+	line[MAX_ERROR_SIZE + column_nr - 6] = c;	
 }
 
 void    as_write_err_line(char *line, int column_nr)
 {
-    char    c;
-	int		l;
-
-	l = ft_strlen(line);
-    if (l > MAX_ERROR_SIZE && column_nr < MAX_ERROR_SIZE)
+    if (ft_strlen(line) > MAX_ERROR_SIZE && column_nr < MAX_ERROR_SIZE)
 		as_err_line_dots(line);
-	else if (l > MAX_ERROR_SIZE && column_nr >= MAX_ERROR_SIZE)
+	else if (ft_strlen(line) > MAX_ERROR_SIZE && column_nr >= MAX_ERROR_SIZE)
 	{
-		ft_printf("...");
+		ft_putstr_fd("...", 2);
 		if (ft_strlen(line + column_nr - 5) > MAX_ERROR_SIZE)
-		{
-			c = line[MAX_ERROR_SIZE + column_nr - 6];
-			line[MAX_ERROR_SIZE + column_nr - 6] = '\0';
-			ft_printf("%s", line + column_nr - 5);
-			ft_printf("...\n");
-			line[MAX_ERROR_SIZE + column_nr - 6] = c;
-		}
+			as_write_long_err(line, column_nr);
 		else
-			ft_printf("%s\n", line + column_nr - 5);
+		{
+			ft_putstr_fd(line + column_nr - 5, 2);
+			ft_putstr_fd("\n", 2);
+		}
 	}
 	else
-		ft_printf("%s\n", line);
+	{
+		ft_putstr_fd(line, 2);
+		ft_putstr_fd("\n", 2);
+	}
 }
 
 void	as_write_err_sign(char *line, int column_nr)
@@ -97,5 +138,5 @@ void	as_write_err_sign(char *line, int column_nr)
 			i++;
 		}
 	}
-	ft_printf(GREEN "^\n" RESET);
+	ft_putstr_fd(GREEN "^\n" RESET, 2);
 }
