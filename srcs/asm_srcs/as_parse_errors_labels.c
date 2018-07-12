@@ -36,10 +36,11 @@ static int  as_params_parse_init(int *i, char *line, int *params_size, int *ret)
     }
     as_get_pos(op_tab[j].opcode, 1);
     as_skip_command(line, i);
+    j = *i;
     as_skip_space(line, i);
     if (!line[*i])
         return (0);
-    return (1);
+    return (*i > j + 1) ? (2) : (1);
 }
 
 static int as_bw_params_el(int *i, char *line, t_list_error **error)
@@ -335,6 +336,8 @@ static int as_parse_el_params(char *line, t_list_label **label, t_list_error **e
     int             ret;
 
     params = as_params_parse_init(&i, line, &params_size, &ret);
+    if (params == 2 && !as_add_warning(error, WARNING11, line, i + 1))
+        return (0);
     if (as_get_pos(0, 0) != 1 && as_get_pos(0, 0) != 9 &&
     as_get_pos(0, 0) != 12 && as_get_pos(0, 0) != 15 &&
     as_get_pos(0, 0) != 16)

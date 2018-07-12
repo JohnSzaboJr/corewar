@@ -65,6 +65,23 @@ static int	as_get_command(char *line, int i, t_list_byte **code)
     return (1);
 }
 
+
+int	as_store_size(t_list_byte **size, t_list_byte *code)
+{
+	int	s;
+	int	i;
+
+	i = 0;
+	s = as_code_size(code) - PROG_NAME_LENGTH - COMMENT_LENGTH - 16;
+	while (i < 4)
+    {
+        (*size)->byte = (s >> (8 * i)) & 0xff;
+        (*size) = (*size)->next;
+        i++;
+    }
+	return (1);
+}
+
 int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 {
 	int				i;
@@ -81,17 +98,21 @@ int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 	return (1);
 }
 
-int as_store_name_comment(char *line, int *section, t_list_byte **code)
+int as_store_name_comment(char *line, int *section, t_list_byte **code, t_list_byte **size)
 {
 	int			i;
 	int			l;
 	int			length;
 
 	l = 0;
-	(*section)++;
 	i = (*section) ? ft_strlen(COMMENT_CMD_STRING) : ft_strlen(NAME_CMD_STRING);
 	length = (*section) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
 	as_skip_space(line, &i);
+	//
+	ft_printf("section: %d\n", *section);
+	ft_printf("i: %d\n", i);
+	//
+	i++;
 	while (l < length && line[i] != '"')
 	{
 		if (!(as_add_byte(code, line[i])))
@@ -100,13 +121,24 @@ int as_store_name_comment(char *line, int *section, t_list_byte **code)
 		l++;
 	}
 	i = (*section) ? (COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 16) :
-	(PROG_NAME_LENGTH - as_code_size(*code) + 12);
+	(PROG_NAME_LENGTH - as_code_size(*code) + 8);
 	while (i)
 	{
 		if (!(as_add_byte(code, 0)))
     		return (0);
 		i--;
 	}
+	if (!(*section))
+		i = 4;
+	while (i)
+	{
+		if (!(as_add_byte(code, 0)))
+    		return (0);
+		i--;
+	}
+	if (!(*section))
+		*size = *code;
+	(*section)++;
 	return (1);
 }
 

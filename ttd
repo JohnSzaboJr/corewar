@@ -1,8 +1,7 @@
 1. Improve/clean up/organize code
 2. Fix errors. after error handling is done, check main functionality of
-compilation!
+compilation!*
 
-- warning or error if too many space after commands
 - check is ".s" is at the end of the file.
 - error if closeing fails! - could not process file
 - what happens ha csak garbage vagy csak space van egy command sorban?

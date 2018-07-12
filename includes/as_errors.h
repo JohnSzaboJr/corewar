@@ -58,6 +58,7 @@
 #define WARNING8    " space before argument separator\n"
 #define WARNING9    " unnecessary space before parameter\n"
 #define WARNING10    " space at the end of the line\n"
+#define WARNING11    " unnecessary spaces between operation and parameter\n"
 #define NOTE1       " choose a register number that fits in a byte to silence this warning\n"
 #define NOTE2       " choose a register number that fits in 4 bytes to silence this warning\n"
 #define NOTE3       " choose a register number that fits in 4 bytes to silence this warning\n"

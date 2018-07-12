@@ -14,6 +14,12 @@
 #include "op.h"
 #include "asm.h"
 
+int as_free_line(char *line)
+{
+	free(line);
+	return (0);
+}
+
 int	as_free_error(t_list_error **list)
 {
 	t_list_error	*tmp;

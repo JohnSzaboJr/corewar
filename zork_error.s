@@ -2,7 +2,7 @@
 .comment""kljlkj
 
 	sti 
-live:		stgi 		r0  , %:live, %1  ugug, %5, r6
+live:		sti 		r0  , %:live, %1  ugug, %5, r6
 		and r1  , %7643873687887 
 
 live:	live r1

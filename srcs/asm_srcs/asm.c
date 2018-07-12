@@ -17,6 +17,14 @@
 #include "colors.h"
 #include <fcntl.h>
 
+static void as_store_init(char **line, t_list_byte **code, t_list_byte **size, int *section)
+{
+	*line = NULL;
+	*code = NULL;
+	*size = NULL;
+	*section = 0;
+}
+
 static int  as_arg_num(int argc)
 {
 	if (argc != 2)
@@ -89,10 +97,9 @@ static int  as_store(int fd, t_list_label **label)
 	char            *line;
 	int             section;
 	t_list_byte     *code;
+	t_list_byte		*size;
 
-	line = NULL;
-	code = NULL;
-	section = 0;
+	as_store_init(&line, &code, &size, &section);
 	if (!as_store_magic(&code))
 		return (0);
 	while (get_next_line(fd, &line))
@@ -100,25 +107,21 @@ static int  as_store(int fd, t_list_label **label)
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
 			if ((section == 2 && !as_store_commands(line, &code, label)) ||
-			((section == 0 || section == 1) && !as_store_name_comment(line, &section, &code)))
-			{
-				free(line);
-				return (0);
-			}
+			((section == 0 || section == 1) &&
+			!as_store_name_comment(line, &section, &code, &size)))
+				return (as_free_line(line));
 		}
 		free(line);
 	}
-	//
+	free(line);
+	as_store_size(&size, code);
 	as_reverse_list(&code);
-	as_print_list(code, *label);
 	//
+	as_print_list(code, *label);
 	//as_write_to_file(&code, name);
 	free(&code);
-	free(line);
 	return (1);
 }
-
-	// store size at the end.
 
 int         main(int argc, char **argv)
 {

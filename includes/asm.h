@@ -53,14 +53,16 @@ extern t_op		op_tab[17];
 // Functions to store information (filename)
 
 int							as_store_magic(t_list_byte **code);
-int							as_store_name_comment(char *line, int *section, t_list_byte **code);
+int							as_store_name_comment(char *line, int *section, t_list_byte **code, t_list_byte **size);
 int							as_store_commands(char *line, t_list_byte **code, t_list_label **label);
+int							as_store_size(t_list_byte **size, t_list_byte *code);
 
 // Functions to free data
 
 int							as_free(t_list_byte **list);
 int							as_free_error(t_list_error **list);
 int							as_free_label(t_list_label **list);
+int							as_free_line(char *line);
 
 // Functions to print error/warning messages on stderr
 
