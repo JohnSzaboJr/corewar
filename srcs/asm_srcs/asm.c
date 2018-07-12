@@ -79,20 +79,19 @@ static int  as_parse(int fd, t_list_label **label, char *filename)
 static int  as_store(int fd, t_list_label **label)
 {
 	char            *line;
-	int             section;
+	int             sec;
 	t_list_byte     *code;
 	t_list_byte		*size;
 
-	as_store_init(&line, &code, &size, &section);
+	as_store_init(&line, &code, &size, &sec);
 	if (!as_store_magic(&code))
 		return (0);
 	while (get_next_line(fd, &line))
 	{
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
-			if ((section == 2 && !as_store_commands(line, &code, label)) ||
-			((section == 0 || section == 1) &&
-			!as_store_name_comment(line, &section, &code, &size)))
+			if ((sec == 2 && !as_store_commands(line, &code, label)) ||
+			((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size)))
 				return (as_free_line(line));
 		}
 		free(line);

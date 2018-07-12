@@ -53,9 +53,13 @@ extern t_op		op_tab[17];
 // Functions to store information (filename)
 
 int							as_store_magic(t_list_byte **code);
-int							as_store_name_comment(char *line, int *section, t_list_byte **code, t_list_byte **size);
+int							as_store_nc(char *line, int *sec, t_list_byte **code, t_list_byte **size);
 int							as_store_commands(char *line, t_list_byte **code, t_list_label **label);
 int							as_store_size(t_list_byte **size, t_list_byte *code);
+int							as_get_params(char *line, t_list_label **label, t_list_byte **code);
+int							as_get_command(char *line, int i, t_list_byte **code);
+int							as_store_zero(int i, int section, t_list_byte **code);
+int							as_store_non_zero(int length, char *line, int *i, t_list_byte **code);
 
 // Functions to free data
 
@@ -75,6 +79,7 @@ int							as_err3(char *message);
 
 int							as_parse_init(char **l, t_list_error **e, int *sec, int *bc);
 void						as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec);
+void						as_store_name_comment_init(char *line, int *i, int section, int *length);
 
 //
 

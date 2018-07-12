@@ -17,6 +17,14 @@
 #include "colors.h"
 #include <fcntl.h>
 
+void	as_store_name_comment_init(char *line, int *i, int section, int *length)
+{
+	*i = (section) ? ft_strlen(COMMENT_CMD_STRING) :
+	ft_strlen(NAME_CMD_STRING);
+	*length = (section) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
+	*i = *i + as_skip_space(line, i) + 1;
+}
+
 void as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
 {
 	*l = NULL;

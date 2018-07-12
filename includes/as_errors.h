@@ -30,7 +30,7 @@
 #define ERROR10      " label too long\n"
 #define ERROR11      " invalid parameter\n"
 #define ERROR12      " register number missing from parameter\n"
-#define ERROR13      " register number is too long\n"
+#define ERROR13      " register doesn't exist\n"
 #define ERROR14      " register number is zero\n"
 #define ERROR15      " incompatible parameter\n"
 #define ERROR16      " too many parameters for this type of operation\n"
@@ -62,8 +62,9 @@
 #define WARNING10    " space at the end of the line\n"
 #define WARNING11    " unnecessary spaces between operation and parameter\n"
 #define WARNING12    " indirect reference too far\n"
-#define NOTE1       " choose a register number that fits in a byte to silence this warning\n"
-#define NOTE2       " choose a register number that fits in 4 bytes to silence this warning\n"
-#define NOTE3       " choose a register number that fits in 4 bytes to silence this warning\n"
+// reg_number note...
+#define NOTE1       " choose a register number lower than REG_NUMBER to silence this warning\n"
+#define NOTE2       " choose a number that fits in 4 bytes to silence this warning\n"
+#define NOTE3       " choose a number that fits in 2 bytes to silence this warning\n"
 
 #endif
