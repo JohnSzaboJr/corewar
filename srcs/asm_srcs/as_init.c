@@ -1,0 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   as_init.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/07/12 14:31:23 by jszabo            #+#    #+#             */
+/*   Updated: 2018/07/12 14:35:38 by jszabo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "libft.h"
+#include "op.h"
+#include "asm.h"
+#include "as_errors.h"
+#include "colors.h"
+#include <fcntl.h>
+
+void as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
+{
+	*l = NULL;
+	*c = NULL;
+	*s = NULL;
+	*sec = 0;
+}
+
+int	as_parse_init(char **l, t_list_error **e, int *sec, int *bc)
+{
+	*l = NULL;
+	*e = NULL;
+	*sec = 0;
+	*bc = 4;
+	return (0);
+}

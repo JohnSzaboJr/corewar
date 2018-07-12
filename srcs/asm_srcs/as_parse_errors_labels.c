@@ -149,22 +149,28 @@ static int as_check_ind_chars(char *line, int i, int j, t_list_error **error)
 
 int as_check_ind_length(char *line, int i, int j, t_list_error **error)
 {
-    char c;
+    char    c;
+    int     warning;
 
+    warning = 0;
     c = line[i];
     line[i] = '\0';
-    if (ft_atoll(line + j + 1) > 32767 ||
-    ft_atoll(line + j + 1) < -32768 ||
-    ft_strlen(line + j + 1) > 6)
+    if (ft_atoll(line + j) > 32767 ||
+    ft_atoll(line + j) < -32768 ||
+    ft_strlen(line + j) > 6)
     {
         line[i] = c;
-        if (!as_add_note(error, NOTE3, line, j + 2))
+        if (!as_add_note(error, NOTE3, line, j + 1))
             return (0);
-        if (!as_add_error(error, ERROR27, line, j + 2))
+        if (!as_add_error(error, ERROR27, line, j + 1))
             return (0);
         return (-1);
     }
+    if (ft_atoi(line + j) > IDX_MOD)
+        warning = 1;
     line[i] = c;
+    if (warning && !as_add_warning(error, WARNING12, line, j + 1))
+        return (0);
     return (1);
 }
 
@@ -395,7 +401,7 @@ static int  as_parse_el_command(char *line, int i, t_list_error **error, int *by
     return (1);
 }
 
-int as_parse_el_name(char *line, int *section, t_list_error **error, int *byte_count)
+int as_parse_name(char *line, int *section, t_list_error **error, int *byte_count)
 {
 	int			i;
 
@@ -414,7 +420,7 @@ int as_parse_el_name(char *line, int *section, t_list_error **error, int *byte_c
 	return (1);
 }
 
-int as_parse_el_comment(char *line, int *section, t_list_error **error, int *byte_count)
+int as_parse_comment(char *line, int *section, t_list_error **error, int *byte_count)
 {
 	int			i;
 
@@ -465,7 +471,7 @@ static void as_check_label_errors(t_list_error **error, char *line, int i)
     *error = node;
 }
 
-int as_parse_el_commands(char *line, t_list_error **error, t_list_label **label, int *byte_count)
+int as_parse_commands(char *line, t_list_error **error, t_list_label **label, int *byte_count)
 {
 	int				i;
 	int				ret;

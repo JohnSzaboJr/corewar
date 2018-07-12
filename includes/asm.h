@@ -69,6 +69,12 @@ int							as_free_line(char *line);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err2(char *message, char *filename);
+int							as_err3(char *message);
+
+// Functions to initialize functions
+
+int							as_parse_init(char **l, t_list_error **e, int *sec, int *bc);
+void						as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec);
 
 //
 
@@ -124,9 +130,9 @@ int							as_check_valid_params(t_list_error **error, char *line);
 
 int							as_line_nr(int a);
 
-int							as_parse_el_name(char *line, int *section, t_list_error **error, int *byte_count);
-int							as_parse_el_comment(char *line, int *section, t_list_error **error, int *byte_count);
-int							as_parse_el_commands(char *line, t_list_error **error, t_list_label **label, int *byte_count);
+int							as_parse_name(char *line, int *section, t_list_error **error, int *byte_count);
+int							as_parse_comment(char *line, int *section, t_list_error **error, int *byte_count);
+int							as_parse_commands(char *line, t_list_error **error, t_list_label **label, int *byte_count);
 
 int							as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
 int							as_check_r(char *line, int *i, int j, t_list_error **error);

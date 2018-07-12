@@ -39,6 +39,15 @@ int	as_err2(char *message, char *filename)
 	return (0);
 }
 
+int	as_err3(char *message)
+{
+	ft_putstr_fd(BOLDGREEN "usage: " RESET, 2);
+	ft_putstr_fd(WHITE, 2);
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd(RESET, 2);
+	return (0);
+}
+
 int as_war1(char *message, int line_nr, char *line, int column_nr)
 {
 	as_write_err(message, line_nr, column_nr, 0);

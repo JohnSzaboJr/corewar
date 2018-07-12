@@ -16,6 +16,7 @@
 #define MAX_LINE_LENGTH 50
 #define MAX_ERROR_SIZE 40
 #define LABEL_SIZE 20
+#define USAGE      "./asm [filename.s]\n"
 #define ERROR0      " malloc failure"
 #define ERROR1      " name specifier string incorrect\n"
 #define ERROR2      " missing quotation mark before name\n"
@@ -47,7 +48,8 @@
 #define ERROR28      " label reference not found\n"
 #define ERROR29      " source file incomplete\n"
 #define ERROR30      "no such file: "
-#define ERROR31      "not a valid file: "
+#define ERROR31      "not a valid source file: "
+#define ERROR32      " compiled size would exceed maximum length\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"
@@ -59,6 +61,7 @@
 #define WARNING9    " unnecessary space before parameter\n"
 #define WARNING10    " space at the end of the line\n"
 #define WARNING11    " unnecessary spaces between operation and parameter\n"
+#define WARNING12    " indirect reference too far\n"
 #define NOTE1       " choose a register number that fits in a byte to silence this warning\n"
 #define NOTE2       " choose a register number that fits in 4 bytes to silence this warning\n"
 #define NOTE3       " choose a register number that fits in 4 bytes to silence this warning\n"

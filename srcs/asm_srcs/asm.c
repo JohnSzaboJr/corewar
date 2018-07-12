@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/08 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/12 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,79 +17,63 @@
 #include "colors.h"
 #include <fcntl.h>
 
-static void as_store_init(char **line, t_list_byte **code, t_list_byte **size, int *section)
+static int  as_open(int argc, char *filename, int *fd)
 {
-	*line = NULL;
-	*code = NULL;
-	*size = NULL;
-	*section = 0;
-}
+	int	l;
 
-static int  as_arg_num(int argc)
-{
 	if (argc != 2)
-	{
-		ft_putstr_fd("usage: ./asm [champion filename]\n", 2);
-		return (0);
-	}
-	return (1);
-}
-
-static int  as_open(char *filename, int *fd)
-{
+		return (as_err3(USAGE));
+	l = ft_strlen(filename);
 	(*fd) = open(filename, O_RDONLY);
 	if ((*fd) < 0)
 		return (as_err2(ERROR30, filename));
+	if (l <= 2 || (filename[l - 1] != 's' && filename[l - 1] != '.'))
+		return (as_err2(ERROR31, filename));
+	return (1);
+}
+
+static int	as_parse_end_check(char **line, t_list_error **error, int bc, int i)
+{
+	if (i < 3 && !as_add_error_noline(error, ERROR29))
+		return (as_free_line(*line));
+	if (bc - PROG_NAME_LENGTH - COMMENT_LENGTH - 16 >= MEM_SIZE / 4 &&
+	!as_add_error_noline(error, ERROR32))
+        return (as_free_line(*line));
+	free(*line);
+	as_reverse_error(error);
+	if (as_print_error(*error))
+		return (as_free_error(error));
+	as_free_error(error);
 	return (1);
 }
 
 static int  as_parse(int fd, t_list_label **label, char *filename)
 {
 	char            *line;
-	int             section;
+	int             sec;
 	t_list_error    *error;
-	int             byte_count;
+	int             bc;
 	int				i;
 
-	line = NULL;
-	error = NULL;
-	section = 0;
-	byte_count = 4;
-	i = 0;
+	i = as_parse_init(&line, &error, &sec, &bc);
 	while (get_next_line(fd, &line) && line)
 	{
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
-			if ((section == 2 && !as_parse_el_commands(line, &error, label, &byte_count)) ||
-			(section == 1 && !as_parse_el_comment(line, &section, &error, &byte_count)) ||
-			(section == 0 && !as_parse_el_name(line, &section, &error, &byte_count)))
-			{
-				free(line);
-				return (0);
-			}
+			if ((sec == 2 && !as_parse_commands(line, &error, label, &bc)) ||
+			(sec == 1 && !as_parse_comment(line, &sec, &error, &bc)) ||
+			(sec == 0 && !as_parse_name(line, &sec, &error, &bc)))
+				return (as_free_line(line));
 			i++;
 		}
 		free(line);
 		as_line_nr(1);
 	}
-	// same kind of error when we get a non ".s" vegzodesu file-t
 	if (!line)
 		return (as_err2(ERROR31, filename));
-	else if (i < 3 && !as_add_error_noline(&error, ERROR29))
-	{
-		free(line);
+	if (!as_parse_end_check(&line, &error, bc, i))
 		return (0);
-	}
-	free(line);
-	as_reverse_error(&error);
-	if (as_print_error(error))
-	{
-		as_free_error(&error);
-		return (0);
-	}
-	as_free_error(&error);
 	return (1);
-	// akkor is hiba ha tul nagy a file!!!
 }
 
 static int  as_store(int fd, t_list_label **label)
@@ -130,11 +114,10 @@ int         main(int argc, char **argv)
 
 	fd = 0;
 	label = NULL;
-	if (!as_arg_num(argc) ||
-	!as_open(argv[1], &fd) ||
+	if (!as_open(argc, argv[1], &fd) ||
 	!as_parse(fd, &label, argv[1]) ||
 	close(fd) < 0 ||
-	!as_open(argv[1], &fd) ||
+	!as_open(argc, argv[1], &fd) ||
 	!as_store(fd, &label) ||
 	close(fd) < 0)
 		return (as_free_label(&label));

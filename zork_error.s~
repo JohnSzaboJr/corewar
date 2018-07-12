@@ -7,4 +7,4 @@ live:		sti 		r0  , %:live, %1  ugug, %5, r6
 
 live:	live r1
 		zjmp  r1,   %:liv
-	ld 20000, r5000
+	ld 2000, r5000

@@ -108,10 +108,6 @@ int as_store_name_comment(char *line, int *section, t_list_byte **code, t_list_b
 	i = (*section) ? ft_strlen(COMMENT_CMD_STRING) : ft_strlen(NAME_CMD_STRING);
 	length = (*section) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
 	as_skip_space(line, &i);
-	//
-	ft_printf("section: %d\n", *section);
-	ft_printf("i: %d\n", i);
-	//
 	i++;
 	while (l < length && line[i] != '"')
 	{

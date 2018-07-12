@@ -34,7 +34,7 @@ int	as_free_error(t_list_error **list)
 		free(*list);
 		*list = tmp->next;
 	}
-	return (1);
+	return (0);
 }
 
 int	as_free_label(t_list_label **list)

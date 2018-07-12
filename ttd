@@ -2,7 +2,11 @@
 2. Fix errors. after error handling is done, check main functionality of
 compilation!*
 
-- check is ".s" is at the end of the file.
+3. "label the_label undefine line x"
+4. "no such register line x"
+5. "Warning Direct too big line x"
+Messages 1, 3 and 4 will stop the program
+- Improve usage
 - error if closeing fails! - could not process file
 - what happens ha csak garbage vagy csak space van egy command sorban?
 - hiba when file is empty
@@ -25,4 +29,5 @@ compilation!*
 - Tesztelni majd, h akkor is jol compilal-e, ha tele van warningokkal
 - check if opening directories produces errors
 - norm and leaks...
+- (does it leak on file error if not closed?)
 - bonus: flag, h barminek el lehessen nevezni a kimeneti file-t
