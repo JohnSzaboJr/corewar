@@ -17,6 +17,30 @@
 #include "colors.h"
 #include <fcntl.h>
 
+void	as_write_bytes(t_list_byte **code, int info, int n)
+{
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		(*code)->byte = (info >> (8 * i)) & 0xff;
+		(*code) = (*code)->next;
+		i++;
+	}
+}
+
+int		as_add_bytes(t_list_byte **code, int n)
+{
+	while (n)
+	{
+		if (!as_add_byte(code, 0))
+			return (0);
+		n--;
+	}
+	return (1);
+}
+
 int		as_add_byte(t_list_byte **code, unsigned char byte)
 {
 	t_list_byte	*new;

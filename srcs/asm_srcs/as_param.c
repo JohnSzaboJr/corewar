@@ -17,6 +17,17 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
+int  as_cmp_label(t_list_label *label, char *line, int k)
+{
+    while (label)
+    {
+        if (!ft_strcmp(line + k, label->name))
+            return (label->pos);
+        label = label->next;
+    }
+    return (0);
+}
+
 int    as_check_valid_params(t_list_error **error, char *line)
 {
     if (line[as_j(0, 0)] != 'r' && line[as_j(0, 0)] != DIRECT_CHAR &&
@@ -47,35 +58,4 @@ int   as_check_enough_params(t_list_error **error, char *line, int i)
 	    // as_write_err_sign(line, i + 1);
     }
     return (1);
-}
-
-int     as_get_pos(unsigned char byte, int a)
-{
-    static int  pos = 0;
-
-    if (a == 1)
-        pos = 0;
-    while (a == 1 && byte != op_tab[pos].opcode)
-        pos++;
-    return (pos);
-}
-
-int     as_j(int a, int i)
-{
-    static int j = 0;
-
-    if (a == 1)
-        j = i;
-    return (j);
-}
-
-int     as_k(int a)
-{
-    static int k = 0;
-    
-    if (a == 1)
-        k = 0;
-    else if (a == 2)
-        k++;
-    return (k);
 }

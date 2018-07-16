@@ -62,8 +62,5 @@
 #define WARNING10    " space at the end of the line\n"
 #define WARNING11    " unnecessary spaces between operation and parameter\n"
 #define WARNING12    " indirect reference too far\n"
-// reg_number note...
-#define NOTE2       " choose a number that fits in 4 bytes to silence this warning\n"
-#define NOTE3       " choose a number that fits in 2 bytes to silence this warning\n"
 
 #endif

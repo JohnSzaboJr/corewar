@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/11 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/16 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,30 @@ void		as_errnbr(int n)
 	write(2, &c, 1);
 }
 
+static void	as_print_error_msg(int t, t_list_error *error)
+{
+	int lnr;
+	int	cnr;
+
+	lnr = error->line_nr;
+	cnr = error->column_nr;
+	if (t == 1 || t == 6 || t == 7 || t == 8)
+		as_err1(error->message, lnr, error->line, cnr);
+	if (t == 2)
+		as_war1(error->message, lnr, error->line, cnr);
+	if (t == 3)
+		as_err_note3(lnr, cnr, error->message);
+	if (t == 4)
+		as_err1(ERROR28, lnr, error->line, cnr);
+	if (t == 6)
+		as_err_note(lnr, error->line, cnr);
+	if (t == 7)
+		as_err_note2(lnr, cnr);
+	if (t == 5)
+		as_err1(error->message, lnr, NULL, 0);
+	// improve by saying "did you mean... label... defined here...?"
+}
+
 static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)
 {
 	int	t;
@@ -50,23 +74,9 @@ static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)
 		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7) ?
 		(*ec + 1) : (*ec);
 		(*wc) = (t == 2) ? (*wc + 1) : (*wc);
-		if (t == 1 || t == 6 || t == 7 || t == 8)
-			as_err1(error->message, error->line_nr, error->line, error->column_nr);
-		if (t == 2)
-			as_war1(error->message, error->line_nr, error->line, error->column_nr);
-		if (t == 3)
-			as_err_note3(error->line_nr, error->column_nr, error->message);
-		if (t == 4)
-			as_err1(ERROR28, error->line_nr, error->line, error->column_nr);
-		if (t == 6)
-			as_err_note(error->line_nr, error->line, error->column_nr);
-		if (t == 7)
-			as_err_note2(error->line_nr, error->column_nr);
-		if (t == 5)
-			as_err1(error->message, error->line_nr, NULL, 0);
+		as_print_error_msg(t, error);
 		error = error->next;
 	}
-	// improve by saying "did you mean... label... defined here...?"
 }
 
 static void	as_print_error_num(int error_count, int warning_count)

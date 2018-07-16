@@ -83,6 +83,20 @@ int							as_parse_init(char **l, t_list_error **e, int *sec, int *bc);
 void						as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec);
 void						as_store_name_comment_init(char *line, int *i, int section, int *length);
 
+// Functions to keep track of values for errors
+
+int							as_line_nr(int a);
+int							as_k(int a);
+int							as_j(int a, int i);
+int							as_get_pos(unsigned char byte, int a);
+
+// Functions to store direct parameters
+
+int							as_sd(char *line, t_list_byte **code);
+int							as_dlabel(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
+int							as_denc(t_list_byte **encoding);
+int							as_dir(char *line);
+
 //
 
 int							as_err_note(int line_nr, char *line, int column_nr);
@@ -115,6 +129,7 @@ int							as_skip_to_sep(char *line, int *i);
 int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 
 int							as_cmd_comp(char *cmd, char *str);
+int							as_add_bytes(t_list_byte **code, int n);
 int							as_add_byte(t_list_byte **code, unsigned char byte);
 int							as_add_label(t_list_label **label, char *line, int i, int pos);
 
@@ -125,17 +140,8 @@ int							as_check_r_params(int co, int k);
 int							as_add_r_encoding(int co, int k, t_list_byte **encoding);
 int							as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line);
 
-int							as_dir(char *line);
-int							as_dir_label(char *line);
-int							as_dir_label2(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
-
-int							as_k(int a);
-int							as_j(int a, int i);
-int							as_get_pos(unsigned char byte, int a);
 int							as_check_enough_params(t_list_error **error, char *line, int i);
 int							as_check_valid_params(t_list_error **error, char *line);
-
-int							as_line_nr(int a);
 
 int							as_parse_name(char *line, int *section, t_list_error **error, int *byte_count);
 int							as_parse_comment(char *line, int *section, t_list_error **error, int *byte_count);
@@ -147,12 +153,11 @@ int							as_cmp_label(t_list_label *label, char *line, int k);
 
 int							as_reverse_error(t_list_error **list);
 
-int							as_store_dir(char *line, t_list_byte **code);
-
 int							as_store_ind(char *line, t_list_byte **code);
 int							as_ind_encoding(t_list_byte **encoding);
-int							as_dir_encoding(t_list_byte **encoding);
 
 char						*as_get_err_par(int co, int k);
+int							as_ind_label(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
+void						as_write_bytes(t_list_byte **code, int info, int n);
 
 #endif

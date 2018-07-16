@@ -96,8 +96,6 @@ int as_check_dir_length(char *line, int i, int j, t_list_error **error)
     ft_strlen(line + j + 1) > 11)
     {
         line[i] = c;
-        if (!as_add_note(error, NOTE2, line, j + 2))
-            return (0);
         if (!as_add_error(error, ERROR26, line, j + 2))
             return (0);
         return (-1);
@@ -160,8 +158,6 @@ int as_check_ind_length(char *line, int i, int j, t_list_error **error)
     ft_strlen(line + j) > 6)
     {
         line[i] = c;
-        if (!as_add_note(error, NOTE3, line, j + 1))
-            return (0);
         if (!as_add_error(error, ERROR27, line, j + 1))
             return (0);
         return (-1);
@@ -303,6 +299,11 @@ static int as_dir_el_label(char *line, t_list_label **label, t_list_error **erro
     j = as_j(0, 0);
     if (line[j + 1] == LABEL_CHAR)
     {
+        if (!as_check_dir_params(as_get_pos(0, 0), as_k(0)))
+        {
+            if (!as_add_error(error, ERROR15, line, j + 1))
+                return (0);
+        }
         j = j + 2;
         k = j;
         as_skip_space(line, &j);
@@ -407,8 +408,11 @@ static int as_parse_el_params(char *line, t_list_label **label, t_list_error **e
         }
         if (line[as_j(0, 0)] == LABEL_CHAR)
         {
+            if (!as_check_ind_params(as_get_pos(0, 0), as_k(0)) && !as_add_error(error, ERROR15, line, as_j(0, 0) + 1))
+                return (0);
             if (!as_ind_el_label(line, label, error))
                 return (0);
+            params_size = params_size + 2;
         }
         if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
         {

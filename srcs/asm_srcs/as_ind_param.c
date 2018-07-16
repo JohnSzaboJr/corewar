@@ -17,6 +17,40 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
+int as_ind_label(char *line, t_list_label **label, int byte_pos, t_list_byte **code)
+{
+    int     j;
+    int     k;
+    char    c;
+    int     i;
+    t_list_byte *node;
+
+    i = 2;
+    j = as_j(0, 0) + 1;
+    as_skip_space(line, &j);
+    k = j;
+    as_skip_label(line, &j);
+    c = line[j];
+    line[j] = '\0';
+    while (i)
+    {
+        if (!as_add_byte(code, 0))
+            return (0);
+        i--;
+    }
+    byte_pos = (as_cmp_label(*label, line, k)) - byte_pos;
+    node = (*code);
+    while (i < 2)
+    {
+        (*code)->byte = (byte_pos >> (8 * i)) & 0xff;
+        (*code) = (*code)->next;
+        i++;
+    }
+    (*code) = node;
+    line[j] = c;
+    return (1);
+}
+
 int as_ind_encoding(t_list_byte **encoding)
 {
     int k;
