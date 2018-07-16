@@ -17,21 +17,32 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-int	as_err_note3(int line_nr, int column_nr, int co, int k)
+// megkeresni h hol van a megfelelo parameter megallapito function
+// add note, message helyett "direct", etc. <- erre kulon function
+// print_error-ban ha type 3-at kap, ezt a modositott err_note_3at hivja azzal
+// majd helyretenni a print_error function file minden reszet
+
+char *as_get_err_par(int co, int k)
+{
+	if (op_tab[co].param_type[k - 1] == T_DIR)
+		return (BOLDWHITE " direct" RESET);
+	else if (op_tab[co].param_type[k - 1] == T_DIR + T_IND)
+		return (BOLDWHITE " direct or indirect" RESET);
+	else if (op_tab[co].param_type[k - 1] == T_REG)
+		return (BOLDWHITE " register" RESET);
+	else if (op_tab[co].param_type[k - 1] == T_IND + T_REG)
+		return (BOLDWHITE " indirect or register" RESET);
+	else if (op_tab[co].param_type[k - 1] == T_DIR + T_REG)
+		return (BOLDWHITE " direct or register" RESET);
+	return (NULL);
+}
+
+int	as_err_note3(int line_nr, int column_nr, char *message)
 {
 	ft_printf(BOLDWHITE "\nline %d, column %d:" RESET, line_nr, column_nr);
 	ft_printf(BOLDBLACK " note:" RESET);
     ft_printf(WHITE " switch this to a parameter of type" RESET);
-    if (op_tab[co].param_type[k - 1] == T_DIR)
-		ft_printf(BOLDWHITE " direct" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_DIR + T_IND)
-		ft_printf(BOLDWHITE " direct or indirect" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_REG)
-		ft_printf(BOLDWHITE " register" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_IND + T_REG)
-		ft_printf(BOLDWHITE " indirect or register" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_DIR + T_REG)
-		ft_printf(BOLDWHITE " direct or register" RESET);
+    ft_printf("%s", message);
     ft_printf(WHITE " to silence this warning\n" RESET);
     return (1);
 }
@@ -40,7 +51,7 @@ int	as_err_note2(int line_nr, int column_nr)
 {
 	ft_printf(BOLDWHITE "\nline %d, column %d:" RESET, line_nr, column_nr);
 	ft_printf(BOLDBLACK " note:" RESET);
-	ft_printf(WHITE " choose a register number that fits in a byte to silence this warning\n" RESET);
+	ft_printf(WHITE " choose a non-zero register number that is not higher than %d to silence this warning\n" RESET, REG_NUMBER);
 	return (1);
 }
 

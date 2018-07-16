@@ -34,6 +34,8 @@ static int as_malloc_error1(t_list_error **error, int a)
 		ft_printf(WHITE " (as_add_error_noline)\n" RESET);
 	else if (a == 6)
 		ft_printf(WHITE " (as_add_error_note1)\n" RESET);
+	else if (a == 7)
+		ft_printf(WHITE " (as_add_error_note2)\n" RESET);
 	as_free_error(error);
 	return (0);
 }
@@ -138,6 +140,24 @@ int as_add_error_note1(t_list_error **error, char *message, char *line, int colu
 	ft_strcpy(new->line, line);
 	ft_strcpy(new->message, message);
 	new->type = 6;
+	new->line_nr = as_line_nr(0);
+	new->column_nr = column_nr;
+	new->next = *error;
+	*error = new;
+	return (1);
+}
+
+int as_add_error_note2(t_list_error **error, char *message, char *line, int column_nr)
+{
+	t_list_error	*new;
+
+	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
+	!(new->line = ft_strnew(ft_strlen(line))) ||
+	!(new->message = ft_strnew(ft_strlen(message))))
+		return (as_malloc_error1(error, 7));
+	ft_strcpy(new->line, line);
+	ft_strcpy(new->message, message);
+	new->type = 7;
 	new->line_nr = as_line_nr(0);
 	new->column_nr = column_nr;
 	new->next = *error;

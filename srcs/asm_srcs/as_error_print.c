@@ -17,41 +17,90 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-int	as_err1(char *message, int line_nr, char *line, int column_nr)
+void		as_errnbr(int n)
 {
-	as_write_err(message, line_nr, column_nr, 1);
-	if (column_nr)
+	char c;
+
+	if (n < 0)
 	{
-		as_write_err_line(line, column_nr);
-		as_write_err_sign(line, column_nr);
+		if (n == -2147483648)
+		{
+			as_errnbr(-214748364);
+			c = '8';
+			write(2, &c, 1);
+			return ;
+		}
+		c = '-';
+		write(2, &c, 1);
+		n *= -1;
 	}
-	return (1);
+	if (n > 9)
+		as_errnbr(n / 10);
+	c = n % 10 + 48;
+	write(2, &c, 1);
 }
 
-int	as_err2(char *message, char *filename)
+static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)
 {
-	ft_putstr_fd(BOLDYELLOW "file error: " RESET, 2);
-	ft_putstr_fd(BOLDWHITE, 2);
-	ft_putstr_fd(message, 2);
-	ft_putstr_fd(RESET, 2);
-	ft_putstr_fd(filename, 2);
+	int	t;
+
+	while (error)
+	{
+		t = error->type;
+		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7) ?
+		(*ec + 1) : (*ec);
+		(*wc) = (t == 2) ? (*wc + 1) : (*wc);
+		if (t == 1 || t == 6 || t == 7 || t == 8)
+			as_err1(error->message, error->line_nr, error->line, error->column_nr);
+		if (t == 2)
+			as_war1(error->message, error->line_nr, error->line, error->column_nr);
+		if (t == 3)
+			as_err_note3(error->line_nr, error->column_nr, error->message);
+		if (t == 4)
+			as_err1(ERROR28, error->line_nr, error->line, error->column_nr);
+		if (t == 6)
+			as_err_note(error->line_nr, error->line, error->column_nr);
+		if (t == 7)
+			as_err_note2(error->line_nr, error->column_nr);
+		if (t == 5)
+			as_err1(error->message, error->line_nr, NULL, 0);
+		error = error->next;
+	}
+	// improve by saying "did you mean... label... defined here...?"
+}
+
+static void	as_print_error_num(int error_count, int warning_count)
+{
+	if (!warning_count && !error_count)
+		return ;
 	ft_putstr_fd("\n", 2);
-	return (0);
+	if (error_count)
+	{
+		as_errnbr(error_count);
+		ft_putstr_fd(" error", 2);
+	}
+	if (error_count > 1)
+		ft_putstr_fd("s", 2);
+	if (error_count && warning_count)
+		ft_putstr_fd(" and ", 2);
+	if (warning_count)
+	{
+		as_errnbr(warning_count);
+		ft_putstr_fd(" warning", 2);
+	}
+	if (warning_count > 1)
+		ft_putstr_fd("s", 2);
+	ft_putstr_fd(" generated.\n", 2);
 }
 
-int	as_err3(char *message)
+int			as_print_error(t_list_error *error)
 {
-	ft_putstr_fd(BOLDGREEN "usage: " RESET, 2);
-	ft_putstr_fd(WHITE, 2);
-	ft_putstr_fd(message, 2);
-	ft_putstr_fd(RESET, 2);
-	return (0);
-}
+	int	error_count;
+	int	warning_count;
 
-int as_war1(char *message, int line_nr, char *line, int column_nr)
-{
-	as_write_err(message, line_nr, column_nr, 0);
-	as_write_err_line(line, column_nr);
-	as_write_err_sign(line, column_nr);
-	return (1);
+	error_count = 0;
+	warning_count = 0;
+	as_print_error_loop(error, &error_count, &warning_count);
+	as_print_error_num(error_count, warning_count);
+	return (error_count);
 }

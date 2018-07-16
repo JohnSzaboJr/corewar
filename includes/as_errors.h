@@ -63,7 +63,6 @@
 #define WARNING11    " unnecessary spaces between operation and parameter\n"
 #define WARNING12    " indirect reference too far\n"
 // reg_number note...
-#define NOTE1       " choose a register number lower than REG_NUMBER to silence this warning\n"
 #define NOTE2       " choose a number that fits in 4 bytes to silence this warning\n"
 #define NOTE3       " choose a number that fits in 2 bytes to silence this warning\n"
 

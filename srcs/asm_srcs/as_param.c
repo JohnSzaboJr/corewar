@@ -20,6 +20,7 @@
 int    as_check_valid_params(t_list_error **error, char *line)
 {
     if (line[as_j(0, 0)] != 'r' && line[as_j(0, 0)] != DIRECT_CHAR &&
+    line[as_j(0, 0)] != LABEL_CHAR &&
     !(ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-'))
     {
         if (!as_add_error(error, ERROR11, line, as_j(0, 0) + 1))

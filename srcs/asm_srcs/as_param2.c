@@ -22,9 +22,8 @@ int  as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte 
     *i = 0;
     as_k(1);
     as_get_pos((*code)->byte, 1);
-    if (as_get_pos(0, 0) != 1 && as_get_pos(0, 0) != 9 &&
-    as_get_pos(0, 0) != 12 && as_get_pos(0, 0) != 15 &&
-    as_get_pos(0, 0) != 16)
+    if (as_get_pos(0, 0) != 0 && as_get_pos(0, 0) != 8 &&
+    as_get_pos(0, 0) != 11)
     {
         if (!(as_add_byte(code, 0)))
             return (0);

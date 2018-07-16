@@ -61,7 +61,7 @@ int							as_get_command(char *line, int i, t_list_byte **code);
 int							as_store_zero(int i, int section, t_list_byte **code);
 int							as_store_non_zero(int length, char *line, int *i, t_list_byte **code);
 
-// Functions to free data
+// Functions to free memory allocation
 
 int							as_free(t_list_byte **list);
 int							as_free_error(t_list_error **list);
@@ -70,12 +70,14 @@ int							as_free_line(char *line);
 
 // Functions to print error/warning messages on stderr
 
+void						as_errnbr(int n);
+int							as_print_error(t_list_error *error);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err2(char *message, char *filename);
 int							as_err3(char *message);
 
-// Functions to initialize functions
+// Functions to initialize function variables
 
 int							as_parse_init(char **l, t_list_error **e, int *sec, int *bc);
 void						as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec);
@@ -85,7 +87,7 @@ void						as_store_name_comment_init(char *line, int *i, int section, int *lengt
 
 int							as_err_note(int line_nr, char *line, int column_nr);
 int							as_err_note2(int line_nr, int column_nr);
-int							as_err_note3(int line_nr, int column_nr, int co, int k);
+int							as_err_note3(int line_nr, int column_nr, char *message);
 void						as_write_err(char *message, int line_nr, int column_nr, int e);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
@@ -95,7 +97,7 @@ int							as_add_note(t_list_error **error, char *message, char *line, int colum
 int							as_add_label_error(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_error_noline(t_list_error **error, char *message);
 int							as_add_error_note1(t_list_error **error, char *message, char *line, int column_nr);
-int							as_print_error(t_list_error *error);
+int							as_add_error_note2(t_list_error **error, char *message, char *line, int column_nr);
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
@@ -150,5 +152,7 @@ int							as_store_dir(char *line, t_list_byte **code);
 int							as_store_ind(char *line, t_list_byte **code);
 int							as_ind_encoding(t_list_byte **encoding);
 int							as_dir_encoding(t_list_byte **encoding);
+
+char						*as_get_err_par(int co, int k);
 
 #endif

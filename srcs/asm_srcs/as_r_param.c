@@ -54,9 +54,7 @@ int as_check_r_length(char *line, int i, int j, t_list_error **error)
     if (ft_atoi(line + j + 1) > REG_NUMBER || ft_strlen(line + j + 1) > (size_t)ft_numlen(REG_NUMBER))
     {
         line[i] = c;
-        if (!as_add_note(error, NOTE1, line, j + 2))
-            return (0);
-        if (!as_add_error(error, ERROR13, line, j + 2))
+        if (!as_add_error_note2(error, ERROR13, line, j + 2))
             return (0);
         return (-1);
     }
@@ -73,9 +71,7 @@ int as_check_r_zero(char *line, int i, int j, t_list_error **error)
     if (!ft_atoi(line + j + 1))
     {
         line[i] = c;
-        if (!as_add_note(error, NOTE1, line, j + 2))
-            return (0);
-        if (!as_add_error(error, ERROR14, line, j + 2))
+        if (!as_add_error_note2(error, ERROR14, line, j + 2))
             return (0);
         return (-1);
     }

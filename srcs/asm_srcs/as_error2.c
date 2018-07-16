@@ -17,29 +17,6 @@
 #include "as_errors.h"
 #include <unistd.h>
 
-static void	as_errnbr(int n)
-{
-	char c;
-
-	if (n < 0)
-	{
-		if (n == -2147483648)
-		{
-			ft_putnbr(-214748364);
-			c = '8';
-			write(2, &c, 1);
-			return ;
-		}
-		c = '-';
-		write(2, &c, 1);
-		n *= -1;
-	}
-	if (n > 9)
-		ft_putnbr(n / 10);
-	c = n % 10 + 48;
-	write(2, &c, 1);
-}
-
 static void	as_putspace(char *line, int i)
 {
 	char	c;

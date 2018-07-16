@@ -1,7 +1,16 @@
-1. Improve/clean up/organize code*
+1. Improve/clean up/organize code
 2. Fix errors. after error handling is done, check main functionality of
-compilation!
+compilation!*
 
+
+- Do incompatible parameter errors work with labels?
+Indirect labels:
+    - in error handling: make a separate category for it
+    - when checking if valid at the end: include this type too
+    - in storing add a separate category too
+
+- Indirect labels!
+- "line 6, column 14: note: switch this to a parameterof type choose a number that fits in 4 bytes to silence this warning"
 5. "Warning Direct too big line x"
 Messages 1, 3 and 4 will stop the program
 - Improve usage
