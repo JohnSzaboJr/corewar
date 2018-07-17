@@ -107,7 +107,7 @@ int			gnl_solve(t_list **list, t_list **node, char **line, const int fd)
 		(del_ls(list, node, fd, &end)))
 		return (1);
 	*list = *node;
-	return (1);
+	return (2);
 }
 
 int			get_next_line(const int fd, char **line)

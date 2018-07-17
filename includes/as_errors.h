@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/25 15:20:40 by jszabo            #+#    #+#             */
-/*   Updated: 2018/03/26 15:01:07 by jszabo           ###   ########.fr       */
+/*   Created: 2018/06/25 15:20:40 by jszabo            #+#    #+#             */
+/*   Updated: 2018/07/17 15:01:07 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@
 #define ERROR30      "no such file: "
 #define ERROR31      "not a valid source file: "
 #define ERROR32      " compiled size would exceed maximum length\n"
+#define ERROR33      " file ends unexpectedly\n"
+// note: add a new line to the end of the file to silence this warning
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"

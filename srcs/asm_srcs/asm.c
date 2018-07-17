@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/12 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/17 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "colors.h"
 #include <fcntl.h>
 
-static int  as_open(int argc, char *filename, int *fd)
+static int	as_open(int argc, char *filename, int *fd)
 {
 	int	l;
 
@@ -32,31 +32,16 @@ static int  as_open(int argc, char *filename, int *fd)
 	return (1);
 }
 
-static int	as_parse_end_check(char **line, t_list_error **error, int bc, int i)
+static int	as_parse(int fd, t_list_label **label, char *filename)
 {
-	if (i < 3 && !as_add_error_noline(error, ERROR29))
-		return (as_free_line(*line));
-	if (bc - PROG_NAME_LENGTH - COMMENT_LENGTH - 16 >= MEM_SIZE / 4 &&
-	!as_add_error_noline(error, ERROR32))
-        return (as_free_line(*line));
-	free(*line);
-	as_reverse_error(error);
-	if (as_print_error(*error))
-		return (as_free_error(error));
-	as_free_error(error);
-	return (1);
-}
-
-static int  as_parse(int fd, t_list_label **label, char *filename)
-{
-	char            *line;
-	int             sec;
-	t_list_error    *error;
-	int             bc;
+	char			*line;
+	int				sec;
+	t_list_error	*error;
+	int				bc;
 	int				i;
 
 	i = as_parse_init(&line, &error, &sec, &bc);
-	while (get_next_line(fd, &line) && line)
+	while (as_empty_line(get_next_line(fd, &line)) && line)
 	{
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
@@ -66,21 +51,19 @@ static int  as_parse(int fd, t_list_label **label, char *filename)
 				return (as_free_line(line));
 			i++;
 		}
+		if (as_empty_line(3) == 2 && !as_add_error_noline(&error, ERROR33))
+			return (as_free_line(line));
 		free(line);
 		as_line_nr(1);
 	}
-	if (!line)
-		return (as_err2(ERROR31, filename));
-	if (!as_parse_end_check(&line, &error, bc, i))
-		return (0);
-	return (1);
+	return (!as_lc(line, filename) || !as_ec(&line, &error, bc, i)) ? (0) : (1);
 }
 
-static int  as_store(int fd, t_list_label **label)
+static int	as_store(int fd, t_list_label **label)
 {
-	char            *line;
-	int             sec;
-	t_list_byte     *code;
+	char			*line;
+	int				sec;
+	t_list_byte		*code;
 	t_list_byte		*size;
 
 	as_store_init(&line, &code, &size, &sec);
@@ -106,10 +89,10 @@ static int  as_store(int fd, t_list_label **label)
 	return (1);
 }
 
-int         main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	int             fd;
-	t_list_label    *label;
+	int				fd;
+	t_list_label	*label;
 
 	fd = 0;
 	label = NULL;

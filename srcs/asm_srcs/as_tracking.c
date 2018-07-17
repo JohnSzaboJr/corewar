@@ -15,6 +15,15 @@
 #include "asm.h"
 #include <fcntl.h>
 
+int	as_empty_line(int a)
+{
+	static int	empty = 0;
+
+	if (a <= 2)
+		empty = a;
+	return (empty);
+}
+
 int	as_line_nr(int a)
 {
 	static int	line_nr = 1;

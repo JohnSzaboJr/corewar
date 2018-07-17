@@ -1,10 +1,8 @@
-1. Improve/clean up/organize code*
+1. Improve/clean up/organize code (as_error done)*
 2. Fix errors. after error handling is done, check main functionality of
 compilation!
 
-5. "Warning Direct too big line x"
-Messages 1, 3 and 4 will stop the program
-- Improve usage
+- unnecessary empty lines?
 - error if closeing fails! - could not process file
 - what happens ha csak garbage vagy csak space van egy command sorban?
 - hiba when file is empty

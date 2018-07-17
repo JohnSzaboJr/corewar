@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/25 15:20:40 by jszabo            #+#    #+#             */
-/*   Updated: 2018/03/26 15:01:07 by jszabo           ###   ########.fr       */
+/*   Created: 2018/06/25 15:20:40 by jszabo            #+#    #+#             */
+/*   Updated: 2018/07/17 15:01:07 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,15 @@ int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err2(char *message, char *filename);
 int							as_err3(char *message);
+int							as_malloc_error1(t_list_error **error, int a);
+
+// Functions to store errors before printing them
+
+int							as_add_error(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_warning(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_note(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_label_error(t_list_error **error, char *line, int column_nr, int j);
+int							as_add_error_noline(t_list_error **error, char *message);
 
 // Functions to initialize function variables
 
@@ -89,6 +98,7 @@ int							as_line_nr(int a);
 int							as_k(int a);
 int							as_j(int a, int i);
 int							as_get_pos(unsigned char byte, int a);
+int							as_empty_line(int a);
 
 // Functions to store direct parameters
 
@@ -96,6 +106,11 @@ int							as_sd(char *line, t_list_byte **code);
 int							as_dlabel(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
 int							as_denc(t_list_byte **encoding);
 int							as_dir(char *line);
+
+// Functions to check for input errors
+
+int							as_ec(char **line, t_list_error **error, int bc, int i);
+int							as_lc(char *line, char *filename);
 
 //
 
@@ -106,11 +121,6 @@ int							as_err_note4(int line_nr, int column_nr, char *message);
 void						as_write_err(char *message, int line_nr, int column_nr, int e);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
-int							as_add_error(t_list_error **error, char *message, char *line, int column_nr);
-int							as_add_warning(t_list_error **error, char *message, char *line, int column_nr);
-int							as_add_note(t_list_error **error, char *message, char *line, int column_nr);
-int							as_add_label_error(t_list_error **error, char *line, int column_nr, int j);
-int							as_add_error_noline(t_list_error **error, char *message);
 int							as_add_error_note1(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_error_note2(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_label_note(t_list_error **error, char *message, int column_nr);
