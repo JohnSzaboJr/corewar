@@ -290,6 +290,28 @@ static int  as_cmp_label_el(t_list_label *label, char *line, int k)
     return (0);
 }
 
+static char *as_label_sug(char *str, t_list_label *label)
+{
+	int             highest;
+	t_list_label    *pos;
+	int             save;
+
+	highest = 0;
+    while (label)
+    {
+        if ((save = as_cmd_comp(label->name, str)) > highest)
+		{
+			pos = label;
+			highest = save;
+		}
+        label = label->next;
+    }
+	if (highest > 1)
+        return (pos->name);
+    else
+        return (NULL);
+}
+
 static int as_dir_el_label(char *line, t_list_label **label, t_list_error **error)
 {
     int     j;
@@ -329,8 +351,15 @@ static int as_dir_el_label(char *line, t_list_label **label, t_list_error **erro
         line[j] = '\0';
         if (!as_cmp_label_el(*label, line, k))
         {
-            if (!as_add_label_error(error, line + k, line, k))
-                    return (0);
+            line[j] = c;
+            if (!as_add_label_error(error, line, k, j))
+                return (0);
+            line[j] = '\0';
+            if (as_label_sug(line + k, *label) && !as_add_label_note(error, as_label_sug(line + k, *label), k))
+                return (0);
+        
+            // megirni az add_label_note-ot
+            // kinyomtatni megfelelo modon
         }
         line[j] = c;
         return (1);
@@ -369,7 +398,10 @@ static int as_ind_el_label(char *line, t_list_label **label, t_list_error **erro
     line[j] = '\0';
     if (!as_cmp_label_el(*label, line, k))
     {
-        if (!as_add_label_error(error, line + k, line, k))
+        line[j] = c;
+        if (!as_add_label_error(error, line, k, j))
+            return (0);
+        if (as_label_sug(line + k, *label) && !as_add_label_note(error, as_label_sug(line + k, *label), k))
             return (0);
     }
     line[j] = c;

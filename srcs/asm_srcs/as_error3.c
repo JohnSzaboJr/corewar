@@ -47,6 +47,14 @@ int	as_err_note3(int line_nr, int column_nr, char *message)
     return (1);
 }
 
+int	as_err_note4(int line_nr, int column_nr, char *message)
+{
+	ft_printf(BOLDWHITE "\nline %d, column %d:" RESET, line_nr, column_nr);
+	ft_printf(BOLDBLACK " note:" RESET);
+    ft_printf(WHITE " did you mean '%s'?\n" RESET, message);
+    return (1);
+}
+
 int	as_err_note2(int line_nr, int column_nr)
 {
 	ft_printf(BOLDWHITE "\nline %d, column %d:" RESET, line_nr, column_nr);

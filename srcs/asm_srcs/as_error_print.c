@@ -47,7 +47,7 @@ static void	as_print_error_msg(int t, t_list_error *error)
 
 	lnr = error->line_nr;
 	cnr = error->column_nr;
-	if (t == 1 || t == 6 || t == 7 || t == 8)
+	if (t == 1 || t == 6 || t == 7)
 		as_err1(error->message, lnr, error->line, cnr);
 	if (t == 2)
 		as_war1(error->message, lnr, error->line, cnr);
@@ -61,7 +61,8 @@ static void	as_print_error_msg(int t, t_list_error *error)
 		as_err_note2(lnr, cnr);
 	if (t == 5)
 		as_err1(error->message, lnr, NULL, 0);
-	// improve by saying "did you mean... label... defined here...?"
+	if (t == 8)
+		as_err_note4(lnr, cnr, error->message);
 }
 
 static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)
