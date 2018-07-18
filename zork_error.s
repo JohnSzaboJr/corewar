@@ -1,7 +1,7 @@
 .name "hhhhh                        hhhhh                                hhhhh                        hhh                                   hhhhh" 
 .comment""kljlkj
 
-
+        
 live2:	              
 	sti 
 l2:		sti 		:liv  , %:live, %1  ugug, %5, r6

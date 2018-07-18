@@ -53,6 +53,7 @@
 #define ERROR32      " compiled size would exceed maximum length\n"
 #define ERROR33      " file ends unexpectedly\n"
 #define ERROR34      "could not close file due to an error: "
+#define ERROR35      " no valid code in file\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"
@@ -68,6 +69,7 @@
 #define WARNING13    " unnecessary empty lines\n"
 #define WARNING14    " unnecessary empty lines at the end of the file\n"
 #define WARNING15    " unnecessary spaces at the end of the line\n"
+#define WARNING16    " line only consists of unnecessary spaces\n"
 #define NOTE1        " file should end with a single new line\n"
 #define NOTE2        " add a new line to the end of the file to silence this warning\n"
 

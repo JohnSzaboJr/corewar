@@ -1,10 +1,7 @@
-1. Improve/clean up/organize code (as_param done)
+1. Improve/clean up/organize code (as_param done)*
 2. Fix errors. after error handling is done, check main functionality of
-compilation!*
+compilation!
 
-- what happens ha csak garbage vagy csak space van egy command sorban?
-- hiba when file doesn't have anything after name or commands
-- what does it do when there are no commands at all...
 - segfaults...
 - WARNING9 doesn't work on first parameter
 - ERROR26 and 27 are same

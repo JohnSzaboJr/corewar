@@ -550,7 +550,14 @@ int as_parse_commands(char *line, t_list_error **error, t_list_label **label, in
 	int				ret;
     int             j;
 
-	i = 0;
+    i = 0;
+	if (as_skip_space(line, &i) == (int)ft_strlen(line))
+    {
+        if (!as_add_warning(error, WARNING16, line, i + 1))
+            return (0);
+        return (1);
+    }
+    i = 0;
 	ret = 0;
 	if (ft_strlen(line) > MAX_LINE_LENGTH && !as_add_error(error, ERROR17, line, 1))
         return (0);

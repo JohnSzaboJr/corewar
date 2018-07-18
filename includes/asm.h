@@ -138,13 +138,13 @@ int							as_empty_line_check(t_list_error **error, int a, char *line);
 int							as_unexp_check(t_list_error **error, char *line);
 int							as_check_enough_params(t_list_error **error, char *line, int i);
 int							as_check_valid_params(t_list_error **error, char *line);
+int							as_parse_name_check(int *i, char *line, t_list_error **error);
+int							as_parse_comment_check(int *i, char *line, t_list_error **error);
 
 //
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
-int							as_parse_name_check(int *i, char *line, t_list_error **error);
-int							as_parse_comment_check(int *i, char *line, t_list_error **error);
 int							as_code_size(t_list_byte *code);
 
 int							as_skip_space(char *line, int *i);
