@@ -70,7 +70,7 @@ static int	as_parse(int fd, t_list_label **label, char *filename)
 			i++;
 		if (as_empty_line(3) == 2 &&
 		(!as_add_error(&error, ERROR33, line, ft_strlen(line)) ||
-		!as_add_note_msg(&error, NOTE2, ft_strlen(line))))
+		!as_add_note(&error, NOTE2, ft_strlen(line))))
 			return (as_free_line(line));
 		free(line);
 		as_line_nr(1);

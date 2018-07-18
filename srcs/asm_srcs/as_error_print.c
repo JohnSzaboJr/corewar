@@ -49,22 +49,22 @@ static void	as_print_error_msg(int t, t_list_error *error)
 	cnr = error->column_nr;
 	if (t == 1 || t == 6 || t == 7)
 		as_err1(error->message, lnr, error->line, cnr);
-	if (t == 2)
-		as_war1(error->message, lnr, error->line, cnr);
-	if (t == 3)
-		as_err_note3(lnr, cnr, error->message);
 	if (t == 4)
 		as_err1(ERROR28, lnr, error->line, cnr);
-	if (t == 6)
-		as_err_note(lnr, error->line, cnr);
-	if (t == 7)
-		as_err_note2(lnr, cnr);
 	if (t == 5)
 		as_err1(error->message, lnr, NULL, 0);
-	if (t == 8)
-		as_err_note4(lnr, cnr, error->message);
+	if (t == 2)
+		as_war1(error->message, lnr, error->line, cnr);
 	if (t == 9)
-		as_not1(lnr, cnr, error->message);
+		as_write_err(error->message, lnr, cnr, 2);
+	if (t == 3)
+		as_note_type(lnr, cnr, error->message);
+	if (t == 6)
+		as_note_cmd(lnr, error->line, cnr);
+	if (t == 7)
+		as_note_reg(lnr, cnr);
+	if (t == 8)
+		as_note_label(lnr, cnr, error->message);
 }
 
 static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)

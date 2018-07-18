@@ -207,7 +207,7 @@ static int  as_check_errors_el_ind(char *line, int *i, t_list_error **error, int
         ret = -1;
         if (!as_add_error(error, ERROR15, line, j + 1))
             return (0);
-        if (!as_add_note(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
+        if (!as_add_note_type(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
             return (0);
     }
     if (ret != -1)
@@ -237,7 +237,7 @@ static int  as_check_errors_el_dir(char *line, int *i, t_list_error **error, int
             ret = -1;
             if (!as_add_error(error, ERROR15, line, j + 1))
                 return (0);
-            if (!as_add_note(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
+            if (!as_add_note_type(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
                 return (0);
         }
     }
@@ -265,12 +265,12 @@ static int  as_check_errors_el_r(char *line, int *i, t_list_error **error, int *
     {
         if (!(ret = as_check_r(line, i, j, error)))
             return (0);
-        if (ret != -1 && !as_check_r_params(as_get_pos(0, 0), as_k(0)))
+        if (!as_check_r_params(as_get_pos(0, 0), as_k(0)))
         {
             ret = -1;
             if (!as_add_error(error, ERROR15, line, j + 1))
                 return (0);
-            if (!as_add_note(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
+            if (!as_add_note_type(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
                 return (0);
         }
     }
@@ -473,7 +473,7 @@ static int  as_parse_el_command(char *line, int i, t_list_error **error, int *by
     }
     if (j == -1 || !ft_isspace(line[i + ft_strlen(op_tab[j].opname)]))
     {
-        if (!as_add_error_note1(error, ERROR8, line, i + 1))
+        if (!as_add_note_cmd(error, ERROR8, line, i + 1))
             return (0);
         else
             return (-1);

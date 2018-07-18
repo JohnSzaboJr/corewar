@@ -25,7 +25,7 @@ int	as_empty_line_check(t_list_error **error, int a, char *line)
 		return (0);
 	if (a == 2 && el && !as_add_warning(error, WARNING14, line, 1))
 		return (0);
-	if (a == 2 && el && !as_add_note_msg(error, NOTE1, 1))
+	if (a == 2 && el && !as_add_note(error, NOTE1, 1))
 		return (0);
 	if (a == 1)
 		el++;
