@@ -84,6 +84,7 @@ int							as_note_cmd(int line_nr, char *line, int column_nr);
 int							as_note_reg(int line_nr, int column_nr);
 int							as_note_type(int line_nr, int column_nr, char *message);
 int							as_note_label(int line_nr, int column_nr, char *message);
+void						as_label_error(char *message, int lnr, char *line, int cnr);
 
 // Functions to store errors before printing them
 
@@ -94,14 +95,15 @@ int							as_add_label_error(t_list_error **error, char *line, int column_nr, in
 int							as_add_error_noline(t_list_error **error, char *message);
 int							as_add_note_cmd(t_list_error **error, char *message, char *line, int cnr);
 int							as_add_note_reg(t_list_error **error, char *message, char *line, int cnr);
-// int							as_add_label_note(t_list_error **error, char *message, int cnr);
 char						*as_get_err_par(int co, int k);
+char						*as_param_error(int a, int b, t_list_error **error);
 
 // Functions to initialize function variables
 
 int							as_parse_init(char **l, t_list_error **e, int *bc);
 void						as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec);
 void						as_store_name_comment_init(char *line, int *i, int section, int *length);
+int							as_gparams_init(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
 
 // Functions to keep track of values for errors
 
@@ -123,12 +125,19 @@ int							as_si(char *line, t_list_byte **code);
 int							as_ilabel(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
 int							as_ind(char *line);
 
-// Functions to check for input errors
+// Functions to store other parameter data
+
+int							as_cmp_label(t_list_label *label, char *line, int k);
+int							as_enc(t_list_byte **encoding, int start);
+
+// Functions to check for errors
 
 int							as_ec(char **line, t_list_error **error, int bc, int i);
 int							as_lc(char *line, char *filename);
 int							as_empty_line_check(t_list_error **error, int a, char *line);
 int							as_unexp_check(t_list_error **error, char *line);
+int							as_check_enough_params(t_list_error **error, char *line, int i);
+int							as_check_valid_params(t_list_error **error, char *line);
 
 //
 
@@ -158,23 +167,18 @@ int							as_check_r_zero(char *line, int i, int j, t_list_error **error);
 int							as_check_r_params(int co, int k);
 int							as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line);
 
-int							as_check_enough_params(t_list_error **error, char *line, int i);
-int							as_check_valid_params(t_list_error **error, char *line);
-
 int							as_parse_name(char *line, int *section, t_list_error **error, int *byte_count);
 int							as_parse_comment(char *line, int *section, t_list_error **error, int *byte_count);
 int							as_parse_commands(char *line, t_list_error **error, t_list_label **label, int *byte_count);
 
 int							as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
 int							as_check_r(char *line, int *i, int j, t_list_error **error);
-int							as_cmp_label(t_list_label *label, char *line, int k);
-
 int							as_reverse_error(t_list_error **list);
 
 void						as_write_bytes(t_list_byte **code, int info, int n);
 int							as_add_note(t_list_error **error, char *message, int cnr);
 char						*as_label_sug(char *str, t_list_label *label);
 void						as_label_error(char *message, int lnr, char *line, int cnr);
-int							as_enc(t_list_byte **encoding, int start);
+int							as_close(int fd, char *filename);
 
 #endif

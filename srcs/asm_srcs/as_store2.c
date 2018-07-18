@@ -53,7 +53,7 @@ int	as_get_params(char *line, t_list_label **label, t_list_byte **code)
     int             byte_pos;
 
     byte_pos = as_code_size(*code) - 1;
-    if (!as_init_i_k_pos_params(&i, code, line, &encoding))
+    if (!as_gparams_init(&i, code, line, &encoding))
         return (0);
     while (line[i])
     {   

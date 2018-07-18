@@ -17,6 +17,13 @@
 #include "colors.h"
 #include <fcntl.h>
 
+int as_close(int fd, char *filename)
+{
+	if (close(fd) < 0)
+		return (as_err2(ERROR34, filename));		
+	return (1);
+}
+
 void	as_write_bytes(t_list_byte **code, int info, int n)
 {
 	int	i;

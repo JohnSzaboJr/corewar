@@ -121,10 +121,10 @@ int			main(int argc, char **argv)
 	label = NULL;
 	if (!as_open(argc, argv[1], &fd) ||
 	!as_parse(fd, &label, argv[1]) ||
-	close(fd) < 0 ||
+	!as_close(fd, argv[1]) ||
 	!as_open(argc, argv[1], &fd) ||
 	!as_store(fd, &label) ||
-	close(fd) < 0)
+	!as_close(fd, argv[1]))
 		return (as_free_label(&label));
 	as_free_label(&label);
 	return (0);

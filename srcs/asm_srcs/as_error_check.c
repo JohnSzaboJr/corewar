@@ -17,6 +17,27 @@
 #include "colors.h"
 #include <fcntl.h>
 
+int	as_check_enough_params(t_list_error **error, char *line, int i)
+{
+	int		pos;
+	int		k;
+	char	*msg;
+
+	pos = as_get_pos(0, 0);
+	k = as_k(0);
+	if (!k && !as_add_error(error, ERROR9, line, i + 1))
+		return (0);
+	if (k && k < op_tab[pos].param_count)
+	{
+		if (!(msg = as_param_error(op_tab[pos].param_count, k, error)))
+			return (0);
+		if (!as_add_error(error, msg, line, i + 1))
+			return (as_free_line(msg));
+		free(msg);
+	}
+	return (1);
+}
+
 int	as_unexp_check(t_list_error **error, char *line)
 {
 	if (as_empty_line(3) == 2 &&

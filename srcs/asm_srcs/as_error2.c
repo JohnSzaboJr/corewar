@@ -84,3 +84,23 @@ char	*as_get_err_par(int co, int k)
 		return (BOLDWHITE " direct or register" RESET);
 	return (NULL);
 }
+
+char	*as_param_error(int a, int b, t_list_error **error)
+{
+    char    *msg;
+    int     len;
+
+    len = 65 + ft_strlen(ft_itoa(a)) + ft_strlen(ft_itoa(b));
+    if (!(msg = ft_strnew(len)))
+    {
+        as_malloc_error1(error, 8);
+        return (NULL);
+    }
+    ft_strnfill(msg, '\0', len);
+    ft_strcat(msg, ERROR18);
+    ft_strcat(msg, ft_itoa(a));
+    ft_strcat(msg, ERROR18B);
+    ft_strcat(msg, ft_itoa(b));
+    ft_strcat(msg, "\n");
+    return (msg);
+}

@@ -35,6 +35,8 @@ int	as_malloc_error1(t_list_error **error, int a)
 		ft_putstr_fd(WHITE " (as_add_note_cmd)\n" RESET, 2);
 	else if (a == 7)
 		ft_putstr_fd(WHITE " (as_add_note_reg)\n" RESET, 2);
+	else if (a == 8)
+		ft_putstr_fd(WHITE " (as_param_error)\n" RESET, 2);
 	else if (a == 9)
 		ft_putstr_fd(WHITE " (as_add_note)\n" RESET, 2);
 	as_free_error(error);

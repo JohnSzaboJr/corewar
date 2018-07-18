@@ -548,6 +548,7 @@ int as_parse_commands(char *line, t_list_error **error, t_list_label **label, in
 {
 	int				i;
 	int				ret;
+    int             j;
 
 	i = 0;
 	ret = 0;
@@ -576,16 +577,14 @@ int as_parse_commands(char *line, t_list_error **error, t_list_label **label, in
 	}
 	else
 		i = 0;
-	as_skip_space(line, &i);
+    j = i;
+    if ((as_skip_space(line, &i) - i) && !line[i] && !as_add_warning(error, WARNING15, line, i))
+        return (0);
 	if (!line[i])
 		return (1);
 	if (!(ret = as_parse_el_command(line, i, error, byte_count)))
 		return (0);	
 	if (ret > -1 && !as_parse_el_params(line, label, error, byte_count))
 		return (0);	
-
-	
-
-	// can label names be the same as known commands?	
 	return (1);
 }

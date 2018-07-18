@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/12 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/12 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/18 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	as_store_name_comment_init(char *line, int *i, int section, int *length)
 	*i = *i + as_skip_space(line, i) + 1;
 }
 
-void as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
+void	as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
 {
 	*l = NULL;
 	*c = NULL;
@@ -33,10 +33,30 @@ void as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
 	*sec = 0;
 }
 
-int	as_parse_init(char **l, t_list_error **e, int *bc)
+int		as_parse_init(char **l, t_list_error **e, int *bc)
 {
 	*l = NULL;
 	*e = NULL;
 	*bc = 4;
 	return (0);
+}
+
+int		as_gparams_init(int *i, t_list_byte **co, char *l, t_list_byte **enc)
+{
+	int	pos;
+
+	*i = 0;
+	as_k(1);
+	as_get_pos((*co)->byte, 1);
+	pos = as_get_pos(0, 0);
+	if (pos != 0 && pos != 8 && pos != 11)
+	{
+		if (!(as_add_byte(co, 0)))
+			return (0);
+		*enc = *co;
+	}
+	else
+		*enc = NULL;
+	as_skip_to_params(l, i);
+	return (1);
 }
