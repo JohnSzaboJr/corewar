@@ -1,8 +1,8 @@
-1. Improve/clean up/organize code (as_error done)*
+1. Improve/clean up/organize code (as_error2 done)*
 2. Fix errors. after error handling is done, check main functionality of
 compilation!
 
-- unnecessary empty lines?
+- Do label warnings disappear properly?
 - error if closeing fails! - could not process file
 - what happens ha csak garbage vagy csak space van egy command sorban?
 - hiba when file is empty

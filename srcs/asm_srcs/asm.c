@@ -32,30 +32,51 @@ static int	as_open(int argc, char *filename, int *fd)
 	return (1);
 }
 
+static int	as_parse_loop(
+char *line, t_list_error **error, t_list_label **label, int *bc)
+{
+	static int	sec = 0;
+
+	if (line[0] != COMMENT_CHAR)
+	{
+		if (!line[0])
+			as_empty_line_check(error, 1, line);
+		else
+		{
+			if (!as_empty_line_check(error, 0, line))
+				return (as_free_line(line));
+			if ((sec == 2 && !as_parse_commands(line, error, label, bc)) ||
+			(sec == 1 && !as_parse_comment(line, &sec, error, bc)) ||
+			(sec == 0 && !as_parse_name(line, &sec, error, bc)))
+				return (as_free_line(line));
+		}
+	}
+	return (1);
+}
+
 static int	as_parse(int fd, t_list_label **label, char *filename)
 {
 	char			*line;
-	int				sec;
 	t_list_error	*error;
 	int				bc;
 	int				i;
 
-	i = as_parse_init(&line, &error, &sec, &bc);
+	i = as_parse_init(&line, &error, &bc);
 	while (as_empty_line(get_next_line(fd, &line)) && line)
 	{
-		if (line[0] && line[0] != COMMENT_CHAR)
-		{
-			if ((sec == 2 && !as_parse_commands(line, &error, label, &bc)) ||
-			(sec == 1 && !as_parse_comment(line, &sec, &error, &bc)) ||
-			(sec == 0 && !as_parse_name(line, &sec, &error, &bc)))
-				return (as_free_line(line));
+		if (!as_parse_loop(line, &error, label, &bc))
+			return (0);
+		if (line[0] != COMMENT_CHAR)
 			i++;
-		}
-		if (as_empty_line(3) == 2 && !as_add_error_noline(&error, ERROR33))
+		if (as_empty_line(3) == 2 &&
+		(!as_add_error(&error, ERROR33, line, ft_strlen(line)) ||
+		!as_add_note_msg(&error, NOTE2, ft_strlen(line))))
 			return (as_free_line(line));
 		free(line);
 		as_line_nr(1);
 	}
+	if (!as_empty_line_check(&error, 2, line))
+		return (0);
 	return (!as_lc(line, filename) || !as_ec(&line, &error, bc, i)) ? (0) : (1);
 }
 

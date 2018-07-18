@@ -85,10 +85,13 @@ int							as_add_warning(t_list_error **error, char *message, char *line, int co
 int							as_add_note(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_label_error(t_list_error **error, char *line, int column_nr, int j);
 int							as_add_error_noline(t_list_error **error, char *message);
+int							as_add_error_note1(t_list_error **error, char *message, char *line, int cnr);
+int							as_add_error_note2(t_list_error **error, char *message, char *line, int cnr);
+int							as_add_label_note(t_list_error **error, char *message, int cnr);
 
 // Functions to initialize function variables
 
-int							as_parse_init(char **l, t_list_error **e, int *sec, int *bc);
+int							as_parse_init(char **l, t_list_error **e, int *bc);
 void						as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec);
 void						as_store_name_comment_init(char *line, int *i, int section, int *length);
 
@@ -111,6 +114,7 @@ int							as_dir(char *line);
 
 int							as_ec(char **line, t_list_error **error, int bc, int i);
 int							as_lc(char *line, char *filename);
+int							as_empty_line_check(t_list_error **error, int a, char *line);
 
 //
 
@@ -121,9 +125,6 @@ int							as_err_note4(int line_nr, int column_nr, char *message);
 void						as_write_err(char *message, int line_nr, int column_nr, int e);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
-int							as_add_error_note1(t_list_error **error, char *message, char *line, int column_nr);
-int							as_add_error_note2(t_list_error **error, char *message, char *line, int column_nr);
-int							as_add_label_note(t_list_error **error, char *message, int column_nr);
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int							as_reverse_list(t_list_byte **list);
@@ -171,5 +172,7 @@ int							as_ind_encoding(t_list_byte **encoding);
 char						*as_get_err_par(int co, int k);
 int							as_ind_label(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
 void						as_write_bytes(t_list_byte **code, int info, int n);
+int	as_not1(int line_nr, int column_nr, char *message);
+int as_add_note_msg(t_list_error **error, char *message, int cnr);
 
 #endif

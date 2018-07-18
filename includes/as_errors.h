@@ -51,7 +51,6 @@
 #define ERROR31      "not a valid source file: "
 #define ERROR32      " compiled size would exceed maximum length\n"
 #define ERROR33      " file ends unexpectedly\n"
-// note: add a new line to the end of the file to silence this warning
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"
@@ -64,5 +63,8 @@
 #define WARNING10    " space at the end of the line\n"
 #define WARNING11    " unnecessary spaces between operation and parameter\n"
 #define WARNING12    " indirect reference too far\n"
-
+#define WARNING13    " unnecessary empty lines\n"
+#define WARNING14    " unnecessary empty lines at the end of the file\n"
+#define NOTE1        " file should end with a single new line\n"
+#define NOTE2        " add a new line to the end of the file to silence this warning\n"
 #endif

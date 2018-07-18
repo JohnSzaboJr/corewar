@@ -37,6 +37,8 @@ int	as_malloc_error1(t_list_error **error, int a)
 		ft_putstr_fd(WHITE " (as_add_error_note2)\n" RESET, 2);
 	else if (a == 8)
 		ft_putstr_fd(WHITE " (as_add_label_note)\n" RESET, 2);
+	else if (a == 9)
+		ft_putstr_fd(WHITE " (as_add_error_note3)\n" RESET, 2);
 	as_free_error(error);
 	return (0);
 }

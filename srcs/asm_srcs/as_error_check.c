@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/17 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/17 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/18 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,23 @@
 #include "as_errors.h"
 #include "colors.h"
 #include <fcntl.h>
+
+int	as_empty_line_check(t_list_error **error, int a, char *line)
+{
+	static int el = 0;
+
+	if (el > 1 && !a && !as_add_warning(error, WARNING13, line, 1))
+		return (0);
+	if (a == 2 && el && !as_add_warning(error, WARNING14, line, 1))
+		return (0);
+	if (a == 2 && el && !as_add_note_msg(error, NOTE1, 1))
+		return (0);
+	if (a == 1)
+		el++;
+	if (a == 0)
+		el = 0;
+	return (1);
+}
 
 int	as_ec(char **line, t_list_error **error, int bc, int i)
 {

@@ -63,6 +63,8 @@ static void	as_print_error_msg(int t, t_list_error *error)
 		as_err1(error->message, lnr, NULL, 0);
 	if (t == 8)
 		as_err_note4(lnr, cnr, error->message);
+	if (t == 9)
+		as_not1(lnr, cnr, error->message);
 }
 
 static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)

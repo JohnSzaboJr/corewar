@@ -33,11 +33,10 @@ void as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
 	*sec = 0;
 }
 
-int	as_parse_init(char **l, t_list_error **e, int *sec, int *bc)
+int	as_parse_init(char **l, t_list_error **e, int *bc)
 {
 	*l = NULL;
 	*e = NULL;
-	*sec = 0;
 	*bc = 4;
 	return (0);
 }
