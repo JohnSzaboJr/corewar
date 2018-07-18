@@ -59,3 +59,10 @@ int   as_check_enough_params(t_list_error **error, char *line, int i)
     }
     return (1);
 }
+
+void	as_label_error(char *message, int lnr, char *line, int cnr)
+{
+	as_err1(ERROR28, lnr, line, cnr);
+	if (message)
+		as_note_label(lnr, cnr, message);
+}

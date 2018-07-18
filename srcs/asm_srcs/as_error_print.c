@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/11 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/16 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/18 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		as_errnbr(int n)
 	write(2, &c, 1);
 }
 
-static void	as_print_error_msg(int t, t_list_error *error)
+static void	as_print_error_msg(int t, t_list_error *error, t_list_label **label)
 {
 	int lnr;
 	int	cnr;
@@ -50,7 +50,8 @@ static void	as_print_error_msg(int t, t_list_error *error)
 	if (t == 1 || t == 6 || t == 7)
 		as_err1(error->message, lnr, error->line, cnr);
 	if (t == 4)
-		as_err1(ERROR28, lnr, error->line, cnr);
+		as_label_error(
+		as_label_sug(error->message, *label), lnr, error->line, cnr);
 	if (t == 5)
 		as_err1(error->message, lnr, NULL, 0);
 	if (t == 2)
@@ -63,11 +64,9 @@ static void	as_print_error_msg(int t, t_list_error *error)
 		as_note_cmd(lnr, error->line, cnr);
 	if (t == 7)
 		as_note_reg(lnr, cnr);
-	if (t == 8)
-		as_note_label(lnr, cnr, error->message);
 }
 
-static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)
+static void	as_print_error_loop(t_list_error *error, int *ec, int *wc, t_list_label **label)
 {
 	int	t;
 
@@ -77,7 +76,7 @@ static void	as_print_error_loop(t_list_error *error, int *ec, int *wc)
 		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7) ?
 		(*ec + 1) : (*ec);
 		(*wc) = (t == 2) ? (*wc + 1) : (*wc);
-		as_print_error_msg(t, error);
+		as_print_error_msg(t, error, label);
 		error = error->next;
 	}
 }
@@ -106,14 +105,16 @@ static void	as_print_error_num(int error_count, int warning_count)
 	ft_putstr_fd(" generated.\n", 2);
 }
 
-int			as_print_error(t_list_error *error)
+int			as_print_error(t_list_error **error, t_list_label **label)
 {
 	int	error_count;
 	int	warning_count;
 
 	error_count = 0;
 	warning_count = 0;
-	as_print_error_loop(error, &error_count, &warning_count);
+	as_print_error_loop(*error, &error_count, &warning_count, label);
 	as_print_error_num(error_count, warning_count);
+	if (error_count)
+		as_free_error(error);
 	return (error_count);
 }

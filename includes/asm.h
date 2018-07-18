@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 15:20:40 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/17 15:01:07 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/18 15:01:07 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int							as_free_line(char *line);
 // Functions to print error/warning messages on stderr
 
 void						as_errnbr(int n);
-int							as_print_error(t_list_error *error);
+int							as_print_error(t_list_error **error, t_list_label **label);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err2(char *message, char *filename);
@@ -94,7 +94,7 @@ int							as_add_label_error(t_list_error **error, char *line, int column_nr, in
 int							as_add_error_noline(t_list_error **error, char *message);
 int							as_add_note_cmd(t_list_error **error, char *message, char *line, int cnr);
 int							as_add_note_reg(t_list_error **error, char *message, char *line, int cnr);
-int							as_add_label_note(t_list_error **error, char *message, int cnr);
+// int							as_add_label_note(t_list_error **error, char *message, int cnr);
 char						*as_get_err_par(int co, int k);
 
 // Functions to initialize function variables
@@ -123,6 +123,7 @@ int							as_dir(char *line);
 int							as_ec(char **line, t_list_error **error, int bc, int i);
 int							as_lc(char *line, char *filename);
 int							as_empty_line_check(t_list_error **error, int a, char *line);
+int							as_unexp_check(t_list_error **error, char *line);
 
 //
 
@@ -171,6 +172,8 @@ int							as_ind_encoding(t_list_byte **encoding);
 
 int							as_ind_label(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
 void						as_write_bytes(t_list_byte **code, int info, int n);
-int as_add_note(t_list_error **error, char *message, int cnr);
+int							as_add_note(t_list_error **error, char *message, int cnr);
+char						*as_label_sug(char *str, t_list_label *label);
+void						as_label_error(char *message, int lnr, char *line, int cnr);
 
 #endif

@@ -68,16 +68,18 @@ static int	as_parse(int fd, t_list_label **label, char *filename)
 			return (0);
 		if (line[0] != COMMENT_CHAR)
 			i++;
-		if (as_empty_line(3) == 2 &&
-		(!as_add_error(&error, ERROR33, line, ft_strlen(line)) ||
-		!as_add_note(&error, NOTE2, ft_strlen(line))))
-			return (as_free_line(line));
+		if (!as_unexp_check(&error, line))
+			return (0);
 		free(line);
 		as_line_nr(1);
 	}
 	if (!as_empty_line_check(&error, 2, line))
+		return (as_free_line(line));
+	if (!as_lc(line, filename) || !as_ec(&line, &error, bc, i) ||
+	as_print_error(&error, label))
 		return (0);
-	return (!as_lc(line, filename) || !as_ec(&line, &error, bc, i)) ? (0) : (1);
+	as_free_error(&error);
+	return (1);
 }
 
 static int	as_store(int fd, t_list_label **label)

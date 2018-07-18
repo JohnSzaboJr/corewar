@@ -17,6 +17,15 @@
 #include "colors.h"
 #include <fcntl.h>
 
+int	as_unexp_check(t_list_error **error, char *line)
+{
+	if (as_empty_line(3) == 2 &&
+	(!as_add_error(error, ERROR33, line, ft_strlen(line)) ||
+	!as_add_note(error, NOTE2, ft_strlen(line))))
+		return (as_free_line(line));
+	return (1);
+}
+
 int	as_empty_line_check(t_list_error **error, int a, char *line)
 {
 	static int el = 0;
@@ -43,9 +52,6 @@ int	as_ec(char **line, t_list_error **error, int bc, int i)
 		return (as_free_line(*line));
 	free(*line);
 	as_reverse_error(error);
-	if (as_print_error(*error))
-		return (as_free_error(error));
-	as_free_error(error);
 	return (1);
 }
 

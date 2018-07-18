@@ -53,24 +53,6 @@ int		as_add_note_reg(t_list_error **error, char *m, char *line, int cnr)
 	return (1);
 }
 
-int		as_add_label_note(t_list_error **error, char *message, int cnr)
-{
-	t_list_error	*new;
-
-	if (!(new = (t_list_error *)malloc(sizeof(*new))))
-		return (as_malloc_error1(error, 8));
-	if (!(new->message = ft_strnew(ft_strlen(message))))
-		return (as_malloc_error1(error, 8));
-	ft_strcpy(new->message, message);
-	new->line = NULL;
-	new->type = 8;
-	new->line_nr = as_line_nr(0);
-	new->column_nr = cnr;
-	new->next = *error;
-	*error = new;
-	return (1);
-}
-
 int		as_add_error_noline(t_list_error **error, char *message)
 {
 	t_list_error	*new;

@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/25 15:20:40 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/17 15:01:07 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/18 15:01:07 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,5 @@
 #define WARNING14    " unnecessary empty lines at the end of the file\n"
 #define NOTE1        " file should end with a single new line\n"
 #define NOTE2        " add a new line to the end of the file to silence this warning\n"
+
 #endif
