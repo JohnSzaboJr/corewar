@@ -1,6 +1,6 @@
-1. Improve/clean up/organize code (as_free done)*
+1. Improve/clean up/organize code (as_i_param done)
 2. Fix errors. after error handling is done, check main functionality of
-compilation!
+compilation!*
 
 - error if closeing fails! - could not process file
 - what happens ha csak garbage vagy csak space van egy command sorban?

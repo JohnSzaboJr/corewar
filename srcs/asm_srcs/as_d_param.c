@@ -64,25 +64,6 @@ t_list_byte **code)
 	return (1);
 }
 
-int	as_denc(t_list_byte **encoding)
-{
-	int k;
-	int pos;
-
-	k = as_k(0);
-	pos = as_get_pos(0, 0);
-	if (k <= op_tab[pos].param_count && *encoding)
-	{
-		if (k == 1)
-			(*encoding)->byte = (unsigned char)128;
-		if (k == 2)
-			(*encoding)->byte = (*encoding)->byte + (unsigned char)32;
-		if (k == 3)
-			(*encoding)->byte = (*encoding)->byte + (unsigned char)8;
-	}
-	return (1);
-}
-
 int	as_dir(char *line)
 {
 	int j;

@@ -62,16 +62,15 @@ int	as_get_params(char *line, t_list_label **label, t_list_byte **code)
 		as_k(2);
         if ((line[as_j(0, 0)] == 'r') && !as_s_reg(code, &encoding, line))
             return (0);
-		if (as_dir(line) == 2 && as_denc(&encoding) &&
+		if (as_dir(line) == 2 && as_enc(&encoding, 2) &&
 		!as_dlabel(line, label, byte_pos, code))
             return (0);
-        if (as_dir(line) == 1 && as_denc(&encoding) && !as_sd(line, code))
+        if (as_dir(line) == 1 && as_enc(&encoding, 2) && !as_sd(line, code))
 			return (0);
-		if (as_ind(line) == 2 && as_ienc(&encoding) &&
-		!as_ind_label(line, label, byte_pos, code))
+		if (as_ind(line) == 2 && as_enc(&encoding, 5) &&
+		!as_ilabel(line, label, byte_pos, code))
 			return (0);
-        if (as_ind(line) == 1 &&
-		as_ienc(&encoding) && !as_store_ind(line, code))
+        if (as_ind(line) == 1 && as_enc(&encoding, 5) && !as_si(line, code))
 			return (0);
         as_skip_space(line, &i);
 		if (line[i])

@@ -34,7 +34,7 @@ int as_check_r(char *line, int *i, int j, t_list_error **error)
 
 int as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line)
 {
-    if (as_add_r_encoding(as_get_pos((*code)->byte, 0), as_k(0), encoding) &&
+    if (as_enc(encoding, -1) &&
     !(as_add_byte(code, (unsigned char)ft_atoi(line + as_j(0, 0) + 1))))
         return (0);
     return (1);

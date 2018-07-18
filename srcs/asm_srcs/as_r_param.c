@@ -87,17 +87,3 @@ int as_check_r_params(int co, int k)
         return (0);
     return (1);
 }
-
-int as_add_r_encoding(int co, int k, t_list_byte **encoding)
-{
-    if (k <= op_tab[co].param_count && *encoding)
-    {
-        if (k == 1)
-            (*encoding)->byte = (unsigned char)64;
-        if (k == 2)
-            (*encoding)->byte = (*encoding)->byte + (unsigned char)16;
-        if (k == 3)
-            (*encoding)->byte = (*encoding)->byte + (unsigned char)4;
-    }
-    return (1);
-}
