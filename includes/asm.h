@@ -118,6 +118,11 @@ int							as_dlabel(char *line, t_list_label **label, int byte_pos, t_list_byte 
 int							as_denc(t_list_byte **encoding);
 int							as_dir(char *line);
 
+// Functions to store indirect parameters
+
+int							as_ienc(t_list_byte **encoding);
+int							as_ind(char *line);
+
 // Functions to check for input errors
 
 int							as_ec(char **line, t_list_error **error, int bc, int i);
@@ -168,7 +173,6 @@ int							as_cmp_label(t_list_label *label, char *line, int k);
 int							as_reverse_error(t_list_error **list);
 
 int							as_store_ind(char *line, t_list_byte **code);
-int							as_ind_encoding(t_list_byte **encoding);
 
 int							as_ind_label(char *line, t_list_label **label, int byte_pos, t_list_byte **code);
 void						as_write_bytes(t_list_byte **code, int info, int n);

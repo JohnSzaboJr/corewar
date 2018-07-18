@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/23 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/03/23 14:35:38 by jszabo           ###   ########.fr       */
+/*   Created: 2018/06/23 14:31:23 by jszabo            #+#    #+#             */
+/*   Updated: 2018/07/18 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 #include "op.h"
 #include "asm.h"
 
-int as_free_line(char *line)
+int	as_free_line(char *line)
 {
-	free(line);
+	if (line)
+		free(line);
 	return (0);
 }
 

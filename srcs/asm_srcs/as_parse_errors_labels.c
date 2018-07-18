@@ -430,7 +430,7 @@ static int as_parse_el_params(char *line, t_list_label **label, t_list_error **e
             if (!as_check_errors_el_dir(line, &i, error, &params_size))
                 return (0);
         }
-        if (line[as_j(0, 0)] == LABEL_CHAR)
+        if (as_ind(line) == 2)
         {
             if (!as_check_ind_params(as_get_pos(0, 0), as_k(0)) && !as_add_error(error, ERROR15, line, as_j(0, 0) + 1))
                 return (0);
@@ -438,7 +438,7 @@ static int as_parse_el_params(char *line, t_list_label **label, t_list_error **e
                 return (0);
             params_size = params_size + 2;
         }
-        if (ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')
+        if (as_ind(line) == 1)
         {
             if (!as_check_errors_el_ind(line, &i, error, &params_size))
                 return (0);

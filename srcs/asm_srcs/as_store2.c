@@ -67,11 +67,11 @@ int	as_get_params(char *line, t_list_label **label, t_list_byte **code)
             return (0);
         if (as_dir(line) == 1 && as_denc(&encoding) && !as_sd(line, code))
 			return (0);
-		if (line[as_j(0, 0)] == LABEL_CHAR && as_ind_encoding(&encoding) &&
+		if (as_ind(line) == 2 && as_ienc(&encoding) &&
 		!as_ind_label(line, label, byte_pos, code))
 			return (0);
-        if (((ft_isdigit(line[as_j(0, 0)]) || line[as_j(0, 0)] == '-')) &&
-		as_ind_encoding(&encoding) && !as_store_ind(line, code))
+        if (as_ind(line) == 1 &&
+		as_ienc(&encoding) && !as_store_ind(line, code))
 			return (0);
         as_skip_space(line, &i);
 		if (line[i])
