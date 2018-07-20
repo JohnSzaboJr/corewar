@@ -78,12 +78,3 @@ int as_check_r_zero(char *line, int i, int j, t_list_error **error)
     line[i] = c;
     return (1);
 }
-
-int as_check_r_params(int co, int k)
-{
-    if (k <= op_tab[co].param_count && op_tab[co].param_type[k - 1] != T_REG &&
-        op_tab[co].param_type[k - 1] != T_REG + T_DIR &&
-        op_tab[co].param_type[k - 1] != T_REG + T_DIR + T_IND)
-        return (0);
-    return (1);
-}

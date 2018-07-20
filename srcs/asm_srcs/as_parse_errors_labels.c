@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/01 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/06 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/19 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,17 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-static int  as_params_parse_init(int *i, char *line, int *params_size, int *ret)
+int  as_params_parse_init(int *i, char *line, int *params_size)
 {
     int j;
 
-    j = 15;
     *i = 0;
     as_k(1);
-    *params_size = 0;
-    *ret = 0;
+    *params_size = (as_get_pos(0, 0) != 0 && as_get_pos(0, 0) != 8 &&
+    as_get_pos(0, 0) != 11) ? (0) : (1);
     *i = as_skip_label(line, i) + 1;
     as_skip_space(line, i);
-    while (j >= 0)
-    {
-        if (!ft_strncmp(op_tab[j].opname, line + *i, ft_strlen(op_tab[j].opname)))
-            break ;
-        j--;
-    }
+    j = as_get_op_pos(line, *i);
     as_get_pos(op_tab[j].opcode, 1);
     as_skip_command(line, i);
     j = *i;
@@ -43,7 +37,7 @@ static int  as_params_parse_init(int *i, char *line, int *params_size, int *ret)
     return (*i > j + 1) ? (2) : (1);
 }
 
-static int as_bw_params_el(int *i, char *line, t_list_error **error)
+int as_bw_params_el(int *i, char *line, t_list_error **error)
 {
     as_j(1, *i);
     as_skip_to_sep(line, i);
@@ -105,7 +99,7 @@ int as_check_dir_length(char *line, int i, int j, t_list_error **error)
     return (1);
 }
 
-static int as_check_dir(char *line, int *i, int j, t_list_error **error)
+int as_check_dir(char *line, int *i, int j, t_list_error **error)
 {
     int ret;
 
@@ -116,16 +110,6 @@ static int as_check_dir(char *line, int *i, int j, t_list_error **error)
     if (ret != -1 && !(ret = as_check_dir_length(line, *i, j, error)))
         return (0);
     return (ret == -1) ? (-1) : (1);
-}
-
-static int as_check_dir_params(int co, int k)
-{
-    if (k <= op_tab[co].param_count && op_tab[co].param_type[k - 1] != T_DIR &&
-        op_tab[co].param_type[k - 1] != T_REG + T_DIR &&
-        op_tab[co].param_type[k - 1] != T_IND + T_DIR &&
-        op_tab[co].param_type[k - 1] != T_REG + T_DIR + T_IND)
-        return (0);
-    return (1);
 }
 
 static int as_check_ind_chars(char *line, int i, int j, t_list_error **error)
@@ -170,7 +154,7 @@ int as_check_ind_length(char *line, int i, int j, t_list_error **error)
     return (1);
 }
 
-static int as_check_ind(char *line, int *i, int j, t_list_error **error)
+int as_check_ind(char *line, int *i, int j, t_list_error **error)
 {
     int ret;
 
@@ -183,415 +167,18 @@ static int as_check_ind(char *line, int *i, int j, t_list_error **error)
     return (ret == -1) ? (-1) : (1);
 }
 
-static int as_check_ind_params(int co, int k)
+int as_type_e(int co, int k, int a)
 {
-    if (k <= op_tab[co].param_count && op_tab[co].param_type[k - 1] != T_IND &&
-        op_tab[co].param_type[k - 1] != T_REG + T_IND &&
-        op_tab[co].param_type[k - 1] != T_IND + T_DIR &&
-        op_tab[co].param_type[k - 1] != T_REG + T_DIR + T_IND)
-        return (0);
+    const int   tab[12] =
+    {T_REG, T_REG + T_DIR, T_REG + T_IND, T_REG + T_DIR + T_IND,
+    T_DIR, T_REG + T_DIR, T_IND + T_DIR, T_REG + T_DIR + T_IND,
+    T_IND, T_REG + T_IND, T_DIR + T_IND, T_REG + T_DIR + T_IND};
+
+    if (k <= op_tab[co].param_count &&
+    op_tab[co].param_type[k - 1] != tab[a] &&
+    op_tab[co].param_type[k - 1] != tab[a + 1] &&
+    op_tab[co].param_type[k - 1] != tab[a + 2] &&
+    op_tab[co].param_type[k - 1] != tab[a + 3])
+        return (-1);
     return (1);
-}
-
-static int  as_check_errors_el_ind(char *line, int *i, t_list_error **error, int *params_size)
-{
-    int j;
-    int ret;
-
-    ret = 0;
-    j = as_j(0, 0);
-    if (!(ret = as_check_ind(line, i, j, error)))
-        return (0);
-    if (ret != -1 && !as_check_ind_params(as_get_pos(0, 0), as_k(0)))
-    {
-        ret = -1;
-        if (!as_add_error(error, ERROR15, line, j + 1))
-            return (0);
-        if (!as_add_note_type(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
-            return (0);
-    }
-    if (ret != -1)
-        *params_size = *params_size + IND_SIZE;
-    return (1);
-}
-
-static int  as_check_errors_el_dir(char *line, int *i, t_list_error **error, int *params_size)
-{
-    int j;
-    int ret;
-
-    ret = 0;
-    j = as_j(0, 0);
-    if (!line[j + 1] || ft_isspace(line[j + 1]) || line[j + 1] == SEPARATOR_CHAR)
-    {
-        ret = -1;
-        if (!as_add_error(error, ERROR25, line, j + 2))
-            return (0);
-    }
-    else if (line[j + 1])
-    {
-        if (!(ret = as_check_dir(line, i, j, error)))
-            return (0);
-        if (ret != -1 && !as_check_dir_params(as_get_pos(0, 0), as_k(0)))
-        {
-            ret = -1;
-            if (!as_add_error(error, ERROR15, line, j + 1))
-                return (0);
-            if (!as_add_note_type(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
-                return (0);
-        }
-    }
-    if (ret != -1)
-        *params_size = *params_size + DIR_SIZE;
-    else if (ret != -1 && as_get_pos(0, 0) == 10)
-        *params_size = *params_size + IND_SIZE;
-    return (1);
-}
-
-static int  as_check_errors_el_r(char *line, int *i, t_list_error **error, int *params_size)
-{
-    int j;
-    int ret;
-
-    ret = 0;
-    j = as_j(0, 0);
-    if (!line[j + 1] || ft_isspace(line[j + 1]) || line[j + 1] == SEPARATOR_CHAR)
-    {
-        ret = -1;
-        if (!as_add_error(error, ERROR12, line, j + 2))
-            return (0);
-    }
-    else if (line[j + 1])
-    {
-        if (!(ret = as_check_r(line, i, j, error)))
-            return (0);
-        if (!as_check_r_params(as_get_pos(0, 0), as_k(0)))
-        {
-            ret = -1;
-            if (!as_add_error(error, ERROR15, line, j + 1))
-                return (0);
-            if (!as_add_note_type(error, as_get_err_par(as_get_pos(0, 0), as_k(0)), line, j + 1))
-                return (0);
-        }
-    }
-    if (ret != -1)
-        (*params_size)++;
-    return (1);
-}
-
-static int  as_cmp_label_el(t_list_label *label, char *line, int k)
-{
-    while (label)
-    {
-        if (!ft_strcmp(line + k, label->name))
-            return (1);
-        label = label->next;
-    }
-    return (0);
-}
-
-char *as_label_sug(char *str, t_list_label *label)
-{
-	int             highest;
-	t_list_label    *pos;
-	int             save;
-
-	highest = 0;
-    while (label)
-    {
-        if ((save = as_cmd_comp(label->name, str)) > highest)
-		{
-			pos = label;
-			highest = save;
-		}
-        label = label->next;
-    }
-	if (highest > 1)
-        return (pos->name);
-    else
-        return (NULL);
-}
-
-static int as_dir_el_label(char *line, t_list_label **label, t_list_error **error)
-{
-    int     j;
-    int     k;
-    char    c;
-
-    j = as_j(0, 0);
-    if (line[j + 1] == LABEL_CHAR)
-    {
-        if (!as_check_dir_params(as_get_pos(0, 0), as_k(0)))
-        {
-            if (!as_add_error(error, ERROR15, line, j + 1))
-                return (0);
-        }
-        j = j + 2;
-        k = j;
-        as_skip_space(line, &j);
-        if (j > k && line[j] && line[j] != SEPARATOR_CHAR)
-        {
-            if (!as_add_error(error, ERROR23, line, k + 1))
-                return (0);
-            return (1);
-        }
-        k = j;
-        as_skip_label(line, &j);
-        if (!(j - k))
-        {
-            as_skip_space(line, &j);
-            if (!line[j] || line[j] == SEPARATOR_CHAR)
-            {
-                if (!as_add_error(error, ERROR22, line, j))
-                    return (0);
-                return (1);
-            }
-        }
-        c = line[j];
-        line[j] = '\0';
-        if (!as_cmp_label_el(*label, line, k))
-        {
-            line[j] = c;
-            if (!as_add_label_error(error, line, k, j))
-                return (0);
-        }
-        line[j] = c;
-        return (1);
-    }
-    return (-1);
-}
-
-static int as_ind_el_label(char *line, t_list_label **label, t_list_error **error)
-{
-    int     j;
-    int     k;
-    char    c;
-
-    j = as_j(0, 0) + 1;
-    k = j;
-    as_skip_space(line, &j);
-    if (j > k && line[j] && line[j] != SEPARATOR_CHAR)
-    {
-        if (!as_add_error(error, ERROR23, line, k + 1))
-            return (0);
-        return (1);
-    }
-    k = j;
-    as_skip_label(line, &j);
-    if (!(j - k))
-    {
-        as_skip_space(line, &j);
-        if (!line[j] || line[j] == SEPARATOR_CHAR)
-        {
-            if (!as_add_error(error, ERROR22, line, j))
-                return (0);
-            return (1);
-        }
-    }
-    c = line[j];
-    line[j] = '\0';
-    if (!as_cmp_label_el(*label, line, k))
-    {
-        line[j] = c;
-        if (!as_add_label_error(error, line, k, j))
-            return (0);
-    }
-    line[j] = c;
-    return (1);
-}
-
-static int as_parse_el_params(char *line, t_list_label **label, t_list_error **error, int *byte_count)
-{
-    int             i;
-    int             params;
-    int             params_size;
-    int             ret;
-
-    params = as_params_parse_init(&i, line, &params_size, &ret);
-    if (params == 2 && !as_add_warning(error, WARNING11, line, i + 1))
-        return (0);
-    if (as_get_pos(0, 0) != 0 && as_get_pos(0, 0) != 8 &&
-    as_get_pos(0, 0) != 11)
-        params_size++;
-    while (line[i] && params)
-    {   
-        ret = 0;
-        if (!as_bw_params_el(&i, line, error))
-            return (0);
-        if ((line[as_j(0, 0)] == 'r') &&
-        !as_check_errors_el_r(line, &i, error, &params_size))
-            return (0);
-        if (as_dir(line) && !(ret = as_dir_el_label(line, label, error)))
-            return (0);
-        if (as_dir(line) && ret != -1)
-            params_size = params_size + 2;
-        else if (as_dir(line) && ret == -1)
-        {
-            if (!as_check_errors_el_dir(line, &i, error, &params_size))
-                return (0);
-        }
-        if (as_ind(line) == 2)
-        {
-            if (!as_check_ind_params(as_get_pos(0, 0), as_k(0)) && !as_add_error(error, ERROR15, line, as_j(0, 0) + 1))
-                return (0);
-            if (!as_ind_el_label(line, label, error))
-                return (0);
-            params_size = params_size + 2;
-        }
-        if (as_ind(line) == 1)
-        {
-            if (!as_check_errors_el_ind(line, &i, error, &params_size))
-                return (0);
-        }
-        if (!as_check_valid_params(error, line) || !as_skip_to_next_param(line, error, &i))
-            return (0);
-    }
-    if (!as_check_enough_params(error, line, i))
-        return (0);
-    *byte_count = *byte_count + params_size;
-    return (1);
-}
-
-static int  as_parse_el_command(char *line, int i, t_list_error **error, int *byte_count)
-{
-    int         j;
-
-    j = 15;
-    while (j >= 0)
-    {
-        if (!ft_strncmp(op_tab[j].opname, line + i, ft_strlen(op_tab[j].opname)))
-            break ;
-        j--;
-    }
-    if (j == -1 || !ft_isspace(line[i + ft_strlen(op_tab[j].opname)]))
-    {
-        if (!as_add_note_cmd(error, ERROR8, line, i + 1))
-            return (0);
-        else
-            return (-1);
-    }
-    (*byte_count)++;
-    return (1);
-}
-
-int as_parse_name(char *line, int *section, t_list_error **error, int *byte_count)
-{
-	int			i;
-
-	(*section)++;
-	if (!(ft_strncmp(line, NAME_CMD_STRING, ft_strlen(NAME_CMD_STRING))) &&
-		(ft_isspace(line[ft_strlen(NAME_CMD_STRING)]) ||
-		line[ft_strlen(NAME_CMD_STRING)] == '"'))
-	{
-		if (!as_parse_name_check(&i, line, error))
-			return (0);
-        *byte_count = (*byte_count) + PROG_NAME_LENGTH + 4;
-		return (1);
-	}
-    if (!as_add_error(error, ERROR1, line, 1))
-        return (0);
-	return (1);
-}
-
-int as_parse_comment(char *line, int *section, t_list_error **error, int *byte_count)
-{
-	int			i;
-
-	(*section)++;
-	if (!(ft_strncmp(line, COMMENT_CMD_STRING, ft_strlen(COMMENT_CMD_STRING))) &&
-		(ft_isspace(line[ft_strlen(COMMENT_CMD_STRING)]) ||
-		line[ft_strlen(COMMENT_CMD_STRING)] == '"'))
-	{
-		if (!as_parse_comment_check(&i, line, error))
-			return (0);
-        *byte_count = (*byte_count) + COMMENT_LENGTH + 8;
-		return (1);
-	}
-	if (!as_add_error(error, ERROR7, line, 1))
-        return (0);
-	return (1);
-}
-
-static void as_check_label_errors(t_list_error **error, char *line, int i)
-{
-    t_list_error    *node;
-    t_list_error    *prev;
-
-    node = *error;
-    (*error) = (*error)->next;
-    while (node->type == 4 && !ft_strncmp(node->message, line, i))
-    {
-        free(node->message);
-        free(node->line);
-        free(node);
-        node = *error;
-        *error = (*error)->next;
-    }
-    prev = node;
-    while (*error)
-    {
-        if ((*error)->type == 4 && !ft_strncmp((*error)->message, line, i))
-        {
-            free((*error)->message);
-            free((*error)->line);
-            prev->next = (*error)->next;
-            free(*error);
-            *error = prev;
-        }
-        prev = *error;
-        *error = (*error)->next;
-    }
-    *error = node;
-}
-
-int as_parse_commands(char *line, t_list_error **error, t_list_label **label, int *byte_count)
-{
-	int				i;
-	int				ret;
-    int             j;
-
-    i = 0;
-	if (as_skip_space(line, &i) == (int)ft_strlen(line))
-    {
-        if (!as_add_warning(error, WARNING16, line, i + 1))
-            return (0);
-        return (1);
-    }
-    i = 0;
-	ret = 0;
-	if (ft_strlen(line) > MAX_LINE_LENGTH && !as_add_error(error, ERROR17, line, 1))
-        return (0);
-	if (as_skip_label(line, &i) && line[i] == LABEL_CHAR && i <= LABEL_SIZE)
-	{
-        as_check_label_errors(error, line, i);
-        if (as_cmp_label_el(*label, line, 0))
-        {
-            if (!as_add_error(error, ERROR24, line, 1))
-                return (0);
-        }
-		else if (!as_add_label(label, line, i, *byte_count))
-		{
-			as_free_error(error);
-			return (0);
-		}
-		i++;
-	}
-	else if (i > LABEL_SIZE)
-	{
-        if (!as_add_error(error, ERROR10, line, i + 1))
-            return (0);
-		i++;
-	}
-	else
-		i = 0;
-    j = i;
-    if ((as_skip_space(line, &i) - i) && !line[i] && !as_add_warning(error, WARNING15, line, i))
-        return (0);
-	if (!line[i])
-		return (1);
-	if (!(ret = as_parse_el_command(line, i, error, byte_count)))
-		return (0);	
-	if (ret > -1 && !as_parse_el_params(line, label, error, byte_count))
-		return (0);	
-	return (1);
 }

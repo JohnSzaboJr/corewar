@@ -40,3 +40,31 @@ int	as_cmp_label(t_list_label *label, char *line, int k)
 	}
 	return (0);
 }
+
+int	as_slabel(char *line, int *i, t_list_error **error, t_list_label **label)
+{
+	if (as_skip_label(line, i) && line[*i] == LABEL_CHAR && *i <= LABEL_SIZE)
+	{
+        as_del_label_errors(error, line, *i);
+        if (as_cmp_label(*label, line, 0))
+        {
+            if (!as_add_error(error, ERROR24, line, 1))
+                return (0);
+        }
+		else if (!as_add_label(label, line, *i, 0))
+		{
+			as_free_error(error);
+			return (0);
+		}
+		(*i)++;
+	}
+	else if ((*i) > LABEL_SIZE)
+	{
+        if (!as_add_error(error, ERROR10, line, *i + 1))
+            return (0);
+		(*i)++;
+	}
+	else
+		*i = 0;
+	return (1);
+}

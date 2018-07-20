@@ -83,13 +83,7 @@ int	as_get_command(char *line, int i, t_list_byte **code)
 {
     int         j;
 
-    j = 15;
-    while (j >= 0)
-    {
-        if (!ft_strncmp(op_tab[j].opname, line + i, ft_strlen(op_tab[j].opname)))
-            break ;
-        j--;
-    }
+    j = as_get_op_pos(line, i);
     if (!(as_add_byte(code, (unsigned char)op_tab[j].opcode)))
         return (0);
     return (1);

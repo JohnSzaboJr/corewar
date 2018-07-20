@@ -45,9 +45,9 @@ char *line, t_list_error **error, t_list_label **label, int *bc)
 		{
 			if (!as_empty_line_check(error, 0, line))
 				return (as_free_line(line));
-			if ((sec == 2 && !as_parse_commands(line, error, label, bc)) ||
-			(sec == 1 && !as_parse_comment(line, &sec, error, bc)) ||
-			(sec == 0 && !as_parse_name(line, &sec, error, bc)))
+			if ((sec == 2 && !as_p_ops(line, error, label, bc)) ||
+			(sec == 1 && !as_pcomment(line, &sec, error, bc)) ||
+			(sec == 0 && !as_pname(line, &sec, error, bc)))
 				return (as_free_line(line));
 		}
 	}

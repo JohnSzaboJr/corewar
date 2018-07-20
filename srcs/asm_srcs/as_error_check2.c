@@ -25,7 +25,7 @@ static int	as_check_quot(int *i, t_list_error **err, char *line, char *message)
 	return (1);
 }
 
-int			as_parse_comment_check(int *i, char *line, t_list_error **error)
+int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 {
 	int	j;
 
@@ -44,10 +44,11 @@ int			as_parse_comment_check(int *i, char *line, t_list_error **error)
 	!as_add_warning(error, WARNING7, line, (*i) + 1)))
 		return (0);
 	*i = j;
+	*bc = (*bc) + COMMENT_LENGTH + 8;
 	return (1);
 }
 
-int			as_parse_name_check(int *i, char *line, t_list_error **error)
+int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 {
 	int			j;
 
@@ -66,6 +67,7 @@ int			as_parse_name_check(int *i, char *line, t_list_error **error)
 	!as_add_warning(error, WARNING3, line, (*i) + 1)))
 		return (0);
 	*i = j;
+	*bc = (*bc) + PROG_NAME_LENGTH + 4;
 	return (1);
 }
 
@@ -73,4 +75,18 @@ int	as_check_valid_params(t_list_error **error, char *line)
 {
 	return (line[as_j(0, 0)] != 'r' && !as_dir(line) && !as_ind(line) &&
 	!as_add_error(error, ERROR11, line, as_j(0, 0) + 1)) ? (0) : (1);
+}
+
+int	as_check_spaces_line(char *line, t_list_error **error)
+{
+	int	i;
+
+	i = 0;
+	if (as_skip_space(line, &i) == (int)ft_strlen(line))
+    {
+        if (!as_add_warning(error, WARNING16, line, i + 1))
+            return (-1);
+        return (1);
+    }
+	return (0);
 }
