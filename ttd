@@ -1,10 +1,7 @@
-1. Improve/clean up/organize code (as_parse2 done)*
+1. Improve/clean up/organize code (as_skip done)*
 2. Fix errors. after error handling is done, check main functionality of
 compilation!
 
-- WARNING9 doesn't work on first parameter
-- ERROR26 and 27 are same
-- ERROR28 column_nr++
 - ERROR24 doesn't work
 - error handling issue: az "sti"-t magaban, parameterek nelkul nem ismeri fel..
 - ide tartozik az is, h missing parameters error

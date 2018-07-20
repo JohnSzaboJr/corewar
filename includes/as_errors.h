@@ -45,7 +45,7 @@
 #define ERROR24      " duplicate label\n"
 #define ERROR25      " direct reference missing from parameter\n"
 #define ERROR26      " direct reference number is too long\n"
-#define ERROR27      " direct reference number is too long\n"
+#define ERROR27      " indirect reference number is too long\n"
 #define ERROR28      " label reference not found\n"
 #define ERROR29      " source file incomplete\n"
 #define ERROR30      "no such file: "

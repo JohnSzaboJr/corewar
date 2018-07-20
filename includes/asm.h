@@ -147,7 +147,6 @@ int							as_name_check(int *i, char *line, t_list_error **error, int *bc);
 int							as_comment_check(int *i, char *line, t_list_error **error, int *bc);
 int							as_check_spaces_line(char *line, t_list_error **error);
 int							as_check_max_length(char *line, t_list_error **error);
-int							as_r_e(char *line, int *i, t_list_error **error, int *params_size);
 int							as_type_e(int co, int k, int a);
 
 // Functions to check errors in indirect parameters
@@ -157,6 +156,10 @@ int							as_i_e(char *line, int *i, t_list_error **error, int *params_size);
 // Functions to check errors in direct parameters
 
 int							as_d_e(char *line, int *i, t_list_error **error, int *params_size);
+
+// Functions to check errors in register parameters
+
+int							as_r_e(char *line, int *i, t_list_error **error, int *params_size);
 
 // Functions to parse file
 
@@ -173,15 +176,18 @@ int							as_reverse_list(t_list_byte **list);
 int							as_label_list_size(t_list_label *label);
 int							as_get_op_pos(char *line, int i);
 
-//
-
-void						as_print_list(t_list_byte *list, t_list_label *label);
+// Functions to skip certain areas
 
 int							as_skip_space(char *line, int *i);
 int							as_skip_label(char *line, int *i);
 int							as_skip_command(char *line, int *i);
 int							as_skip_name(char *line, int *i, int *j);
 int							as_skip_rev_space(char *line, int *i);
+
+//
+
+void						as_print_list(t_list_byte *list, t_list_label *label);
+
 int							as_skip_to_params(char *line, int *i);
 int							as_skip_to_sep(char *line, int *i);
 int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
@@ -191,16 +197,8 @@ int							as_add_bytes(t_list_byte **code, int n);
 int							as_add_byte(t_list_byte **code, unsigned char byte);
 int							as_add_label(t_list_label **label, char *line, int i, int pos);
 
-int							as_check_r_chars(char *line, int i, int j, t_list_error **error);
-int							as_check_r_length(char *line, int i, int j, t_list_error **error);
-int							as_check_r_zero(char *line, int i, int j, t_list_error **error);
-int							as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line);
-
-int							as_check_r(char *line, int *i, int j, t_list_error **error);
-
 void						as_write_bytes(t_list_byte **code, int info, int n);
 int							as_add_note(t_list_error **error, char *message, int cnr);
-void						as_label_error(char *message, int lnr, char *line, int cnr);
 int							as_close(int fd, char *filename);
 
 #endif

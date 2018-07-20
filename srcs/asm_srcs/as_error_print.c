@@ -51,7 +51,7 @@ static void	as_print_error_msg(int t, t_list_error *error, t_list_label **label)
 		as_err1(error->message, lnr, error->line, cnr);
 	if (t == 4)
 		as_label_error(
-		as_label_sug(error->message, *label), lnr, error->line, cnr);
+		as_label_sug(error->message, *label), lnr, error->line, cnr + 1);
 	if (t == 5)
 		as_err1(error->message, lnr, NULL, 0);
 	if (t == 2)
