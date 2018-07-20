@@ -32,24 +32,37 @@ void as_del_label_errors(t_list_error **error, char *line, int i)
     t_list_error    *prev;
 
     node = *error;
-    (*error) = (*error)->next;
-    while (node->type == 4 && !ft_strncmp(node->message, line, i))
-		as_dlnode(&node, error);
-    prev = node;
-    while (*error)
+    if (*error && !((*error)->next))
     {
-        if ((*error)->type == 4 && !ft_strncmp((*error)->message, line, i))
+        if ((*error)->type == 4 && !ft_strncmp(node->message, line, i))
         {
             free((*error)->message);
             free((*error)->line);
-            prev->next = (*error)->next;
-            free(*error);
-            *error = prev;
+            free((*error));
+            *error = NULL;
         }
-        prev = *error;
-        *error = (*error)->next;
     }
-    *error = node;
+    else if (*error)
+    {
+        (*error) = (*error)->next;
+        while (node->type == 4 && !ft_strncmp(node->message, line, i))
+		    as_dlnode(&node, error);
+        prev = node;
+        while (*error)
+        {
+            if ((*error)->type == 4 && !ft_strncmp((*error)->message, line, i))
+            {
+                free((*error)->message);
+                free((*error)->line);
+                prev->next = (*error)->next;
+                free(*error);
+                *error = prev;
+            }
+            prev = *error;
+            *error = (*error)->next;
+        }
+        *error = node;
+    }
 }
 
 char *as_label_sug(char *str, t_list_label *label)

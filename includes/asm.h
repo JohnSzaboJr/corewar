@@ -106,6 +106,7 @@ int							as_parse_init(char **l, t_list_error **e, int *bc);
 void						as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec);
 void						as_store_name_comment_init(char *line, int *i, int section, int *length);
 int							as_gparams_init(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
+int							as_pparams_init(int *i, char *line, int *params_size);
 
 // Functions to keep track of values for errors
 
@@ -147,8 +148,15 @@ int							as_comment_check(int *i, char *line, t_list_error **error, int *bc);
 int							as_check_spaces_line(char *line, t_list_error **error);
 int							as_check_max_length(char *line, t_list_error **error);
 int							as_r_e(char *line, int *i, t_list_error **error, int *params_size);
-int							as_d_e(char *line, int *i, t_list_error **error, int *params_size);
+int							as_type_e(int co, int k, int a);
+
+// Functions to check errors in indirect parameters
+
 int							as_i_e(char *line, int *i, t_list_error **error, int *params_size);
+
+// Functions to check errors in direct parameters
+
+int							as_d_e(char *line, int *i, t_list_error **error, int *params_size);
 
 // Functions to parse file
 
@@ -188,17 +196,11 @@ int							as_check_r_length(char *line, int i, int j, t_list_error **error);
 int							as_check_r_zero(char *line, int i, int j, t_list_error **error);
 int							as_s_reg(t_list_byte **code, t_list_byte **encoding, char *line);
 
-int							as_init_i_k_pos_params(int *i, t_list_byte **code, char *line, t_list_byte **encoding);
 int							as_check_r(char *line, int *i, int j, t_list_error **error);
 
 void						as_write_bytes(t_list_byte **code, int info, int n);
 int							as_add_note(t_list_error **error, char *message, int cnr);
 void						as_label_error(char *message, int lnr, char *line, int cnr);
 int							as_close(int fd, char *filename);
-int  as_params_parse_init(int *i, char *line, int *params_size);
-int as_bw_params_el(int *i, char *line, t_list_error **error);
-int as_check_dir(char *line, int *i, int j, t_list_error **error);
-int as_check_ind(char *line, int *i, int j, t_list_error **error);
-int as_type_e(int co, int k, int a);
 
 #endif

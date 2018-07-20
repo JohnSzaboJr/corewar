@@ -108,7 +108,7 @@ static int	as_store(int fd, t_list_label **label)
 	//
 	as_print_list(code, *label);
 	//as_write_to_file(&code, name);
-	free(&code);
+	as_free(&code);
 	return (1);
 }
 

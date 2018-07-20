@@ -1,8 +1,7 @@
-1. Improve/clean up/organize code (as_param done)*
+1. Improve/clean up/organize code (as_parse2 done)*
 2. Fix errors. after error handling is done, check main functionality of
 compilation!
 
-- segfaults...
 - WARNING9 doesn't work on first parameter
 - ERROR26 and 27 are same
 - ERROR28 column_nr++
@@ -17,7 +16,6 @@ compilation!
 -    // a vegen tesztelni kell az osszes potencialis hibat a lista alapjan
     // es osszehasonlitani a masik asm reakcioival
 - Tesztelni majd, h akkor is jol compilal-e, ha tele van warningokkal
-- check if opening directories produces errors
 - norm and leaks...
 - (does it leak on file error if not closed?)
 - bonus: flag, h barminek el lehessen nevezni a kimeneti file-t
