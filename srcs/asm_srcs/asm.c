@@ -32,25 +32,10 @@ static int	as_open(int argc, char *filename, int *fd)
 	return (1);
 }
 
-static int	as_parse_loop(
-char *line, t_list_error **error, t_list_label **label, int *bc)
+static int	as_close(int fd, char *filename)
 {
-	static int	sec = 0;
-
-	if (line[0] != COMMENT_CHAR)
-	{
-		if (!line[0])
-			as_empty_line_check(error, 1, line);
-		else
-		{
-			if (!as_empty_line_check(error, 0, line))
-				return (as_free_line(line));
-			if ((sec == 2 && !as_p_ops(line, error, label, bc)) ||
-			(sec == 1 && !as_pcomment(line, &sec, error, bc)) ||
-			(sec == 0 && !as_pname(line, &sec, error, bc)))
-				return (as_free_line(line));
-		}
-	}
+	if (close(fd) < 0)
+		return (as_err2(ERROR34, filename));		
 	return (1);
 }
 

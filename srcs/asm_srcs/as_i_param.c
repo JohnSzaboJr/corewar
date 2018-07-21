@@ -55,7 +55,7 @@ t_list_byte **code)
     line[j] = '\0';
     if (!as_add_bytes(code, 2))
 		return (0);
-    byte_pos = (as_cmp_label(*label, line, k)) - byte_pos;
+    byte_pos = (as_cmp_label(*label, line, k)) - byte_pos + 1;
     node = (*code);
     as_write_bytes(code, byte_pos, 2);
     (*code) = node;

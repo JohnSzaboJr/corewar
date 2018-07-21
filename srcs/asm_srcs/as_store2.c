@@ -65,11 +65,13 @@ int			as_get_params(char *line, t_list_label **label, t_list_byte **code)
 		return (0);
 	while (line[i])
 	{
+		as_skip_space(line, &i);
 		as_j(1, i);
 		as_skip_to_sep(line, &i);
 		as_k(2);
-		if (((line[as_j(0, 0)] == 'r') && !as_sr(code, &encoding, line)) ||
-		(as_dir(line) == 2 && as_enc(&encoding, 2) &&
+		if (((line[as_j(0, 0)] == 'r') && !as_sr(code, &encoding, line)))
+			return (0);
+		if ((as_dir(line) == 2 && as_enc(&encoding, 2) &&
 		!as_dlabel(line, label, byte_pos, code)) ||
 		(as_dir(line) == 1 && as_enc(&encoding, 2) && !as_sd(line, code)) ||
 		(as_ind(line) == 2 && as_enc(&encoding, 5) &&

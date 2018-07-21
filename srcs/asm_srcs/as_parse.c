@@ -42,15 +42,12 @@ static int	as_pparams(char *l, t_list_label **lab, t_list_error **err, int *bc)
 static int	as_p_op(char *line, int i, t_list_error **error, int *byte_count)
 {
 	int	j;
+	int k;
 
 	j = as_get_op_pos(line, i);
-	if (j == -1 || !ft_isspace(line[i + ft_strlen(op_tab[j].opname)]))
-	{
-		if (!as_add_note_cmd(error, ERROR8, line, i + 1))
-			return (0);
-		else
-			return (-1);
-	}
+	k = i + ft_strlen(op_tab[j].opname);
+	if (j == -1 || (!ft_isspace(line[k]) && line[k]))
+		return (!as_add_note_cmd(error, ERROR8, line, i + 1)) ? (0) : (-1);
 	(*byte_count)++;
 	return (1);
 }

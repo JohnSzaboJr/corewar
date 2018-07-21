@@ -99,6 +99,7 @@ char						*as_get_err_par(int co, int k);
 char						*as_param_error(int a, int b, t_list_error **error);
 void						as_del_label_errors(t_list_error **error, char *line, int i);
 char						*as_label_sug(char *str, t_list_label *label);
+int							as_add_note(t_list_error **error, char *message, int cnr);
 
 // Functions to initialize function variables
 
@@ -167,6 +168,7 @@ int							as_pp_loop(char *l, t_list_label **lab, t_list_error **err, int *ps);
 int         				as_p_ops(char *l, t_list_error **err, t_list_label **label, int *bc);
 int							as_pname(char *line, int *section, t_list_error **error, int *byte_count);
 int							as_pcomment(char *line, int *section, t_list_error **error, int *byte_count);
+int							as_parse_loop(char *line, t_list_error **error, t_list_label **label, int *bc);
 
 // General utility functions
 
@@ -175,6 +177,11 @@ int							as_reverse_error(t_list_error **list);
 int							as_reverse_list(t_list_byte **list);
 int							as_label_list_size(t_list_label *label);
 int							as_get_op_pos(char *line, int i);
+void						as_write_bytes(t_list_byte **code, int info, int n);
+int							as_add_bytes(t_list_byte **code, int n);
+int							as_add_byte(t_list_byte **code, unsigned char byte);
+int							as_cmd_comp(char *cmd, char *str);
+int							as_add_label(t_list_label **label, char *line, int i, int pos);
 
 // Functions to skip certain areas
 
@@ -183,22 +190,12 @@ int							as_skip_label(char *line, int *i);
 int							as_skip_command(char *line, int *i);
 int							as_skip_name(char *line, int *i, int *j);
 int							as_skip_rev_space(char *line, int *i);
-
-//
-
-void						as_print_list(t_list_byte *list, t_list_label *label);
-
 int							as_skip_to_params(char *line, int *i);
 int							as_skip_to_sep(char *line, int *i);
 int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 
-int							as_cmd_comp(char *cmd, char *str);
-int							as_add_bytes(t_list_byte **code, int n);
-int							as_add_byte(t_list_byte **code, unsigned char byte);
-int							as_add_label(t_list_label **label, char *line, int i, int pos);
+//
 
-void						as_write_bytes(t_list_byte **code, int info, int n);
-int							as_add_note(t_list_error **error, char *message, int cnr);
-int							as_close(int fd, char *filename);
+void						as_print_list(t_list_byte *list, t_list_label *label);
 
 #endif

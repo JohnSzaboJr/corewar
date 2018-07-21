@@ -1,15 +1,9 @@
-1. Improve/clean up/organize code (as_skip done)*
+1. Improve/clean up/organize code (everything done, header org todo, and print_list, then makefile)*
 2. Fix errors. after error handling is done, check main functionality of
 compilation!
 
-- ERROR24 doesn't work
-- error handling issue: az "sti"-t magaban, parameterek nelkul nem ismeri fel..
-- ide tartozik az is, h missing parameters error
-- ha a label nevenek eleje azonos, osszeteveszi?
-- too few parameters for this type of operation, <-- vesszo a vege!
-
+- Tesztelni addig, amig nem azonos az output minden esetben.
 - Tesztelni, hogy a direct mikor mentodik 4 byte-ra? Labelek eseteben mindig 2?
-    // i = (!ft_strncmp(line + 1, "sti", 3)) ? (2) : (4);?
 -    // a vegen tesztelni kell az osszes potencialis hibat a lista alapjan
     // es osszehasonlitani a masik asm reakcioival
 - Tesztelni majd, h akkor is jol compilal-e, ha tele van warningokkal

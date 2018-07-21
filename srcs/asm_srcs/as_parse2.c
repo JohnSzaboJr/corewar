@@ -100,3 +100,25 @@ int			as_pp_loop(char *l, t_list_label **lab, t_list_error **err, int *ps)
 	as_i(i, 1);
 	return (1);
 }
+
+int			as_parse_loop(
+char *line, t_list_error **error, t_list_label **label, int *bc)
+{
+	static int	sec = 0;
+
+	if (line[0] != COMMENT_CHAR)
+	{
+		if (!line[0])
+			as_empty_line_check(error, 1, line);
+		else
+		{
+			if (!as_empty_line_check(error, 0, line))
+				return (as_free_line(line));
+			if ((sec == 2 && !as_p_ops(line, error, label, bc)) ||
+			(sec == 1 && !as_pcomment(line, &sec, error, bc)) ||
+			(sec == 0 && !as_pname(line, &sec, error, bc)))
+				return (as_free_line(line));
+		}
+	}
+	return (1);
+}
