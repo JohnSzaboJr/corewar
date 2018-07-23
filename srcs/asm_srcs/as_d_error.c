@@ -51,15 +51,18 @@ static int as_d_length(char *line, int i, int j, t_list_error **error)
 
 	c = line[i];
 	line[i] = '\0';
-	if (ft_atoll(line + j + 1) > 2147483647 ||
-	ft_atoll(line + j + 1) < -2147483648 ||
-	ft_strlen(line + j + 1) > 11)
-	{
-		line[i] = c;
-		if (!as_add_error(error, ERROR26, line, j + 2))
-			return (0);
-		return (-1);
-	}
+	// if (ft_atoll(line + j + 1) > 2147483647 ||
+	// ft_atoll(line + j + 1) < -2147483648 ||
+	// ft_strlen(line + j + 1) > 11)
+	// {
+	// 	line[i] = c;
+	// 	if (!as_add_error(error, ERROR26, line, j + 2))
+	// 		return (0);
+	// 	return (-1);
+	// }
+	if (!(*error))
+	j = 0;
+	//
 	line[i] = c;
 	return (1);
 }
@@ -102,6 +105,6 @@ int	as_d_e(char *line, int *i, t_list_error **error, int *ps)
 			return (0);
 	}
 	*ps = (ret != -1) ? (*ps + DIR_SIZE) : (*ps);
-	*ps = (ret != -1 && pos == 10) ? (*ps - DIR_SIZE + IND_SIZE) : (*ps);
+	*ps = (ret != -1 && (pos == 10 || pos == 8)) ? (*ps - DIR_SIZE + IND_SIZE) : (*ps);
 	return (1);
 }

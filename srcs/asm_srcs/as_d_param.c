@@ -33,7 +33,7 @@ int	as_sd(char *line, t_list_byte **code)
 	line[j] = '\0';
 	num = ft_atoi(line + i);
 	line[j] = c;
-	i = (as_get_pos(0, 0) == 10) ? IND_SIZE : DIR_SIZE;
+	i = (as_get_pos(0, 0) == 10 || as_get_pos(0, 0) == 8) ? IND_SIZE : DIR_SIZE;
 	if (!as_add_bytes(code, i))
 		return (0);
 	as_write_bytes(code, num, i);
@@ -51,12 +51,12 @@ t_list_byte **code)
 	j = as_j(0, 0) + 2;
 	as_skip_space(line, &j);
 	k = j;
-	as_skip_label(line, &j);
+	as_skip_label2(line, &j);
 	c = line[j];
 	line[j] = '\0';
 	if (!as_add_bytes(code, 2))
 		return (0);
-	byte_pos = (as_cmp_label(*label, line, k)) - byte_pos + 1;
+	byte_pos = (as_cmp_label(*label, line, k)) - byte_pos;
 	node = (*code);
 	as_write_bytes(code, byte_pos, 2);
 	(*code) = node;

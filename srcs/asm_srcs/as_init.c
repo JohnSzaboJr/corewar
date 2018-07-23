@@ -64,16 +64,14 @@ int		as_gparams_init(int *i, t_list_byte **co, char *l, t_list_byte **enc)
 int		as_pparams_init(int *i, char *line, int *params_size)
 {
 	int j;
-	int	pos;
 
 	*i = 0;
-	pos = as_get_pos(0, 0);
 	as_k(1);
-	*params_size = (pos != 0 && pos != 8 && pos != 11) ? (0) : (1);
-	*i = as_skip_label(line, i) + 1;
+	as_skip_label(line, i);
 	as_skip_space(line, i);
 	j = as_get_op_pos(line, *i);
 	as_get_pos(op_tab[j].opcode, 1);
+	*params_size = (j != 0 && j != 8 && j != 11) ? (1) : (0);
 	as_skip_command(line, i);
 	j = *i;
 	as_skip_space(line, i);

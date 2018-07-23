@@ -13,7 +13,7 @@
 #ifndef AS_ERRORS_H
 # define AS_ERRORS_H
 
-#define MAX_LINE_LENGTH 50
+#define MAX_LINE_LENGTH 100
 #define MAX_ERROR_SIZE 40
 #define LABEL_SIZE 20
 #define USAGE      "./asm [filename.s]\n"

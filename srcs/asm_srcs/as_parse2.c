@@ -41,7 +41,7 @@ static int	as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab)
 	if (j > k && line[j] && line[j] != SEPARATOR_CHAR)
 		return (as_add_error(err, ERROR23, line, k + 1));
 	k = j;
-	as_skip_label(line, &j);
+	as_skip_label2(line, &j);
 	if (!(j - k))
 	{
 		as_skip_space(line, &j);
@@ -62,12 +62,15 @@ static int	as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab)
 static int	as_dlab_e(char *line, t_list_label **label, t_list_error **error)
 {
 	int	j;
+	int pos;
 
 	j = as_j(0, 0);
+	pos = as_get_pos(0, 0);
 	if (line[j + 1] == LABEL_CHAR)
 	{
-		if ((-1 == as_type_e(as_get_pos(0, 0), as_k(0), 4)) &&
-		!as_add_error(error, ERROR15, line, j + 1))
+		if ((-1 == as_type_e(pos, as_k(0), 4)) &&
+		(!as_add_error(error, ERROR15, line, j + 1) ||
+		!as_add_note_type(error, as_get_err_par(pos, as_k(0)), line, j)))
 			return (0);
 		return (as_lab_e(j + 2, line, error, label));
 	}
@@ -85,7 +88,7 @@ int			as_pp_loop(char *l, t_list_label **lab, t_list_error **err, int *ps)
 	!as_r_e(l, &i, err, ps)) || (as_dir(l) && !(ret = as_dlab_e(l, lab, err))))
 		return (0);
 	if (as_dir(l) && ret != -1)
-		*ps = *ps + 2;
+		*ps = *ps + IND_SIZE;
 	else if (as_dir(l) && ret == -1 && !as_d_e(l, &i, err, ps))
 		return (0);
 	if (as_ind(l) == 2 && (((-1 == as_type_e(as_get_pos(0, 0), as_k(0), 4)) &&

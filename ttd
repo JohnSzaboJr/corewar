@@ -2,6 +2,10 @@
 2. Fix errors. after error handling is done, check main functionality of
 compilation!
 
+- do we record params_bytes correctly when zjmp direct in parse?
+- flag to disable warnings?
+- update usage
+- Make sure h full line shows up in errors, akkor is ha endcomment...
 - Tesztelni addig, amig nem azonos az output minden esetben.
 - Tesztelni, hogy a direct mikor mentodik 4 byte-ra? Labelek eseteben mindig 2?
 -    // a vegen tesztelni kell az osszes potencialis hibat a lista alapjan
@@ -10,3 +14,4 @@ compilation!
 - norm and leaks...
 - (does it leak on file error if not closed?)
 - bonus: flag, h barminek el lehessen nevezni a kimeneti file-t
+- a flag?

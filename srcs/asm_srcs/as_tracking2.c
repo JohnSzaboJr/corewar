@@ -23,3 +23,30 @@ int	as_i(int value, int a)
 		i = value;
 	return (i);
 }
+
+int	as_endcomment(char *line, int a)
+{
+	static int	endcom = 0;
+	static int	pos = 0;
+	int			i;
+
+	i = 0;
+	if (a == 1 && endcom)
+	{
+		endcom = 0;
+		line[pos] = ';';
+		return (endcom);
+	}
+	while (!a && line[i])
+	{
+		if (line[i] == ';')
+		{
+			line[i] = '\0';
+			endcom = 1;
+			pos = i;
+			return (endcom);
+		}
+		i++;
+	}
+	return (endcom);
+}

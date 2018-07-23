@@ -49,15 +49,24 @@ static int	as_parse(int fd, t_list_label **label, char *filename)
 	i = as_parse_init(&line, &error, &bc);
 	while (as_empty_line(get_next_line(fd, &line)) && line)
 	{
+		// //
+		// ft_printf("%d\n", bc - 2192);
+		// ft_printf("%s\n", line);
+
+		as_endcomment(line, 0);
 		if (!as_parse_loop(line, &error, label, &bc))
 			return (0);
 		if (line[0] != COMMENT_CHAR)
 			i++;
 		if (!as_unexp_check(&error, line))
 			return (0);
+		as_endcomment(line, 1);
 		free(line);
 		as_line_nr(1);
 	}
+	// //
+	// ft_printf("%d\n", bc - 2192);
+
 	if (!as_empty_line_check(&error, 2, line))
 		return (as_free_line(line));
 	if (!as_lc(line, filename) || !as_ec(&line, &error, bc, i) ||

@@ -45,7 +45,7 @@ int	as_slabel(char *line, int *i, t_list_error **error, t_list_label **label)
 {
 	char c;
 
-	if (as_skip_label(line, i) && line[*i] == LABEL_CHAR && *i <= LABEL_SIZE)
+	if (as_skip_label2(line, i) && line[*i] == LABEL_CHAR && *i <= LABEL_SIZE)
 	{
         as_del_label_errors(error, line, *i);
 		c = line[*i];

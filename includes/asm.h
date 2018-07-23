@@ -117,6 +117,7 @@ int							as_j(int a, int i);
 int							as_k(int a);
 int							as_get_pos(unsigned char byte, int a);
 int							as_empty_line(int a);
+int							as_endcomment(char *line, int a);
 
 // Functions to store direct parameters
 
@@ -197,5 +198,6 @@ int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 //
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
+int	as_skip_label2(char *line, int *i);
 
 #endif

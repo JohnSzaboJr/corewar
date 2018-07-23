@@ -68,8 +68,8 @@ int			as_p_ops(char *l, t_list_error **err, t_list_label **label, int *bc)
 	if (as_label_list_size(*label) > ret)
 		(*label)->pos = *bc;
 	ret = 0;
-	if ((as_skip_space(l, &i) - i) &&
-	!l[i] && !as_add_warning(err, WARNING15, l, i))
+	if ((as_skip_space(l, &i) - i) && l[i - 1] != LABEL_CHAR &&
+	!l[i] && !as_endcomment(l, 2) && !as_add_warning(err, WARNING15, l, i))
 		return (0);
 	if (!l[i])
 		return (1);

@@ -38,7 +38,7 @@ int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 	int				i;
 
 	i = 0;
-	as_skip_label(line, &i);
+	as_skip_label2(line, &i);
 	i = (line[i] == LABEL_CHAR) ? (i + 1) : (0);
 	as_skip_space(line, &i);
 	if (!line[i])

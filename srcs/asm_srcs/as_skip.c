@@ -41,6 +41,20 @@ int	as_skip_name(char *line, int *i, int *j)
 
 int	as_skip_label(char *line, int *i)
 {
+	int j;
+
+	j = *i;
+	while (line[*i] && ft_strchr(LABEL_CHARS, line[*i]))
+		(*i)++;
+	if (!line[*i] || line[*i] != LABEL_CHAR)
+		(*i) = j;
+	else if (line[*i] == LABEL_CHAR)
+		(*i)++;
+	return (*i);
+}
+
+int	as_skip_label2(char *line, int *i)
+{
 	while (line[*i] && ft_strchr(LABEL_CHARS, line[*i]))
 		(*i)++;
 	return (*i);
