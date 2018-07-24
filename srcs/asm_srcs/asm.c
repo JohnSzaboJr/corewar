@@ -88,12 +88,14 @@ static int	as_store(int fd, t_list_label **label)
 		return (0);
 	while (get_next_line(fd, &line))
 	{
+		as_endcomment(line, 0);
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
 			if ((sec == 2 && !as_store_commands(line, &code, label)) ||
 			((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size)))
 				return (as_free_line(line));
 		}
+		as_endcomment(line, 1);
 		free(line);
 	}
 	free(line);

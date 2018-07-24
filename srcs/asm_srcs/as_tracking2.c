@@ -29,18 +29,20 @@ int	as_endcomment(char *line, int a)
 	static int	endcom = 0;
 	static int	pos = 0;
 	int			i;
+	static char	c = ';';
 
 	i = 0;
 	if (a == 1 && endcom)
 	{
 		endcom = 0;
-		line[pos] = ';';
+		line[pos] = c;
 		return (endcom);
 	}
 	while (!a && line[i])
 	{
-		if (line[i] == ';')
+		if (line[i] == ';' || line[i] == COMMENT_CHAR)
 		{
+			c = line[i];
 			line[i] = '\0';
 			endcom = 1;
 			pos = i;

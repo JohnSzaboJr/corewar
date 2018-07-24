@@ -36,6 +36,7 @@ int	as_store_size(t_list_byte **size, t_list_byte *code)
 int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 {
 	int				i;
+	int				j;
 
 	i = 0;
 	as_skip_label2(line, &i);
@@ -43,8 +44,10 @@ int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 	as_skip_space(line, &i);
 	if (!line[i])
 		return (1);
-	if (!as_get_command(line, i, code) ||
-	!as_get_params(line, label, code))
+	j = as_get_command(line, i, code);
+	if (!j)
+		return (0);
+	if (j != -1 && !as_get_params(line, label, code))
 		return (0);
 	return (1);
 }

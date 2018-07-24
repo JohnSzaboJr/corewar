@@ -90,6 +90,8 @@ int			as_get_command(char *line, int i, t_list_byte **code)
 	int	j;
 
 	j = as_get_op_pos(line, i);
+	if (j < 0)
+		return (j);
 	if (!(as_add_byte(code, (unsigned char)op_tab[j].opcode)))
 		return (0);
 	return (1);

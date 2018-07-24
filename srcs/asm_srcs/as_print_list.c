@@ -29,10 +29,10 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 	k = 0;
 	l = 1;
 	beg = 1;
-	ft_printf("\nallocated bytes: %d\n", as_code_size(list));
+	// ft_printf("\nallocated bytes: %d\n", as_code_size(list));
 	i = 0;
 	//
-	ft_putstr("output: \n\n");
+	// ft_putstr("output: \n\n");
 	while (list)
 	{
 		node = list;
@@ -73,11 +73,11 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 			k = 1;
 		j = 0;
 	}
-	ft_printf("\n\n");
+	ft_printf("\n");
 	while (label)
 	{
-		ft_printf("label name: %s\n", label->name);
-		ft_printf("label pos: %d\n\n", label->pos);
+		// ft_printf("label name: %s\n", label->name);
+		// ft_printf("label pos: %d\n\n", label->pos);
 		label = label->next;
 	}
 }

@@ -87,11 +87,13 @@ int			as_pp_loop(char *l, t_list_label **lab, t_list_error **err, int *ps)
 	if (!as_bw_params(&i, l, err) || ((l[as_j(0, 0)] == 'r') &&
 	!as_r_e(l, &i, err, ps)) || (as_dir(l) && !(ret = as_dlab_e(l, lab, err))))
 		return (0);
-	if (as_dir(l) && ret != -1)
+	if (as_dir(l) == 2 && ret != -1 && (as_get_pos(0, 0) == 10 || as_get_pos(0, 0) == 8 || as_get_pos(0, 0) == 11 || as_get_pos(0, 0) == 9))
 		*ps = *ps + IND_SIZE;
+	else if (as_dir(l) == 2 && ret != -1)
+		*ps = *ps + DIR_SIZE;
 	else if (as_dir(l) && ret == -1 && !as_d_e(l, &i, err, ps))
 		return (0);
-	if (as_ind(l) == 2 && (((-1 == as_type_e(as_get_pos(0, 0), as_k(0), 4)) &&
+	if (as_ind(l) == 2 && (((-1 == as_type_e(as_get_pos(0, 0), as_k(0), 8)) &&
 	!as_add_error(err, ERROR15, l, as_j(0, 0) + 1)) ||
 	!as_lab_e(as_j(0, 0) + 1, l, err, lab)))
 		return (0);

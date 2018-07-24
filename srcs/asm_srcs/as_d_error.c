@@ -105,6 +105,6 @@ int	as_d_e(char *line, int *i, t_list_error **error, int *ps)
 			return (0);
 	}
 	*ps = (ret != -1) ? (*ps + DIR_SIZE) : (*ps);
-	*ps = (ret != -1 && (pos == 10 || pos == 8)) ? (*ps - DIR_SIZE + IND_SIZE) : (*ps);
+	*ps = (ret != -1 && (pos == 10 || pos == 8 || pos == 9 || pos == 11)) ? (*ps - DIR_SIZE + IND_SIZE) : (*ps);
 	return (1);
 }

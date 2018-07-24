@@ -2,6 +2,9 @@
 2. Fix errors. after error handling is done, check main functionality of
 compilation!
 
+- Backward: label name problem
+- if you comments in the beginning, it will treat it as unnecessary empty lines... toto
+- 42 cor isnt over max size?
 - do we record params_bytes correctly when zjmp direct in parse?
 - flag to disable warnings?
 - update usage
