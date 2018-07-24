@@ -54,6 +54,7 @@
 #define ERROR33      " file ends unexpectedly\n"
 #define ERROR34      "could not close file due to an error: "
 #define ERROR35      " no valid code in file\n"
+#define ERROR36      " file couldn't be created: "
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"

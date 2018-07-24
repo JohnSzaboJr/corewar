@@ -1,7 +1,11 @@
-1. Improve/clean up/organize code (megcsinalni a file irast, everything done, header org todo, and print_list, then makefile)*
+1. Improve/clean up/organize code (go file by file again, header org todo, and print_list, then makefile)
 2. Fix errors. after error handling is done, check main functionality of
-compilation!
+compilation!*
 
+- clean up as_flags
+- make sure only 5 functions in as_error_print.c, also line length!
+- Check the warnings of compilations...
+- Flag: to print out what was compiled.
 - Backward: label name problem
 - if you comments in the beginning, it will treat it as unnecessary empty lines... toto
 - 42 cor isnt over max size?
@@ -18,3 +22,5 @@ compilation!
 - (does it leak on file error if not closed?)
 - bonus: flag, h barminek el lehessen nevezni a kimeneti file-t
 - a flag?
+- tesztelni az osszessel in a script...
+- tesztelni az o error reakcioit...

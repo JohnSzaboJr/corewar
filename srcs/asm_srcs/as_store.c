@@ -17,7 +17,7 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-int	as_store_size(t_list_byte **size, t_list_byte *code)
+static int	as_store_size(t_list_byte **size, t_list_byte *code)
 {
 	int	s;
 	int	i;
@@ -33,7 +33,7 @@ int	as_store_size(t_list_byte **size, t_list_byte *code)
 	return (1);
 }
 
-int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
+static int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 {
 	int				i;
 	int				j;
@@ -52,7 +52,7 @@ int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
 	return (1);
 }
 
-int as_store_nc(char *line, int *sec, t_list_byte **code, t_list_byte **size)
+static int as_store_nc(char *line, int *sec, t_list_byte **code, t_list_byte **size)
 {
 	int			i;
 	int			length;
@@ -67,7 +67,7 @@ int as_store_nc(char *line, int *sec, t_list_byte **code, t_list_byte **size)
 	return (1);
 }
 
-int as_store_magic(t_list_byte **code)
+static int as_store_magic(t_list_byte **code)
 {
 	int			magic;
 	int			i;
@@ -82,5 +82,34 @@ int as_store_magic(t_list_byte **code)
 		i--;
 	}
 	as_reverse_list(code);
+	return (1);
+}
+
+int	as_store(int fd, t_list_label **label, char *filename)
+{
+	char			*line;
+	int				sec;
+	t_list_byte		*code;
+	t_list_byte		*size;
+
+	as_store_init(&line, &code, &size, &sec);
+	if (!as_store_magic(&code))
+		return (0);
+	while (get_next_line(fd, &line))
+	{
+		as_endcomment(line, 0);
+		if (line[0] && line[0] != COMMENT_CHAR)
+		{
+			if ((sec == 2 && !as_store_commands(line, &code, label)) ||
+			((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size)))
+				return (as_free_line(line));
+		}
+		as_endcomment(line, 1);
+		free(line);
+	}
+	free(line);
+	if (!as_store_size(&size, code) || !as_reverse_list(&code) ||
+	!as_write_file(&code, filename) || !as_free(&code))
+		return (0);
 	return (1);
 }

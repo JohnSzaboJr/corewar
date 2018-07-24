@@ -17,12 +17,16 @@
 #include "colors.h"
 #include <fcntl.h>
 
-static int	as_open(int argc, char *filename, int *fd)
+static int	as_open_close(int argc, char *filename, int *fd, int a)
 {
 	int	l;
 
-	if (argc != 2)
-		return (as_err3(USAGE));
+	if (a)
+	{
+		if (close(*fd) < 0)
+			return (as_err2(ERROR34, filename));
+		return (1);
+	}
 	l = ft_strlen(filename);
 	(*fd) = open(filename, O_RDONLY);
 	if ((*fd) < 0)
@@ -32,14 +36,7 @@ static int	as_open(int argc, char *filename, int *fd)
 	return (1);
 }
 
-static int	as_close(int fd, char *filename)
-{
-	if (close(fd) < 0)
-		return (as_err2(ERROR34, filename));		
-	return (1);
-}
-
-static int	as_parse(int fd, t_list_label **label, char *filename)
+static int	as_parse(int fd, t_list_label **label, char *filename, t_flags *flags)
 {
 	char			*line;
 	t_list_error	*error;
@@ -49,10 +46,6 @@ static int	as_parse(int fd, t_list_label **label, char *filename)
 	i = as_parse_init(&line, &error, &bc);
 	while (as_empty_line(get_next_line(fd, &line)) && line)
 	{
-		// //
-		// ft_printf("%d\n", bc - 2192);
-		// ft_printf("%s\n", line);
-
 		as_endcomment(line, 0);
 		if (!as_parse_loop(line, &error, label, &bc))
 			return (0);
@@ -64,34 +57,32 @@ static int	as_parse(int fd, t_list_label **label, char *filename)
 		free(line);
 		as_line_nr(1);
 	}
-	// //
-	// ft_printf("%d\n", bc - 2192);
-
 	if (!as_empty_line_check(&error, 2, line))
 		return (as_free_line(line));
 	if (!as_lc(line, filename) || !as_ec(&line, &error, bc, i) ||
-	as_print_error(&error, label))
+	as_print_error(&error, label, flags) || as_free_error(&error))
 		return (0);
-	as_free_error(&error);
 	return (1);
 }
 
-//
-static int	as_write_file(t_list_byte **code, char *filename)
+int	as_write_file(t_list_byte **code, char *filename)
 {
-// error on open?
-// message after writing
-// malloc error here?
-	int	fd;
+	int		fd;
 	char	*newname;
 	int		l;
 
 	l = ft_strlen(filename);
 	if (!(newname = ft_strnew(l + 2)))
-		return (0);
+		return (as_malloc_error2(code));
 	ft_strncpy(newname, filename, l - 1);
 	ft_strcpy(newname + l - 1, "cor");
-	fd = open(newname, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	fd = open(newname, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR |
+	S_IRGRP | S_IROTH);
+	if (fd < 0)
+	{
+		as_free(code);
+		return (as_err2(ERROR36, newname));
+	}
 	while (*code)
 	{
 		write(fd, &((*code)->byte), 1);
@@ -101,37 +92,34 @@ static int	as_write_file(t_list_byte **code, char *filename)
 	free(newname);
 	return (1);
 }
-//
 
-static int	as_store(int fd, t_list_label **label, char *filename)
+static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 {
-	char			*line;
-	int				sec;
-	t_list_byte		*code;
-	t_list_byte		*size;
+	int	i;
 
-	as_store_init(&line, &code, &size, &sec);
-	if (!as_store_magic(&code))
+	i = 1;
+	if (!(*flags = (t_flags *)(malloc(sizeof(**flags)))))
 		return (0);
-	while (get_next_line(fd, &line))
+	// error message!
+	// free the flags everywhere!
+	(*flags)->w = 0;
+	while (*pos < argc && argv[*pos][0] == '-')
+		(*pos)++;
+	if (argc < 2 || (*pos) == argc)
+		return (as_err3(USAGE));
+	while (i < argc)
 	{
-		as_endcomment(line, 0);
-		if (line[0] && line[0] != COMMENT_CHAR)
+		if ((argv[i][0] != '-' || ft_strlen(argv[i]) != 2) && i != (*pos))
+			return (as_err3(USAGE));
+		if (argv[i][0] == '-')
 		{
-			if ((sec == 2 && !as_store_commands(line, &code, label)) ||
-			((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size)))
-				return (as_free_line(line));
+			if (argv[i][1] == 'w' && !((*flags)->w))
+				(*flags)->w = 1;
+			else
+				return (as_err3(USAGE));
 		}
-		as_endcomment(line, 1);
-		free(line);
+		i++;
 	}
-	free(line);
-	as_store_size(&size, code);
-	as_reverse_list(&code);
-	//
-	// as_print_list(code, *label);
-	as_write_file(&code, filename);
-	as_free(&code);
 	return (1);
 }
 
@@ -139,15 +127,19 @@ int			main(int argc, char **argv)
 {
 	int				fd;
 	t_list_label	*label;
+	t_flags			*flags;
+	int				pos;
 
 	fd = 0;
+	pos = 1;
 	label = NULL;
-	if (!as_open(argc, argv[1], &fd) ||
-	!as_parse(fd, &label, argv[1]) ||
-	!as_close(fd, argv[1]) ||
-	!as_open(argc, argv[1], &fd) ||
-	!as_store(fd, &label, argv[1]) ||
-	!as_close(fd, argv[1]))
+	if (!as_flags_init(&flags, argc, argv, &pos) ||
+	!as_open_close(argc, argv[pos], &fd, 0) ||
+	!as_parse(fd, &label, argv[pos], flags) ||
+	!as_open_close(0, argv[pos], &fd, 1) ||
+	!as_open_close(argc, argv[pos], &fd, 0) ||
+	!as_store(fd, &label, argv[pos]) ||
+	!as_open_close(0, argv[pos], &fd, 1))
 		return (as_free_label(&label));
 	as_free_label(&label);
 	return (0);

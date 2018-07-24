@@ -40,7 +40,7 @@ void		as_errnbr(int n)
 	write(2, &c, 1);
 }
 
-static void	as_print_error_msg(int t, t_list_error *error, t_list_label **label)
+static void	as_print_error_msg(int t, t_list_error *error, t_list_label **label, t_flags *flags)
 {
 	int lnr;
 	int	cnr;
@@ -54,7 +54,7 @@ static void	as_print_error_msg(int t, t_list_error *error, t_list_label **label)
 		as_label_sug(error->message, *label), lnr, error->line, cnr + 1);
 	if (t == 5)
 		as_err1(error->message, lnr, NULL, 0);
-	if (t == 2)
+	if (t == 2 && !(flags->w))
 		as_war1(error->message, lnr, error->line, cnr);
 	if (t == 9)
 		as_write_err(error->message, lnr, cnr, 2);
@@ -66,7 +66,19 @@ static void	as_print_error_msg(int t, t_list_error *error, t_list_label **label)
 		as_note_reg(lnr, cnr);
 }
 
-static void	as_print_error_loop(t_list_error *error, int *ec, int *wc, t_list_label **label)
+static void	as_print_error_loop(t_list_error *error, t_list_label **label, t_flags *flags)
+{
+	int	t;
+
+	while (error)
+	{
+		t = error->type;
+		as_print_error_msg(t, error, label, flags);
+		error = error->next;
+	}
+}
+
+static void	as_error_count(t_list_error *error, int *ec, int *wc)
 {
 	int	t;
 
@@ -76,7 +88,6 @@ static void	as_print_error_loop(t_list_error *error, int *ec, int *wc, t_list_la
 		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7) ?
 		(*ec + 1) : (*ec);
 		(*wc) = (t == 2) ? (*wc + 1) : (*wc);
-		as_print_error_msg(t, error, label);
 		error = error->next;
 	}
 }
@@ -105,14 +116,17 @@ static void	as_print_error_num(int error_count, int warning_count)
 	ft_putstr_fd(" generated.\n", 2);
 }
 
-int			as_print_error(t_list_error **error, t_list_label **label)
+int			as_print_error(t_list_error **error, t_list_label **label, t_flags *flags)
 {
 	int	error_count;
 	int	warning_count;
 
 	error_count = 0;
 	warning_count = 0;
-	as_print_error_loop(*error, &error_count, &warning_count, label);
+	as_error_count(*error, &error_count, &warning_count);
+	if (flags->w)
+		warning_count = 0;
+	as_print_error_loop(*error, label, flags);
 	as_print_error_num(error_count, warning_count);
 	if (error_count)
 		as_free_error(error);

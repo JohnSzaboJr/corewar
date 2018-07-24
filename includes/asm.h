@@ -48,18 +48,20 @@ typedef struct	s_op
 	int			half_size;
 }				t_op;
 
+typedef struct	s_flags
+{
+	int			w;
+}				t_flags;
+
 extern t_op		op_tab[17];
 
 // Functions to store information (filename)
 
-int							as_store_magic(t_list_byte **code);
-int							as_store_nc(char *line, int *sec, t_list_byte **code, t_list_byte **size);
-int							as_store_commands(char *line, t_list_byte **code, t_list_label **label);
-int							as_store_size(t_list_byte **size, t_list_byte *code);
 int							as_get_params(char *line, t_list_label **label, t_list_byte **code);
 int							as_get_command(char *line, int i, t_list_byte **code);
 int							as_store_zero(int i, int section, t_list_byte **code);
 int							as_store_non_zero(int length, char *line, int *i, t_list_byte **code);
+int							as_store(int fd, t_list_label **label, char *filename);
 
 // Functions to free memory allocation
 
@@ -71,12 +73,13 @@ int							as_free_line(char *line);
 // Functions to print error/warning messages on stderr
 
 void						as_errnbr(int n);
-int							as_print_error(t_list_error **error, t_list_label **label);
+int							as_print_error(t_list_error **error, t_list_label **label, t_flags *flags);
 int							as_war1(char *message, int line_nr, char *line, int column_nr);
 int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err2(char *message, char *filename);
 int							as_err3(char *message);
 int							as_malloc_error1(t_list_error **error, int a);
+int							as_malloc_error2(t_list_byte **code);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
 void						as_write_err(char *message, int line_nr, int column_nr, int e);
@@ -199,5 +202,6 @@ int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int	as_skip_label2(char *line, int *i);
+int	as_write_file(t_list_byte **code, char *filename);
 
 #endif
