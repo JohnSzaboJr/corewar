@@ -76,7 +76,34 @@ static int	as_parse(int fd, t_list_label **label, char *filename)
 	return (1);
 }
 
-static int	as_store(int fd, t_list_label **label)
+//
+static int	as_write_file(t_list_byte **code, char *filename)
+{
+// error on open?
+// message after writing
+// malloc error here?
+	int	fd;
+	char	*newname;
+	int		l;
+
+	l = ft_strlen(filename);
+	if (!(newname = ft_strnew(l + 2)))
+		return (0);
+	ft_strncpy(newname, filename, l - 1);
+	ft_strcpy(newname + l - 1, "cor");
+	fd = open(newname, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	while (*code)
+	{
+		write(fd, &((*code)->byte), 1);
+		(*code) = (*code)->next;
+	}
+	ft_printf("Writing output program to %s\n", newname);
+	free(newname);
+	return (1);
+}
+//
+
+static int	as_store(int fd, t_list_label **label, char *filename)
 {
 	char			*line;
 	int				sec;
@@ -102,8 +129,8 @@ static int	as_store(int fd, t_list_label **label)
 	as_store_size(&size, code);
 	as_reverse_list(&code);
 	//
-	as_print_list(code, *label);
-	//as_write_to_file(&code, name);
+	// as_print_list(code, *label);
+	as_write_file(&code, filename);
 	as_free(&code);
 	return (1);
 }
@@ -119,7 +146,7 @@ int			main(int argc, char **argv)
 	!as_parse(fd, &label, argv[1]) ||
 	!as_close(fd, argv[1]) ||
 	!as_open(argc, argv[1], &fd) ||
-	!as_store(fd, &label) ||
+	!as_store(fd, &label, argv[1]) ||
 	!as_close(fd, argv[1]))
 		return (as_free_label(&label));
 	as_free_label(&label);
