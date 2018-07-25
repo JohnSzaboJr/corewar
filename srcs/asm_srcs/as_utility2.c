@@ -71,7 +71,7 @@ int		as_add_label(t_list_label **label, char *line, int i, int pos)
 		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
 		ft_printf(BOLDWHITE ERROR0 RESET);
 		ft_printf(WHITE " (as_add_label)\n" RESET);
-		as_free_label(label);
+		as_free_lab_fla(label, NULL);
 		return (0);
 	}
 	new->next = *label;
@@ -81,7 +81,7 @@ int		as_add_label(t_list_label **label, char *line, int i, int pos)
 		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
 		ft_printf(BOLDWHITE ERROR0 RESET);
 		ft_printf(WHITE " (as_add_label)\n" RESET);
-		as_free_label(label);
+		as_free_lab_fla(label, NULL);
 		return (0);
 	}
 	ft_strncpy((*label)->name, line, i);

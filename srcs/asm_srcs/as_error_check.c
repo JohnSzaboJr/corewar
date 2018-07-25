@@ -51,9 +51,9 @@ int	as_empty_line_check(t_list_error **error, int a, char *line)
 {
 	static int el = 0;
 
-	if (el > 1 && !a && !as_add_warning(error, WARNING13, line, 1))
+	if (el > 1 && !a && !as_add_warning2(error, WARNING13, line, 1))
 		return (0);
-	if (a == 2 && el && !as_add_warning(error, WARNING14, line, 1))
+	if (a == 2 && el && !as_add_warning2(error, WARNING14, line, 1))
 		return (0);
 	if (a == 2 && el && !as_add_note(error, NOTE1, 1))
 		return (0);

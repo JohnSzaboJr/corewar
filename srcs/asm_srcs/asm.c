@@ -17,10 +17,9 @@
 #include "colors.h"
 #include <fcntl.h>
 
-static int	as_open_close(int argc, char *filename, int *fd, int a)
+static int	as_open_close(char *filename, int *fd, int a)
 {
 	int	l;
-
 	if (a)
 	{
 		if (close(*fd) < 0)
@@ -36,7 +35,7 @@ static int	as_open_close(int argc, char *filename, int *fd, int a)
 	return (1);
 }
 
-static int	as_parse(int fd, t_list_label **label, char *filename, t_flags *flags)
+static int	as_parse(int fd, t_list_label **label, char *fn, t_flags *flags)
 {
 	char			*line;
 	t_list_error	*error;
@@ -46,7 +45,6 @@ static int	as_parse(int fd, t_list_label **label, char *filename, t_flags *flags
 	i = as_parse_init(&line, &error, &bc);
 	while (as_empty_line(get_next_line(fd, &line)) && line)
 	{
-		as_endcomment(line, 0);
 		if (!as_parse_loop(line, &error, label, &bc))
 			return (0);
 		if (line[0] != COMMENT_CHAR)
@@ -59,37 +57,9 @@ static int	as_parse(int fd, t_list_label **label, char *filename, t_flags *flags
 	}
 	if (!as_empty_line_check(&error, 2, line))
 		return (as_free_line(line));
-	if (!as_lc(line, filename) || !as_ec(&line, &error, bc, i) ||
+	if (!as_lc(line, fn) || !as_ec(&line, &error, bc, i) ||
 	as_print_error(&error, label, flags) || as_free_error(&error))
 		return (0);
-	return (1);
-}
-
-int	as_write_file(t_list_byte **code, char *filename)
-{
-	int		fd;
-	char	*newname;
-	int		l;
-
-	l = ft_strlen(filename);
-	if (!(newname = ft_strnew(l + 2)))
-		return (as_malloc_error2(code));
-	ft_strncpy(newname, filename, l - 1);
-	ft_strcpy(newname + l - 1, "cor");
-	fd = open(newname, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR |
-	S_IRGRP | S_IROTH);
-	if (fd < 0)
-	{
-		as_free(code);
-		return (as_err2(ERROR36, newname));
-	}
-	while (*code)
-	{
-		write(fd, &((*code)->byte), 1);
-		(*code) = (*code)->next;
-	}
-	ft_printf("Writing output program to %s\n", newname);
-	free(newname);
 	return (1);
 }
 
@@ -99,10 +69,9 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 
 	i = 1;
 	if (!(*flags = (t_flags *)(malloc(sizeof(**flags)))))
-		return (0);
-	// error message!
-	// free the flags everywhere!
+		return (as_malloc_error2(NULL, 2));
 	(*flags)->w = 0;
+	(*flags)->W = 0;
 	while (*pos < argc && argv[*pos][0] == '-')
 		(*pos)++;
 	if (argc < 2 || (*pos) == argc)
@@ -115,6 +84,8 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 		{
 			if (argv[i][1] == 'w' && !((*flags)->w))
 				(*flags)->w = 1;
+			else if (argv[i][1] == 'W' && !((*flags)->W))
+				(*flags)->W = 1;
 			else
 				return (as_err3(USAGE));
 		}
@@ -133,14 +104,15 @@ int			main(int argc, char **argv)
 	fd = 0;
 	pos = 1;
 	label = NULL;
+	flags = NULL;
 	if (!as_flags_init(&flags, argc, argv, &pos) ||
-	!as_open_close(argc, argv[pos], &fd, 0) ||
+	!as_open_close(argv[pos], &fd, 0) ||
 	!as_parse(fd, &label, argv[pos], flags) ||
-	!as_open_close(0, argv[pos], &fd, 1) ||
-	!as_open_close(argc, argv[pos], &fd, 0) ||
+	!as_open_close(argv[pos], &fd, 1) ||
+	!as_open_close(argv[pos], &fd, 0) ||
 	!as_store(fd, &label, argv[pos]) ||
-	!as_open_close(0, argv[pos], &fd, 1))
-		return (as_free_label(&label));
-	as_free_label(&label);
+	!as_open_close(argv[pos], &fd, 1))
+		return (as_free_lab_fla(&label, flags));
+	as_free_lab_fla(&label, flags);
 	return (0);
 }

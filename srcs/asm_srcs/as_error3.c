@@ -23,49 +23,63 @@ static void	as_dlnode(t_list_error **node, t_list_error **error)
     free((*node)->line);
     free(*node);
     *node = *error;
+    if (!(*error))
+        return;
     *error = (*error)->next;
 }
 
-void as_del_label_errors(t_list_error **error, char *line, int i)
+static void as_dlone(t_list_error **node, t_list_error **err, char *l)
+{
+    if ((*err)->type == 4 && !ft_strcmp((*node)->message, l))
+    {
+        free((*err)->message);
+        free((*err)->line);
+        free((*err));
+        *err = NULL;
+    }
+}
+
+static void as_dlone2(t_list_error **prev, t_list_error **err, char *l)
+{
+    if ((*err)->type == 4 && !ft_strcmp((*err)->message, l))
+        {
+            free((*err)->message);
+            free((*err)->line);
+            (*prev)->next = (*err)->next;
+            free(*err);
+            *err = *prev;
+        }
+}
+
+void        as_del_label_errors(t_list_error **error, char *line, int i)
 {
     t_list_error    *node;
     t_list_error    *prev;
+    char            c;
 
+    c = line[i];
+    line[i] = '\0';
     node = *error;
     if (*error && !((*error)->next))
-    {
-        if ((*error)->type == 4 && !ft_strncmp(node->message, line, i))
-        {
-            free((*error)->message);
-            free((*error)->line);
-            free((*error));
-            *error = NULL;
-        }
-    }
+        as_dlone(&node, error, line);
     else if (*error)
     {
         (*error) = (*error)->next;
-        while (node->type == 4 && !ft_strncmp(node->message, line, i))
+        while (node && node->type == 4 && !ft_strcmp(node->message, line))
 		    as_dlnode(&node, error);
         prev = node;
         while (*error)
         {
-            if ((*error)->type == 4 && !ft_strncmp((*error)->message, line, i))
-            {
-                free((*error)->message);
-                free((*error)->line);
-                prev->next = (*error)->next;
-                free(*error);
-                *error = prev;
-            }
+            as_dlone2(&prev, error, line);
             prev = *error;
             *error = (*error)->next;
         }
         *error = node;
     }
+    line[i] = c;
 }
 
-char *as_label_sug(char *str, t_list_label *label)
+char        *as_label_sug(char *str, t_list_label *label)
 {
 	int             highest;
 	t_list_label    *pos;

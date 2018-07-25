@@ -21,6 +21,7 @@ int		as_add_note_cmd(t_list_error **error, char *m, char *line, int cnr)
 {
 	t_list_error	*new;
 
+	as_endcomment(line, 1);
 	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
 	!(new->line = ft_strnew(ft_strlen(line))) ||
 	!(new->message = ft_strnew(ft_strlen(m))))
@@ -32,6 +33,7 @@ int		as_add_note_cmd(t_list_error **error, char *m, char *line, int cnr)
 	new->column_nr = cnr;
 	new->next = *error;
 	*error = new;
+	as_endcomment(line, 0);
 	return (1);
 }
 
@@ -39,6 +41,7 @@ int		as_add_note_reg(t_list_error **error, char *m, char *line, int cnr)
 {
 	t_list_error	*new;
 
+	as_endcomment(line, 1);
 	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
 	!(new->line = ft_strnew(ft_strlen(line))) ||
 	!(new->message = ft_strnew(ft_strlen(m))))
@@ -50,6 +53,7 @@ int		as_add_note_reg(t_list_error **error, char *m, char *line, int cnr)
 	new->column_nr = cnr;
 	new->next = *error;
 	*error = new;
+	as_endcomment(line, 0);
 	return (1);
 }
 
@@ -70,6 +74,31 @@ int		as_add_error_noline(t_list_error **error, char *message)
 	return (1);
 }
 
+int	as_add_label_error(t_list_error **error, char *line, int column_nr, int j)
+{
+	t_list_error	*new;
+	char			c;
+
+	as_endcomment(line, 1);
+	c = line[j];
+	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
+	!(new->line = ft_strnew(ft_strlen(line))))
+		return (as_malloc_error1(error, 4));
+	ft_strcpy(new->line, line);
+	line[j] = '\0';
+	if (!(new->message = ft_strnew(ft_strlen(line + column_nr))))
+		return (as_malloc_error1(error, 4));
+	ft_strcpy(new->message, line + column_nr);
+	line[j] = c;
+	new->type = 4;
+	new->line_nr = as_line_nr(0);
+	new->column_nr = column_nr;
+	new->next = *error;
+	*error = new;
+	as_endcomment(line, 0);
+	return (1);
+}
+
 char	*as_get_err_par(int co, int k)
 {
 	if (op_tab[co].param_type[k - 1] == T_DIR)
@@ -83,24 +112,4 @@ char	*as_get_err_par(int co, int k)
 	else if (op_tab[co].param_type[k - 1] == T_DIR + T_REG)
 		return (BOLDWHITE " direct or register" RESET);
 	return (NULL);
-}
-
-char	*as_param_error(int a, int b, t_list_error **error)
-{
-    char    *msg;
-    int     len;
-
-    len = 65 + ft_strlen(ft_itoa(a)) + ft_strlen(ft_itoa(b));
-    if (!(msg = ft_strnew(len)))
-    {
-        as_malloc_error1(error, 8);
-        return (NULL);
-    }
-    ft_strnfill(msg, '\0', len);
-    ft_strcat(msg, ERROR18);
-    ft_strcat(msg, ft_itoa(a));
-    ft_strcat(msg, ERROR18B);
-    ft_strcat(msg, ft_itoa(b));
-    ft_strcat(msg, "\n");
-    return (msg);
 }

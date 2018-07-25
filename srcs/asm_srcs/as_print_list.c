@@ -76,8 +76,8 @@ void	as_print_list(t_list_byte *list, t_list_label *label)
 	ft_printf("\n");
 	while (label)
 	{
-		// ft_printf("label name: %s\n", label->name);
-		// ft_printf("label pos: %d\n\n", label->pos);
+		ft_printf("label name: %s\n", label->name);
+		ft_printf("label pos: %d\n\n", label->pos);
 		label = label->next;
 	}
 }

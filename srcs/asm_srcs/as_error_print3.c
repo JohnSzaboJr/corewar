@@ -17,7 +17,7 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-void	as_write_err(char *message, int line_nr, int column_nr, int e)
+int		as_write_err(char *message, int line_nr, int column_nr, int e)
 {
 	if (column_nr)
 	{
@@ -41,6 +41,7 @@ void	as_write_err(char *message, int line_nr, int column_nr, int e)
 		ft_putstr_fd(BOLDWHITE, 2);
 	ft_putstr_fd(message, 2);
 	ft_putstr_fd(RESET, 2);
+	return (0);
 }
 
 int		as_note_type(int line_nr, int column_nr, char *message)

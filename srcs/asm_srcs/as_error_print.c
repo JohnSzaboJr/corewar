@@ -17,68 +17,44 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-void		as_errnbr(int n)
+static void	as_print_msg(int t, t_list_error *e, t_list_label **l, t_flags *f)
 {
-	char c;
+	int			lnr;
+	int			cnr;
+	static int	w = 0;
 
-	if (n < 0)
-	{
-		if (n == -2147483648)
-		{
-			as_errnbr(-214748364);
-			c = '8';
-			write(2, &c, 1);
-			return ;
-		}
-		c = '-';
-		write(2, &c, 1);
-		n *= -1;
-	}
-	if (n > 9)
-		as_errnbr(n / 10);
-	c = n % 10 + 48;
-	write(2, &c, 1);
-}
-
-static void	as_print_error_msg(int t, t_list_error *error, t_list_label **label, t_flags *flags)
-{
-	int lnr;
-	int	cnr;
-
-	lnr = error->line_nr;
-	cnr = error->column_nr;
+	lnr = e->line_nr;
+	cnr = e->column_nr;
 	if (t == 1 || t == 6 || t == 7)
-		as_err1(error->message, lnr, error->line, cnr);
+		as_err1(e->message, lnr, e->line, cnr);
 	if (t == 4)
-		as_label_error(
-		as_label_sug(error->message, *label), lnr, error->line, cnr + 1);
+		as_label_error(as_label_sug(e->message, *l), lnr, e->line, cnr + 1);
 	if (t == 5)
-		as_err1(error->message, lnr, NULL, 0);
-	if (t == 2 && !(flags->w))
-		as_war1(error->message, lnr, error->line, cnr);
-	if (t == 9)
-		as_write_err(error->message, lnr, cnr, 2);
+		as_err1(e->message, lnr, NULL, 0);
+	if (t == 2 && !(f->w))
+		w = as_war1(e->message, lnr, e->line, cnr);
+	if (t == 9 && (w || f->W || (e->message)[1] == 'a'))
+		w = as_write_err(e->message, lnr, cnr, 2);
+	if (t == 10 && f->W && !(f->w))
+		as_war1(e->message, lnr, e->line, cnr);
 	if (t == 3)
-		as_note_type(lnr, cnr, error->message);
+		as_note_type(lnr, cnr, e->message);
 	if (t == 6)
-		as_note_cmd(lnr, error->line, cnr);
+		as_note_cmd(lnr, e->line, cnr);
 	if (t == 7)
 		as_note_reg(lnr, cnr);
 }
 
-static void	as_print_error_loop(t_list_error *error, t_list_label **label, t_flags *flags)
+static void	as_print_error_loop(t_list_error *e, t_list_label **l, t_flags *f)
 {
-	int	t;
-
-	while (error)
+	while (e)
 	{
-		t = error->type;
-		as_print_error_msg(t, error, label, flags);
-		error = error->next;
+		as_print_msg(e->type, e, l, f);
+		e = e->next;
 	}
 }
 
-static void	as_error_count(t_list_error *error, int *ec, int *wc)
+static void	as_error_count(t_list_error *error, int *ec, int *wc, t_flags *f)
 {
 	int	t;
 
@@ -87,7 +63,8 @@ static void	as_error_count(t_list_error *error, int *ec, int *wc)
 		t = error->type;
 		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7) ?
 		(*ec + 1) : (*ec);
-		(*wc) = (t == 2) ? (*wc + 1) : (*wc);
+		if ((t == 2 && !(f->w)) || (t == 10 && !(f->w) && f->W))
+			(*wc)++;
 		error = error->next;
 	}
 }
@@ -116,19 +93,17 @@ static void	as_print_error_num(int error_count, int warning_count)
 	ft_putstr_fd(" generated.\n", 2);
 }
 
-int			as_print_error(t_list_error **error, t_list_label **label, t_flags *flags)
+int			as_print_error(t_list_error **err, t_list_label **label, t_flags *f)
 {
 	int	error_count;
 	int	warning_count;
 
 	error_count = 0;
 	warning_count = 0;
-	as_error_count(*error, &error_count, &warning_count);
-	if (flags->w)
-		warning_count = 0;
-	as_print_error_loop(*error, label, flags);
+	as_error_count(*err, &error_count, &warning_count, f);
+	as_print_error_loop(*err, label, f);
 	as_print_error_num(error_count, warning_count);
 	if (error_count)
-		as_free_error(error);
+		as_free_error(err);
 	return (error_count);
 }

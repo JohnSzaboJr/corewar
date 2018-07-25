@@ -23,8 +23,10 @@ int	as_sd(char *line, t_list_byte **code)
 	int		j;
 	char	c;
 	int		num;
+	int		pos;
 
 	j = as_j(0, 0) + 1;
+	pos = as_get_pos(0, 0);
 	as_skip_space(line, &j);
 	i = j;
 	while (line[j] == '-' || ft_isdigit(line[j]))
@@ -33,36 +35,34 @@ int	as_sd(char *line, t_list_byte **code)
 	line[j] = '\0';
 	num = ft_atoi(line + i);
 	line[j] = c;
-	i = (as_get_pos(0, 0) == 10 || as_get_pos(0, 0) == 8 || as_get_pos(0, 0) == 9 || as_get_pos(0, 0) == 11) ? IND_SIZE : DIR_SIZE;
+	i = (pos == 8 || pos == 9 || pos == 10 || pos == 11) ? IND_SIZE : DIR_SIZE;
 	if (!as_add_bytes(code, i))
 		return (0);
 	as_write_bytes(code, num, i);
 	return (1);
 }
 
-int	as_dlabel(char *line, t_list_label **label, int byte_pos,
-t_list_byte **code)
+int	as_dlabel(char *l, t_list_label **label, int byte_pos, t_list_byte **code)
 {
 	int			j;
 	int			k;
 	char		c;
-	t_list_byte	*node;
 	int			i;
+	int			pos;
 
 	j = as_j(0, 0) + 2;
-	as_skip_space(line, &j);
+	pos = as_get_pos(0, 0);
+	as_skip_space(l, &j);
 	k = j;
-	as_skip_label2(line, &j);
-	c = line[j];
-	line[j] = '\0';
-	i = (as_get_pos(0, 0) == 10 || as_get_pos(0, 0) == 8 || as_get_pos(0, 0) == 11 || as_get_pos(0, 0) == 9) ? IND_SIZE : DIR_SIZE;
+	as_skip_label2(l, &j);
+	c = l[j];
+	l[j] = '\0';
+	byte_pos = (as_cmp_label(*label, l, k)) - byte_pos;
+	i = (pos == 8 || pos == 9 || pos == 10 || pos == 11) ? IND_SIZE : DIR_SIZE;
 	if (!as_add_bytes(code, i))
 		return (0);
-	byte_pos = (as_cmp_label(*label, line, k)) - byte_pos;
-	node = (*code);
 	as_write_bytes(code, byte_pos, i);
-	(*code) = node;
-	line[j] = c;
+	l[j] = c;
 	return (1);
 }
 

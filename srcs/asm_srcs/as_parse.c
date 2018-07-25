@@ -24,7 +24,7 @@ static int	as_pparams(char *l, t_list_label **lab, t_list_error **err, int *bc)
 	int	params_size;
 
 	params = as_pparams_init(&i, l, &params_size);
-	if (params == 2 && !as_add_warning(err, WARNING11, l, i + 1))
+	if (params == 2 && !as_add_warning2(err, WARNING11, l, i + 1))
 		return (0);
 	as_i(i, 1);
 	while (l[i] && params)
@@ -69,7 +69,7 @@ int			as_p_ops(char *l, t_list_error **err, t_list_label **label, int *bc)
 		(*label)->pos = *bc;
 	ret = 0;
 	if ((as_skip_space(l, &i) - i) && l[i - 1] != LABEL_CHAR &&
-	!l[i] && !as_endcomment(l, 2) && !as_add_warning(err, WARNING15, l, i))
+	!l[i] && !as_endcomment(l, 2) && !as_add_warning2(err, WARNING15, l, i))
 		return (0);
 	if (!l[i])
 		return (1);

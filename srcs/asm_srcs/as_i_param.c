@@ -45,7 +45,6 @@ t_list_byte **code)
     int         j;
     int         k;
     char        c;
-    t_list_byte *node;
 
     j = as_j(0, 0) + 1;
     as_skip_space(line, &j);
@@ -53,12 +52,10 @@ t_list_byte **code)
     as_skip_label2(line, &j);
     c = line[j];
     line[j] = '\0';
-    if (!as_add_bytes(code, 2))
-		return (0);
     byte_pos = (as_cmp_label(*label, line, k)) - byte_pos;
-    node = (*code);
-    as_write_bytes(code, byte_pos, 2);
-    (*code) = node;
+    if (!as_add_bytes(code, IND_SIZE))
+		return (0);
+    as_write_bytes(code, byte_pos, IND_SIZE);
     line[j] = c;
     return (1);
 }

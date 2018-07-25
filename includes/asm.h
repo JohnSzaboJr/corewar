@@ -51,6 +51,7 @@ typedef struct	s_op
 typedef struct	s_flags
 {
 	int			w;
+	int			W;
 }				t_flags;
 
 extern t_op		op_tab[17];
@@ -67,7 +68,7 @@ int							as_store(int fd, t_list_label **label, char *filename);
 
 int							as_free(t_list_byte **list);
 int							as_free_error(t_list_error **list);
-int							as_free_label(t_list_label **list);
+int							as_free_lab_fla(t_list_label **list, t_flags *flags);
 int							as_free_line(char *line);
 
 // Functions to print error/warning messages on stderr
@@ -79,10 +80,10 @@ int							as_err1(char *message, int line_nr, char *line, int column_nr);
 int							as_err2(char *message, char *filename);
 int							as_err3(char *message);
 int							as_malloc_error1(t_list_error **error, int a);
-int							as_malloc_error2(t_list_byte **code);
+int							as_malloc_error2(t_list_byte **code, int a);
 void						as_write_err_line(char *line, int column_nr);
 void						as_write_err_sign(char *line, int column_nr);
-void						as_write_err(char *message, int line_nr, int column_nr, int e);
+int							as_write_err(char *message, int line_nr, int column_nr, int e);
 int							as_note_cmd(int line_nr, char *line, int column_nr);
 int							as_note_reg(int line_nr, int column_nr);
 int							as_note_type(int line_nr, int column_nr, char *message);
@@ -93,6 +94,7 @@ void						as_label_error(char *message, int lnr, char *line, int cnr);
 
 int							as_add_error(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_warning(t_list_error **error, char *message, char *line, int column_nr);
+int							as_add_warning2(t_list_error **error, char *message, char *line, int cnr);
 int							as_add_note_type(t_list_error **error, char *message, char *line, int column_nr);
 int							as_add_label_error(t_list_error **error, char *line, int column_nr, int j);
 int							as_add_error_noline(t_list_error **error, char *message);
@@ -154,16 +156,10 @@ int							as_check_spaces_line(char *line, t_list_error **error);
 int							as_check_max_length(char *line, t_list_error **error);
 int							as_type_e(int co, int k, int a);
 
-// Functions to check errors in indirect parameters
+// Functions to check errors in parameters
 
 int							as_i_e(char *line, int *i, t_list_error **error, int *params_size);
-
-// Functions to check errors in direct parameters
-
 int							as_d_e(char *line, int *i, t_list_error **error, int *params_size);
-
-// Functions to check errors in register parameters
-
 int							as_r_e(char *line, int *i, t_list_error **error, int *params_size);
 
 // Functions to parse file
@@ -187,7 +183,7 @@ int							as_add_byte(t_list_byte **code, unsigned char byte);
 int							as_cmd_comp(char *cmd, char *str);
 int							as_add_label(t_list_label **label, char *line, int i, int pos);
 
-// Functions to skip certain areas
+// Functions to skip certain areas in string
 
 int							as_skip_space(char *line, int *i);
 int							as_skip_label(char *line, int *i);
@@ -198,10 +194,13 @@ int							as_skip_to_params(char *line, int *i);
 int							as_skip_to_sep(char *line, int *i);
 int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 
+// Output functions
+
+int							as_write_file(t_list_byte **code, char *filename);
+
 //
 
 void						as_print_list(t_list_byte *list, t_list_label *label);
 int	as_skip_label2(char *line, int *i);
-int	as_write_file(t_list_byte **code, char *filename);
 
 #endif

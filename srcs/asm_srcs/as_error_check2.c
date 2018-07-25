@@ -84,7 +84,7 @@ int	as_check_spaces_line(char *line, t_list_error **error)
 	i = 0;
 	if (as_skip_space(line, &i) == (int)ft_strlen(line))
     {
-        if (!as_add_warning(error, WARNING16, line, i + 1))
+        if (!as_endcomment(line, 2) && !as_add_warning2(error, WARNING16, line, i + 1))
             return (-1);
         return (1);
     }

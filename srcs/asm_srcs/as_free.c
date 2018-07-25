@@ -38,7 +38,7 @@ int	as_free_error(t_list_error **list)
 	return (0);
 }
 
-int	as_free_label(t_list_label **list)
+int	as_free_lab_fla(t_list_label **list, t_flags *flags)
 {
 	t_list_label	*tmp;
 
@@ -50,6 +50,8 @@ int	as_free_label(t_list_label **list)
 		free(*list);
 		*list = tmp->next;
 	}
+	if (flags)
+		free(flags);
 	return (1);
 }
 

@@ -16,6 +16,7 @@
 #define MAX_LINE_LENGTH 100
 #define MAX_ERROR_SIZE 40
 #define LABEL_SIZE 20
+#define D_LENGTH_CHECK 0
 #define USAGE      "./asm [filename.s]\n"
 #define ERROR0      " malloc failure"
 #define ERROR1      " name specifier string incorrect\n"
@@ -31,7 +32,7 @@
 #define ERROR11      " invalid parameter\n"
 #define ERROR12      " register number missing from parameter\n"
 #define ERROR13      " register doesn't exist\n"
-#define ERROR14      " register number is zero\n"
+
 #define ERROR15      " incompatible parameter\n"
 #define ERROR16      " too many parameters for this type of operation\n"
 #define ERROR17      " line exceeds maximum length\n"

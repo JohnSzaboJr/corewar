@@ -26,7 +26,7 @@ static int	as_bw_params(int *i, char *line, t_list_error **error)
 	!as_add_error(error, ERROR16, line, as_j(0, 0) + 1))
 		return (0);
 	if (line[*i] == SEPARATOR_CHAR && ft_isspace(line[*i - 1]) &&
-	!as_add_warning(error, WARNING8, line, *i))
+	!as_add_warning2(error, WARNING8, line, *i))
 		return (0);
 	return (1);
 }
@@ -35,7 +35,7 @@ static int	as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab)
 {
 	int		k;
 	char	c;
-
+	
 	k = j;
 	as_skip_space(line, &j);
 	if (j > k && line[j] && line[j] != SEPARATOR_CHAR)
@@ -48,14 +48,26 @@ static int	as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab)
 		if (!line[j] || line[j] == SEPARATOR_CHAR)
 			return (as_add_error(err, ERROR22, line, j));
 	}
+	while (line[j] && !ft_isspace(line[j]) && line[j] != SEPARATOR_CHAR)
+			j++;
 	c = line[j];
 	line[j] = '\0';
 	if (!as_cmp_label(*lab, line, k))
 	{
 		line[j] = c;
-		return (as_add_label_error(err, line, k, j));
+		if (!as_add_label_error(err, line, k, j))
+			return (0);
+		k = j;
+		as_skip_space(line, &j);
+		if (j > k && line[j] && line[j] != SEPARATOR_CHAR && !as_add_error(err, ERROR20, line, j))
+			return (0);
+		return (1);
 	}
 	line[j] = c;
+	k = j;
+	as_skip_space(line, &j);
+	if (j > k && line[j] && line[j] != SEPARATOR_CHAR && !as_add_error(err, ERROR20, line, j))
+		return (0);
 	return (1);
 }
 
@@ -111,19 +123,17 @@ char *line, t_list_error **error, t_list_label **label, int *bc)
 {
 	static int	sec = 0;
 
-	if (line[0] != COMMENT_CHAR)
+	if (!line[0])
+		as_empty_line_check(error, 1, line);
+	else if (!as_empty_line_check(error, 0, line))
+		return (as_free_line(line));
+	as_endcomment(line, 0);
+	if (line[0] && line[0] != COMMENT_CHAR)
 	{
-		if (!line[0])
-			as_empty_line_check(error, 1, line);
-		else
-		{
-			if (!as_empty_line_check(error, 0, line))
-				return (as_free_line(line));
-			if ((sec == 2 && !as_p_ops(line, error, label, bc)) ||
-			(sec == 1 && !as_pcomment(line, &sec, error, bc)) ||
-			(sec == 0 && !as_pname(line, &sec, error, bc)))
-				return (as_free_line(line));
-		}
+		if ((sec == 2 && !as_p_ops(line, error, label, bc)) ||
+		(sec == 1 && !as_pcomment(line, &sec, error, bc)) ||
+		(sec == 0 && !as_pname(line, &sec, error, bc)))
+			return (as_free_line(line));
 	}
 	return (1);
 }
