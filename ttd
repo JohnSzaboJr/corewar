@@ -1,10 +1,8 @@
-1. Improve/clean up/organize code (as_error3 done, header org todo,
+1. Improve/clean up/organize code (as_param done, header org todo,
 and print_list, then makefile)
 2. Fix errors. after error handling is done, check main functionality of
 compilation!*
 
-- Check the warnings of compilations...
-- Hol lehetnek kommentek?
 - Flag: to print out what was compiled.
 - Backward: label name problem
 - if you comments in the beginning, it will treat it as unnecessary empty lines... toto
@@ -24,3 +22,10 @@ compilation!*
 - a flag?
 - tesztelni az osszessel in a script...
 - tesztelni az o error reakcioit...
+
+
+
+
+
+
+

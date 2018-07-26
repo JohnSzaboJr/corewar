@@ -16,6 +16,7 @@
 typedef struct				s_list_byte
 {
 	unsigned char			byte;
+	int						type;
 	struct s_list_byte		*next;
 }							t_list_byte;
 
@@ -52,6 +53,7 @@ typedef struct	s_flags
 {
 	int			w;
 	int			W;
+	int			p;
 }				t_flags;
 
 extern t_op		op_tab[17];
@@ -62,7 +64,7 @@ int							as_get_params(char *line, t_list_label **label, t_list_byte **code);
 int							as_get_command(char *line, int i, t_list_byte **code);
 int							as_store_zero(int i, int section, t_list_byte **code);
 int							as_store_non_zero(int length, char *line, int *i, t_list_byte **code);
-int							as_store(int fd, t_list_label **label, char *filename);
+int							as_store(int fd, t_list_label **label, char *filename, t_flags *flags);
 
 // Functions to free memory allocation
 
@@ -178,8 +180,8 @@ int							as_reverse_list(t_list_byte **list);
 int							as_label_list_size(t_list_label *label);
 int							as_get_op_pos(char *line, int i);
 void						as_write_bytes(t_list_byte **code, int info, int n);
-int							as_add_bytes(t_list_byte **code, int n);
-int							as_add_byte(t_list_byte **code, unsigned char byte);
+int							as_add_bytes(t_list_byte **code, int n, int type);
+int							as_add_byte(t_list_byte **code, unsigned char byte, int type);
 int							as_cmd_comp(char *cmd, char *str);
 int							as_add_label(t_list_label **label, char *line, int i, int pos);
 
@@ -197,10 +199,10 @@ int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
 // Output functions
 
 int							as_write_file(t_list_byte **code, char *filename);
+int							as_print_list(t_list_byte *list);
 
 //
 
-void						as_print_list(t_list_byte *list, t_list_label *label);
 int	as_skip_label2(char *line, int *i);
 
 #endif

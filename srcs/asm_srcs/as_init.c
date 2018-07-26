@@ -51,7 +51,7 @@ int		as_gparams_init(int *i, t_list_byte **co, char *l, t_list_byte **enc)
 	pos = as_get_pos(0, 0);
 	if (pos != 0 && pos != 8 && pos != 11)
 	{
-		if (!(as_add_byte(co, 0)))
+		if (!(as_add_byte(co, 0, 2)))
 			return (0);
 		*enc = *co;
 	}

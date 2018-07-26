@@ -26,6 +26,7 @@ static int	as_store_size(t_list_byte **size, t_list_byte *code)
 	s = as_code_size(code) - PROG_NAME_LENGTH - COMMENT_LENGTH - 16;
 	while (i < 4)
     {
+		(*size)->type = 6;
         (*size)->byte = (s >> (8 * i)) & 0xff;
         (*size) = (*size)->next;
         i++;
@@ -76,7 +77,7 @@ static int as_store_magic(t_list_byte **code)
 	magic = COREWAR_EXEC_MAGIC;
 	while (i)
 	{
-		if (!(as_add_byte(code, magic % 256)))
+		if (!(as_add_byte(code, magic % 256, 0)))
         	return (0);
 		magic = (magic - (magic % (256))) / (256);
 		i--;
@@ -85,7 +86,7 @@ static int as_store_magic(t_list_byte **code)
 	return (1);
 }
 
-int	as_store(int fd, t_list_label **label, char *filename)
+int	as_store(int fd, t_list_label **label, char *filename, t_flags *flags)
 {
 	char			*line;
 	int				sec;
@@ -109,7 +110,8 @@ int	as_store(int fd, t_list_label **label, char *filename)
 	}
 	free(line);
 	if (!as_store_size(&size, code) || !as_reverse_list(&code) ||
-	!as_write_file(&code, filename) || !as_free(&code))
+	(flags->p && !as_print_list(code)) || !as_write_file(&code, filename) ||
+	!as_free(&code))
 		return (0);
 	return (1);
 }

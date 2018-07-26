@@ -33,18 +33,18 @@ void	as_write_bytes(t_list_byte **code, int info, int n)
 	*code = node;
 }
 
-int		as_add_bytes(t_list_byte **code, int n)
+int		as_add_bytes(t_list_byte **code, int n, int type)
 {
 	while (n)
 	{
-		if (!as_add_byte(code, 0))
+		if (!as_add_byte(code, 0, type))
 			return (0);
 		n--;
 	}
 	return (1);
 }
 
-int		as_add_byte(t_list_byte **code, unsigned char byte)
+int		as_add_byte(t_list_byte **code, unsigned char byte, int type)
 {
 	t_list_byte	*new;
 
@@ -59,6 +59,7 @@ int		as_add_byte(t_list_byte **code, unsigned char byte)
 	new->next = *code;
 	*code = new;
 	(*code)->byte = byte;
+	(*code)->type = type;
 	return (1);
 }
 

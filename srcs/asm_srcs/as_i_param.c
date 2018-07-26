@@ -33,30 +33,29 @@ int as_si(char *line, t_list_byte **code)
     num = ft_atoi(line + i);
     line[j] = c;
     i = IND_SIZE;
-    if (!as_add_bytes(code, i))
+    if (!as_add_bytes(code, i, 3))
 		return (0);
 	as_write_bytes(code, num, i);
     return (1);
 }
 
-int as_ilabel(char *line, t_list_label **label, int byte_pos,
-t_list_byte **code)
+int as_ilabel(char *l, t_list_label **label, int byte_pos, t_list_byte **code)
 {
     int         j;
     int         k;
     char        c;
 
     j = as_j(0, 0) + 1;
-    as_skip_space(line, &j);
+    as_skip_space(l, &j);
     k = j;
-    as_skip_label2(line, &j);
-    c = line[j];
-    line[j] = '\0';
-    byte_pos = (as_cmp_label(*label, line, k)) - byte_pos;
-    if (!as_add_bytes(code, IND_SIZE))
+    as_skip_label2(l, &j);
+    c = l[j];
+    l[j] = '\0';
+    byte_pos = (as_cmp_label(*label, l, k)) - byte_pos;
+    if (!as_add_bytes(code, IND_SIZE, 3))
 		return (0);
     as_write_bytes(code, byte_pos, IND_SIZE);
-    line[j] = c;
+    l[j] = c;
     return (1);
 }
 

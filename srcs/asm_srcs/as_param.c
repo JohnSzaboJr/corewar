@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/06 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/18 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/07/26 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,30 +41,33 @@ int	as_cmp_label(t_list_label *label, char *line, int k)
 	return (0);
 }
 
-int	as_slabel(char *line, int *i, t_list_error **error, t_list_label **label)
+static int	as_lab_value(char *l, int *i, t_list_error **e, t_list_label **lab)
 {
 	char c;
 
-	if (as_skip_label2(line, i) && line[*i] == LABEL_CHAR && *i <= LABEL_SIZE)
+	as_del_label_errors(e, l, *i);
+	c = l[*i];
+	l[*i] = '\0';
+    if (as_cmp_label(*lab, l, 0))
+    {
+		l[*i] = c;
+        if (!as_add_error(e, ERROR24, l, 1))
+            return (0);
+    }
+	else if (!as_add_label(lab, l, *i, 0))
 	{
-        as_del_label_errors(error, line, *i);
-		c = line[*i];
-		line[*i] = '\0';
-        if (as_cmp_label(*label, line, 0))
-        {
-			line[*i] = c;
-            if (!as_add_error(error, ERROR24, line, 1))
-                return (0);
-        }
-		else if (!as_add_label(label, line, *i, 0))
-		{
-			line[*i] = c;
-			as_free_error(error);
-			return (0);
-		}
-		line[*i] = c;
-		(*i)++;
+		l[*i] = c;
+		return (as_free_error(e));
 	}
+	l[*i] = c;
+	(*i)++;
+	return (1);
+}
+
+int	as_slabel(char *line, int *i, t_list_error **error, t_list_label **label)
+{
+	if (as_skip_label2(line, i) && line[*i] == LABEL_CHAR && *i <= LABEL_SIZE)
+		as_lab_value(line, i, error, label);
 	else if ((*i) > LABEL_SIZE)
 	{
         if (!as_add_error(error, ERROR10, line, *i + 1))

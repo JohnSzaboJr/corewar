@@ -36,7 +36,7 @@ int	as_sd(char *line, t_list_byte **code)
 	num = ft_atoi(line + i);
 	line[j] = c;
 	i = (pos == 8 || pos == 9 || pos == 10 || pos == 11) ? IND_SIZE : DIR_SIZE;
-	if (!as_add_bytes(code, i))
+	if (!as_add_bytes(code, i, 3))
 		return (0);
 	as_write_bytes(code, num, i);
 	return (1);
@@ -59,7 +59,7 @@ int	as_dlabel(char *l, t_list_label **label, int byte_pos, t_list_byte **code)
 	l[j] = '\0';
 	byte_pos = (as_cmp_label(*label, l, k)) - byte_pos;
 	i = (pos == 8 || pos == 9 || pos == 10 || pos == 11) ? IND_SIZE : DIR_SIZE;
-	if (!as_add_bytes(code, i))
+	if (!as_add_bytes(code, i, 3))
 		return (0);
 	as_write_bytes(code, byte_pos, i);
 	l[j] = c;

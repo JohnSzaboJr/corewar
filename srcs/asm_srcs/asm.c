@@ -72,6 +72,7 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 		return (as_malloc_error2(NULL, 2));
 	(*flags)->w = 0;
 	(*flags)->W = 0;
+	(*flags)->p = 0;
 	while (*pos < argc && argv[*pos][0] == '-')
 		(*pos)++;
 	if (argc < 2 || (*pos) == argc)
@@ -86,6 +87,8 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 				(*flags)->w = 1;
 			else if (argv[i][1] == 'W' && !((*flags)->W))
 				(*flags)->W = 1;
+			else if (argv[i][1] == 'p' && !((*flags)->p))
+				(*flags)->p = 1;
 			else
 				return (as_err3(USAGE));
 		}
@@ -110,7 +113,7 @@ int			main(int argc, char **argv)
 	!as_parse(fd, &label, argv[pos], flags) ||
 	!as_open_close(argv[pos], &fd, 1) ||
 	!as_open_close(argv[pos], &fd, 0) ||
-	!as_store(fd, &label, argv[pos]) ||
+	!as_store(fd, &label, argv[pos], flags) ||
 	!as_open_close(argv[pos], &fd, 1))
 		return (as_free_lab_fla(&label, flags));
 	as_free_lab_fla(&label, flags);

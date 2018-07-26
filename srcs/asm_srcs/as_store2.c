@@ -20,7 +20,7 @@
 static int	as_sr(t_list_byte **code, t_list_byte **encoding, char *line)
 {
 	if (as_enc(encoding, -1) &&
-	!(as_add_byte(code, (unsigned char)ft_atoi(line + as_j(0, 0) + 1))))
+	!(as_add_byte(code, (unsigned char)ft_atoi(line + as_j(0, 0) + 1), 3)))
 		return (0);
 	return (1);
 }
@@ -32,7 +32,7 @@ int			as_store_non_zero(int length, char *line, int *i, t_list_byte **c)
 	l = 0;
 	while (l < length && line[*i] != '"')
 	{
-		if (!(as_add_byte(c, line[*i])))
+		if (!(as_add_byte(c, line[*i], 5)))
 			return (0);
 		(*i)++;
 		l++;
@@ -47,7 +47,7 @@ int			as_store_zero(int i, int section, t_list_byte **code)
 	(PROG_NAME_LENGTH - as_code_size(*code) + 12);
 	while (i)
 	{
-		if (!(as_add_byte(code, 0)))
+		if (!(as_add_byte(code, 0, 5)))
 			return (0);
 		i--;
 	}
@@ -92,7 +92,7 @@ int			as_get_command(char *line, int i, t_list_byte **code)
 	j = as_get_op_pos(line, i);
 	if (j < 0)
 		return (j);
-	if (!(as_add_byte(code, (unsigned char)op_tab[j].opcode)))
+	if (!(as_add_byte(code, (unsigned char)op_tab[j].opcode, 1)))
 		return (0);
 	return (1);
 }
