@@ -1,9 +1,9 @@
 a=0
 array=(zork bigzork turtle fluttershy helltrain bee_gees 42 toto tdc4b \
 tdc3b tdc2b slider2 new2 mortel maxidef matb leeloob lde jumper ex barriere \
-Torpilleb Survivor Octobre_Rouge_V4.2 Gagnant Deathb Car Backwards)
+Torpilleb Survivor Octobre_Rouge_V4.2 Gagnant Deathb Car Backwards zork_error2)
 
-while [ $a -lt 28 ]
+while [ $a -lt 29 ]
 do
     ARG=${array[a]}
     echo 'testing:'"\033[33m" $ARG.s "\033[0m"

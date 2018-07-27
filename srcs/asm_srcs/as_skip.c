@@ -15,13 +15,6 @@
 #include "asm.h"
 #include <fcntl.h>
 
-int	as_skip_rev_space(char *line, int *i)
-{
-	while (ft_isspace(line[*i - 1]))
-		(*i)--;
-	return (1);
-}
-
 int	as_skip_command(char *line, int *i)
 {
 	while (line[*i] && !ft_isspace(line[*i]))

@@ -30,7 +30,7 @@ int as_code_size(t_list_byte *code)
 	return (i);
 }
 
-int	as_reverse_list(t_list_byte **list)
+int	as_rlist(t_list_byte **list)
 {
 	t_list_byte *next;
 	t_list_byte *tmp;

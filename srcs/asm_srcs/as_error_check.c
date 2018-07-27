@@ -71,7 +71,7 @@ int	as_ec(char **line, t_list_error **error, int bc, int i)
 	code_length = bc - PROG_NAME_LENGTH - COMMENT_LENGTH - 16;
 	if (i < 3 && !as_add_error_noline(error, ERROR29))
 		return (as_free_line(*line));
-	if (code_length >= MEM_SIZE / 4 && !as_add_error_noline(error, ERROR32))
+	if (code_length >= CHAMP_MAX_SIZE && !as_add_error_noline(error, ERROR32))
 		return (as_free_line(*line));
 	if (code_length <= 0 && !as_add_error_noline(error, ERROR35))
 		return (as_free_line(*line));

@@ -17,7 +17,12 @@
 #define MAX_ERROR_SIZE 40
 #define LABEL_SIZE 20
 #define D_LENGTH_CHECK 0
-#define USAGE      "./asm [filename.s]\n"
+#define I_LENGTH_CHECK 0
+#define USAGE      "./asm [-wWp] <sourcefile.s> \n\
+    -w : Disables warnings\n\
+    -W : Displays warnings about improper spaces\n\
+    -p : Displays the compiled color-coded machine code on compilation\n\
+    -a : Displays an annotated version of the code\n"
 #define ERROR0      " malloc failure"
 #define ERROR1      " name specifier string incorrect\n"
 #define ERROR2      " missing quotation mark before name\n"
@@ -32,21 +37,17 @@
 #define ERROR11      " invalid parameter\n"
 #define ERROR12      " register number missing from parameter\n"
 #define ERROR13      " register doesn't exist\n"
-
 #define ERROR15      " incompatible parameter\n"
 #define ERROR16      " too many parameters for this type of operation\n"
 #define ERROR17      " line exceeds maximum length\n"
 #define ERROR18      " too few parameters for this type of operation, expected "
 #define ERROR18B     ", have "
-#define ERROR19      " line exceeds maximum length\n"
 #define ERROR20      " invalid characters at the end of parameter\n"
-#define ERROR21      " direct reference missing from parameter\n"
 #define ERROR22      " missing label\n"
 #define ERROR23      " invalid label\n"
 #define ERROR24      " duplicate label\n"
 #define ERROR25      " direct reference missing from parameter\n"
 #define ERROR26      " direct reference number is too long\n"
-#define ERROR27      " indirect reference number is too long\n"
 #define ERROR28      " label reference not found\n"
 #define ERROR29      " source file incomplete\n"
 #define ERROR30      "no such file: "

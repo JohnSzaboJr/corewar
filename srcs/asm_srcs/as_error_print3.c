@@ -62,7 +62,7 @@ int		as_note_label(int line_nr, int column_nr, char *message)
 
 int		as_note_reg(int line_nr, int column_nr)
 {
-	as_write_err(" choose a non-zero register number that is not higher than ",
+	as_write_err(" choose a register number that is not higher than ",
 	line_nr, column_nr, 2);
 	as_errnbr(REG_NUMBER);
 	ft_putstr_fd(" to silence this warning\n", 2);

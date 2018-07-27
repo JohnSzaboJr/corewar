@@ -54,14 +54,15 @@ typedef struct	s_flags
 	int			w;
 	int			W;
 	int			p;
+	int			a;
 }				t_flags;
 
 extern t_op		op_tab[17];
 
 // Functions to store information (filename)
 
-int							as_get_params(char *line, t_list_label **label, t_list_byte **code);
-int							as_get_command(char *line, int i, t_list_byte **code);
+int							as_get_params(char *line, t_list_label **label, t_list_byte **code, t_flags *f);
+int							as_get_command(char *line, int i, t_list_byte **code, t_flags *f);
 int							as_store_zero(int i, int section, t_list_byte **code);
 int							as_store_non_zero(int length, char *line, int *i, t_list_byte **code);
 int							as_store(int fd, t_list_label **label, char *filename, t_flags *flags);
@@ -140,6 +141,7 @@ int							as_ind(char *line);
 
 // Functions to store other parameter data
 
+int							as_bw_params(int *i, char *line, t_list_error **error);
 int							as_cmp_label(t_list_label *label, char *line, int k);
 int							as_enc(t_list_byte **encoding, int start);
 int							as_slabel(char *line, int *i, t_list_error **error, t_list_label **label);
@@ -171,12 +173,14 @@ int         				as_p_ops(char *l, t_list_error **err, t_list_label **label, int 
 int							as_pname(char *line, int *section, t_list_error **error, int *byte_count);
 int							as_pcomment(char *line, int *section, t_list_error **error, int *byte_count);
 int							as_parse_loop(char *line, t_list_error **error, t_list_label **label, int *bc);
+int							as_dlab_e(char *line, t_list_label **label, t_list_error **error);
+int							as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab);
 
 // General utility functions
 
 int							as_code_size(t_list_byte *code);
 int							as_reverse_error(t_list_error **list);
-int							as_reverse_list(t_list_byte **list);
+int							as_rlist(t_list_byte **list);
 int							as_label_list_size(t_list_label *label);
 int							as_get_op_pos(char *line, int i);
 void						as_write_bytes(t_list_byte **code, int info, int n);
@@ -189,20 +193,20 @@ int							as_add_label(t_list_label **label, char *line, int i, int pos);
 
 int							as_skip_space(char *line, int *i);
 int							as_skip_label(char *line, int *i);
+int							as_skip_label2(char *line, int *i);
 int							as_skip_command(char *line, int *i);
 int							as_skip_name(char *line, int *i, int *j);
 int							as_skip_rev_space(char *line, int *i);
 int							as_skip_to_params(char *line, int *i);
 int							as_skip_to_sep(char *line, int *i);
 int							as_skip_to_next_param(char *line, t_list_error **error, int *i);
+void						as_lab_skip(char *line, int *j, char *c);
 
 // Output functions
 
-int							as_write_file(t_list_byte **code, char *filename);
-int							as_print_list(t_list_byte *list);
+int							as_wfile(t_list_byte **code, char *filename);
+int							as_plist(t_list_byte *list);
 
 //
-
-int	as_skip_label2(char *line, int *i);
 
 #endif

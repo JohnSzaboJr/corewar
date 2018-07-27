@@ -42,16 +42,7 @@ static int	as_i_length(char *line, int i, int j, t_list_error **error)
 	warning = 0;
 	c = line[i];
 	line[i] = '\0';
-	if (ft_atoll(line + j) > 32767 ||
-	ft_atoll(line + j) < -32768 ||
-	ft_strlen(line + j) > 6)
-	{
-		line[i] = c;
-		if (!as_add_error(error, ERROR27, line, j + 1))
-			return (0);
-		return (-1);
-	}
-	if (ft_atoi(line + j) > IDX_MOD)
+	if (I_LENGTH_CHECK && ft_atoi(line + j) > IDX_MOD)
 		warning = 1;
 	line[i] = c;
 	if (warning && !as_add_warning(error, WARNING12, line, j + 1))

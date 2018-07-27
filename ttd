@@ -1,28 +1,10 @@
-1. Improve/clean up/organize code (as_param done, header org todo,
+1. Improve/clean up/organize code (as_store3 done, header org todo,
 and print_list, then makefile)
 2. Fix errors. after error handling is done, check main functionality of
 compilation!*
 
-- Flag: to print out what was compiled.
-- Backward: label name problem
-- if you comments in the beginning, it will treat it as unnecessary empty lines... toto
-- 42 cor isnt over max size?
-- do we record params_bytes correctly when zjmp direct in parse?
-- flag to disable warnings?
-- update usage
-- Make sure h full line shows up in errors, akkor is ha endcomment...
-- Tesztelni addig, amig nem azonos az output minden esetben.
-- Tesztelni, hogy a direct mikor mentodik 4 byte-ra? Labelek eseteben mindig 2?
--    // a vegen tesztelni kell az osszes potencialis hibat a lista alapjan
-    // es osszehasonlitani a masik asm reakcioival
-- Tesztelni majd, h akkor is jol compilal-e, ha tele van warningokkal
-- norm and leaks...
-- (does it leak on file error if not closed?)
-- bonus: flag, h barminek el lehessen nevezni a kimeneti file-t
+- norm and leaks... (does it leak on file error if not closed?)
 - a flag?
-- tesztelni az osszessel in a script...
-- tesztelni az o error reakcioit...
-
 
 
 

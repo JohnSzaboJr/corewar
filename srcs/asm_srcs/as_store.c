@@ -17,7 +17,7 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-static int	as_store_size(t_list_byte **size, t_list_byte *code)
+static int	as_ssize(t_list_byte **size, t_list_byte *code)
 {
 	int	s;
 	int	i;
@@ -34,36 +34,36 @@ static int	as_store_size(t_list_byte **size, t_list_byte *code)
 	return (1);
 }
 
-static int as_store_commands(char *line, t_list_byte **code, t_list_label **label)
+static int as_store_commands(char *l, t_list_byte **code, t_list_label **label, t_flags *f)
 {
 	int				i;
 	int				j;
 
 	i = 0;
-	as_skip_label2(line, &i);
-	i = (line[i] == LABEL_CHAR) ? (i + 1) : (0);
-	as_skip_space(line, &i);
-	if (!line[i])
+	as_skip_label2(l, &i);
+	i = (l[i] == LABEL_CHAR) ? (i + 1) : (0);
+	as_skip_space(l, &i);
+	if (!l[i])
 		return (1);
-	j = as_get_command(line, i, code);
+	j = as_get_command(l, i, code, f);
 	if (!j)
 		return (0);
-	if (j != -1 && !as_get_params(line, label, code))
+	if (j != -1 && !as_get_params(l, label, code, f))
 		return (0);
 	return (1);
 }
 
-static int as_store_nc(char *line, int *sec, t_list_byte **code, t_list_byte **size)
+static int as_store_nc(char *line, int *sec, t_list_byte **c, t_list_byte **s)
 {
 	int			i;
 	int			length;
 
 	as_store_name_comment_init(line, &i, *sec, &length);
-	if (!as_store_non_zero(length, line, &i, code) ||
-	!as_store_zero(i, *sec, code))
+	if (!as_store_non_zero(length, line, &i, c) ||
+	!as_store_zero(i, *sec, c))
 		return (0);
 	if (!(*sec))
-		*size = *code;
+		*s = *c;
 	(*sec)++;
 	return (1);
 }
@@ -82,11 +82,11 @@ static int as_store_magic(t_list_byte **code)
 		magic = (magic - (magic % (256))) / (256);
 		i--;
 	}
-	as_reverse_list(code);
+	as_rlist(code);
 	return (1);
 }
 
-int	as_store(int fd, t_list_label **label, char *filename, t_flags *flags)
+int	as_store(int fd, t_list_label **label, char *filename, t_flags *f)
 {
 	char			*line;
 	int				sec;
@@ -101,7 +101,12 @@ int	as_store(int fd, t_list_label **label, char *filename, t_flags *flags)
 		as_endcomment(line, 0);
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
-			if ((sec == 2 && !as_store_commands(line, &code, label)) ||
+			if (f->a && sec == 2)
+			{
+				ft_printf(YELLOW "\n%d: " RESET, as_code_size(code) - 2192);
+				ft_printf(BOLDBLACK "%s\n" RESET, line);
+			}
+			if ((sec == 2 && !as_store_commands(line, &code, label, f)) ||
 			((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size)))
 				return (as_free_line(line));
 		}
@@ -109,9 +114,8 @@ int	as_store(int fd, t_list_label **label, char *filename, t_flags *flags)
 		free(line);
 	}
 	free(line);
-	if (!as_store_size(&size, code) || !as_reverse_list(&code) ||
-	(flags->p && !as_print_list(code)) || !as_write_file(&code, filename) ||
-	!as_free(&code))
+	if (!as_ssize(&size, code) || !as_rlist(&code) ||
+	(f->p && !as_plist(code)) || !as_wfile(&code, filename) || !as_free(&code))
 		return (0);
 	return (1);
 }

@@ -17,7 +17,7 @@
 #include "colors.h"
 #include <fcntl.h>
 
-int as_write_file(t_list_byte **code, char *filename)
+int			as_wfile(t_list_byte **code, char *filename)
 {
 	int		fd;
 	char	*newname;
@@ -45,7 +45,7 @@ int as_write_file(t_list_byte **code, char *filename)
 	return (1);
 }
 
-static void	as_print_zeros(int *j, int *l, t_list_byte **list, t_list_byte **node)
+static void	as_print_zeros(int *j, int *l, t_list_byte **list, t_list_byte **n)
 {
 	*l = *j;
 	ft_printf("00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00\n");
@@ -54,7 +54,7 @@ static void	as_print_zeros(int *j, int *l, t_list_byte **list, t_list_byte **nod
 		ft_printf(WHITE "*\n" RESET);
 	while (*j > 16)
 		*j -=16;
-	*list = *node;
+	*list = *n;
 	*l = *l - *j;
 	while (*l)
 	{
@@ -89,10 +89,11 @@ static int	as_print_star(t_list_byte **list, int i)
 	return (k);
 }
 
-static void as_print_loop(t_list_byte **list, int *i)
+static void	as_print_loop(t_list_byte **list, int *i)
 {
-	static char *colors[8] =
-	{WHITE, WHITE, CYAN, MAGENTA, GREEN, GREEN, YELLOW, BOLDBLACK};
+	static char *colors[10] =
+	{WHITE, WHITE, CYAN, MAGENTA, GREEN, GREEN, YELLOW, BOLDBLACK,
+	MAGENTA, MAGENTA};
 
 	ft_printf(colors[(*list)->type]);
 	if ((*list)->byte <= 15)
@@ -110,7 +111,7 @@ static void as_print_loop(t_list_byte **list, int *i)
 	(*i)++;
 }
 
-int	as_print_list(t_list_byte *list)
+int			as_plist(t_list_byte *list)
 {
 	int	i;
 	t_list_byte	*node;

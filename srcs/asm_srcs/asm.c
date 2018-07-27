@@ -73,6 +73,7 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 	(*flags)->w = 0;
 	(*flags)->W = 0;
 	(*flags)->p = 0;
+	(*flags)->a = 0;
 	while (*pos < argc && argv[*pos][0] == '-')
 		(*pos)++;
 	if (argc < 2 || (*pos) == argc)
@@ -89,6 +90,8 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 				(*flags)->W = 1;
 			else if (argv[i][1] == 'p' && !((*flags)->p))
 				(*flags)->p = 1;
+			else if (argv[i][1] == 'a' && !((*flags)->p))
+				(*flags)->a = 1;
 			else
 				return (as_err3(USAGE));
 		}

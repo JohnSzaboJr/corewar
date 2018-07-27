@@ -29,6 +29,7 @@ int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 {
 	int	j;
 
+	*bc = (*bc) + COMMENT_LENGTH + 8;
 	*i = ft_strlen(COMMENT_CMD_STRING);
 	j = *i;
 	as_skip_space(line, i);
@@ -44,7 +45,6 @@ int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 	!as_add_warning(error, WARNING7, line, (*i) + 1)))
 		return (0);
 	*i = j;
-	*bc = (*bc) + COMMENT_LENGTH + 8;
 	return (1);
 }
 
@@ -52,6 +52,7 @@ int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 {
 	int			j;
 
+	*bc = (*bc) + PROG_NAME_LENGTH + 4;
 	*i = ft_strlen(NAME_CMD_STRING);
 	j = *i;
 	as_skip_space(line, i);
@@ -67,7 +68,6 @@ int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 	!as_add_warning(error, WARNING3, line, (*i) + 1)))
 		return (0);
 	*i = j;
-	*bc = (*bc) + PROG_NAME_LENGTH + 4;
 	return (1);
 }
 

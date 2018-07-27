@@ -52,7 +52,7 @@ int		as_malloc_error2(t_list_byte **code, int a)
 	ft_putstr_fd(BOLDYELLOW "system error:" RESET, 2);
 	ft_putstr_fd(BOLDWHITE " malloc failure" RESET, 2);
 	if (a == 1)
-		ft_putstr_fd(WHITE " (as_write_file)\n" RESET, 2);
+		ft_putstr_fd(WHITE " (as_wfile)\n" RESET, 2);
 	else if (a == 2)
 		ft_putstr_fd(WHITE " (as_flags_init)\n" RESET, 2);
 	as_free(code);
