@@ -28,13 +28,13 @@ int	as_free_error(t_list_error **list)
 
 	while (*list)
 	{
-		tmp = *list;
+		tmp = (*list)->next;
 		if ((*list)->line)
 			free((*list)->line);
 		if ((*list)->message)
 			free((*list)->message);
 		free(*list);
-		*list = tmp->next;
+		*list = tmp;
 	}
 	return (0);
 }
@@ -62,9 +62,9 @@ int	as_free(t_list_byte **list)
 
 	while (*list)
 	{
-		tmp = *list;
+		tmp = (*list)->next;
 		free(*list);
-		*list = tmp->next;
+		*list = tmp;
 	}
 	return (1);
 }

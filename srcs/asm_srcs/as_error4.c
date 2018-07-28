@@ -22,18 +22,25 @@ char	*as_param_error(int a, int b, t_list_error **error)
 {
     char    *msg;
     int     len;
+    char    *a_str;
+    char    *b_str;
 
-    len = 65 + ft_strlen(ft_itoa(a)) + ft_strlen(ft_itoa(b));
-    if (!(msg = ft_strnew(len)))
+    len = 65 + ft_numlen(a) + ft_numlen(b);
+    a_str = NULL;
+    b_str = NULL;
+    if (!(msg = ft_strnew(len)) || !(a_str = ft_itoa(a)) ||
+    !(b_str = ft_itoa(b)))
     {
         as_malloc_error1(error, 8);
         return (NULL);
     }
     ft_strnfill(msg, '\0', len);
     ft_strcat(msg, ERROR18);
-    ft_strcat(msg, ft_itoa(a));
+    ft_strcat(msg, a_str);
     ft_strcat(msg, ERROR18B);
-    ft_strcat(msg, ft_itoa(b));
+    ft_strcat(msg, b_str);
     ft_strcat(msg, "\n");
+    free(a_str);
+    free(b_str);
     return (msg);
 }

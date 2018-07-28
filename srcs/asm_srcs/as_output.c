@@ -20,10 +20,12 @@
 
 int			as_wfile(t_list_byte **code, char *filename)
 {
-	int		fd;
-	char	*newname;
-	int		l;
+	int			fd;
+	char		*newname;
+	int			l;
+	t_list_byte	*node;
 
+	node = *code;
 	l = ft_strlen(filename);
 	if (!(newname = ft_strnew(l + 2)))
 		return (as_malloc_error2(code, 1));
@@ -43,6 +45,7 @@ int			as_wfile(t_list_byte **code, char *filename)
 	}
 	ft_printf("Writing output program to %s\n", newname);
 	free(newname);
+	*code = node;
 	return (1);
 }
 
