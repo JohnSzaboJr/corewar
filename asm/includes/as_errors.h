@@ -18,7 +18,7 @@
 #define LABEL_SIZE 20
 #define D_LENGTH_CHECK 0
 #define I_LENGTH_CHECK 0
-#define USAGE      "./asm [-wWp] <sourcefile.s> \n\
+#define USAGE      "./asm [-wWpa] <sourcefile.s> \n\
     -w : Disables warnings\n\
     -W : Displays warnings about improper spaces\n\
     -p : Displays the compiled color-coded machine code on compilation\n\
