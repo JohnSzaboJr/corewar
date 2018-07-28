@@ -12,7 +12,8 @@
 
 #include "libft.h"
 #include "op.h"
-#include "asm.h"
+#include "asm_struct.h"
+#include "asm_prot.h"
 #include "as_errors.h"
 #include "colors.h"
 #include <fcntl.h>
@@ -65,9 +66,6 @@ static int	as_parse(int fd, t_list_label **label, char *fn, t_flags *flags)
 
 static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 {
-	int	i;
-
-	i = 1;
 	if (!(*flags = (t_flags *)(malloc(sizeof(**flags)))))
 		return (as_malloc_error2(NULL, 2));
 	(*flags)->w = 0;
@@ -78,26 +76,7 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 		(*pos)++;
 	if (argc < 2 || (*pos) == argc)
 		return (as_err3(USAGE));
-	while (i < argc)
-	{
-		if ((argv[i][0] != '-' || ft_strlen(argv[i]) != 2) && i != (*pos))
-			return (as_err3(USAGE));
-		if (argv[i][0] == '-')
-		{
-			if (argv[i][1] == 'w' && !((*flags)->w))
-				(*flags)->w = 1;
-			else if (argv[i][1] == 'W' && !((*flags)->W))
-				(*flags)->W = 1;
-			else if (argv[i][1] == 'p' && !((*flags)->p))
-				(*flags)->p = 1;
-			else if (argv[i][1] == 'a' && !((*flags)->p))
-				(*flags)->a = 1;
-			else
-				return (as_err3(USAGE));
-		}
-		i++;
-	}
-	return (1);
+	return (as_flags_loop(flags, argc, argv, pos));
 }
 
 int			main(int argc, char **argv)

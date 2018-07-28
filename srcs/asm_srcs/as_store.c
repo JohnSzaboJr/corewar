@@ -12,7 +12,8 @@
 
 #include "libft.h"
 #include "op.h"
-#include "asm.h"
+#include "asm_struct.h"
+#include "asm_prot.h"
 #include "colors.h"
 #include "as_errors.h"
 #include <fcntl.h>
@@ -68,7 +69,7 @@ static int as_store_nc(char *line, int *sec, t_list_byte **c, t_list_byte **s)
 	return (1);
 }
 
-static int as_store_magic(t_list_byte **code)
+int			as_store_magic(t_list_byte **code)
 {
 	int			magic;
 	int			i;
@@ -86,26 +87,21 @@ static int as_store_magic(t_list_byte **code)
 	return (1);
 }
 
-int	as_store(int fd, t_list_label **label, char *filename, t_flags *f)
+int			as_store(int fd, t_list_label **label, char *filename, t_flags *f)
 {
 	char			*line;
 	int				sec;
 	t_list_byte		*code;
 	t_list_byte		*size;
 
-	as_store_init(&line, &code, &size, &sec);
-	if (!as_store_magic(&code))
+	if (!as_store_init(&line, &code, &size, &sec))
 		return (0);
 	while (get_next_line(fd, &line))
 	{
 		as_endcomment(line, 0);
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
-			if (f->a && sec == 2)
-			{
-				ft_printf(YELLOW "\n%d: " RESET, as_code_size(code) - 2192);
-				ft_printf(BOLDBLACK "%s\n" RESET, line);
-			}
+			as_a_line(f, sec, code, line);
 			if ((sec == 2 && !as_store_commands(line, &code, label, f)) ||
 			((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size)))
 				return (as_free_line(line));

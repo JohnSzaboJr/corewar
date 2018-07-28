@@ -1,13 +1,5 @@
-1. Improve/clean up/organize code (as_store3 done, header org todo,
-and print_list, then makefile)
-2. Fix errors. after error handling is done, check main functionality of
-compilation!*
-
-- norm and leaks... (does it leak on file error if not closed?)
-- a flag?
-
-
-
+1. (makefile)*
+2. norm and leaks... (does it leak on file error if not closed?)
 
 
 

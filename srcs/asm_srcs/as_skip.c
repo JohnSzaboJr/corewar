@@ -12,7 +12,8 @@
 
 #include "libft.h"
 #include "op.h"
-#include "asm.h"
+#include "asm_struct.h"
+#include "asm_prot.h"
 #include <fcntl.h>
 
 int	as_skip_command(char *line, int *i)

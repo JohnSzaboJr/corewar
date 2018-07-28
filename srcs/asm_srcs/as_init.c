@@ -12,7 +12,8 @@
 
 #include "libft.h"
 #include "op.h"
-#include "asm.h"
+#include "asm_struct.h"
+#include "asm_prot.h"
 #include "as_errors.h"
 #include "colors.h"
 #include <fcntl.h>
@@ -25,12 +26,15 @@ void	as_store_name_comment_init(char *line, int *i, int section, int *length)
 	*i = *i + as_skip_space(line, i) + 1;
 }
 
-void	as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
+int		as_store_init(char **l, t_list_byte **c, t_list_byte **s, int *sec)
 {
 	*l = NULL;
 	*c = NULL;
 	*s = NULL;
 	*sec = 0;
+	if (!as_store_magic(c))
+		return (0);
+	return (1);
 }
 
 int		as_parse_init(char **l, t_list_error **e, int *bc)

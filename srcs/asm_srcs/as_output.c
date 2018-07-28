@@ -12,7 +12,8 @@
 
 #include "libft.h"
 #include "op.h"
-#include "asm.h"
+#include "asm_struct.h"
+#include "asm_prot.h"
 #include "as_errors.h"
 #include "colors.h"
 #include <fcntl.h>
@@ -96,9 +97,7 @@ static void	as_print_loop(t_list_byte **list, int *i)
 	MAGENTA, MAGENTA};
 
 	ft_printf(colors[(*list)->type]);
-	if ((*list)->byte <= 15)
-		ft_putchar('0');
-	ft_printf("%x ", (*list)->byte);
+	as_write_byte(*list);
 	if (!((*i + 1) % 16))
 	{
 		ft_putchar('\n');

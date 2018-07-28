@@ -12,7 +12,8 @@
 
 #include "libft.h"
 #include "op.h"
-#include "asm.h"
+#include "asm_struct.h"
+#include "asm_prot.h"
 #include "colors.h"
 #include "as_errors.h"
 #include <fcntl.h>
@@ -31,105 +32,6 @@ static void	as_bw_sparams(char *line, int *i)
 	as_j(1, *i);
 	as_skip_to_sep(line, i);
 	as_k(2);
-}
-
-static void as_putnspace(int n)
-{
-	while (n)
-	{
-		ft_putchar(' ');
-		n--;
-	}
-}
-
-static void		as_write_byte(t_list_byte *code)
-{
-	if (code->byte < 16)
-		ft_printf("0");
-	ft_printf("%x ", code->byte);
-}
-
-// atirni ugy h szetszedni a kodot... (direct - direct)
-// majd az as_write_byteot hasznalni a -p nal is
-
-static void		as_print_a1(int n, t_list_byte *code)
-{
-	if (n == 1)
-		ft_printf(CYAN "encoding" RESET);
-	if (n == 2)
-		ft_printf(MAGENTA "register" RESET);
-	as_putnspace(ft_strlen(op_tab[as_get_pos(0, 0)].opname));
-	if (n == 1)
-		ft_printf(CYAN "   (1 byte):  " RESET);
-	if (n == 2)
-		ft_printf(MAGENTA "   (1 byte):  " RESET);
-	as_write_byte(code);
-	ft_putchar('\n');
-}
-
-static void		as_print_a2(int n, t_list_byte **op_pos, int *m, char *str)
-{
-	t_list_byte	*node;
-	int			i;
-	int			j;
-	int			pos;
-
-	i = 0;
-	j = 4;
-	pos = as_get_pos(0, 0);
-	if (((pos == 8 || pos == 9 || pos == 10 || pos == 11) && n == 3) ||
-		(pos == 5 && n == 9))
-		j = 2;
-	node = *op_pos;
-	while (*op_pos && (*op_pos)->type == n && *m < j)
-	{
-		*op_pos = (*op_pos)->next;
-		(*m)++;
-	}
-	if (*m == 1)
-		return ;
-	ft_printf(MAGENTA "%s" RESET, str);
-	as_putnspace(ft_strlen(op_tab[as_get_pos(0, 0)].opname));
-	if (n == 3)
-		ft_printf("  ");
-	ft_printf(MAGENTA "   (%d bytes): " RESET, *m);
-	(*op_pos) = node;
-	while (i < *m)
-	{
-		as_write_byte(*op_pos);
-		if ((*op_pos)->next)
-			node = (*op_pos);
-		*op_pos = (*op_pos)->next;
-		i++;
-	}
-	*op_pos = node;
-	ft_putchar('\n');
-}
-
-static int		as_print_a(t_flags *f, t_list_byte **code, t_list_byte *encoding, t_list_byte **op_pos)
-{
-	int			m;
-
-	if (f->a && encoding)
-		as_print_a1(1, encoding);
-	if (f->a)
-	{
-		as_rlist(code);
-		while (*op_pos)
-		{
-			m = 0;
-			if ((*op_pos)->type == 8)
-				as_print_a1(2, *op_pos);
-			else if ((*op_pos)->type == 3)
-				as_print_a2(3, op_pos, &m, "direct");
-			else if ((*op_pos)->type == 9)
-				as_print_a2(9, op_pos, &m, "indirect");
-			if (*op_pos)
-				*op_pos = (*op_pos)->next;
-		}
-		as_rlist(code);
-	}
-	return (1);
 }
 
 int			as_get_params(char *line, t_list_label **label, t_list_byte **code, t_flags *f)
@@ -158,7 +60,7 @@ int			as_get_params(char *line, t_list_label **label, t_list_byte **code, t_flag
 		if (line[i])
 			i++;
 	}
-	return (as_print_a(f, code, encoding, &op_pos));
+	return (as_pa(f, code, encoding, &op_pos));
 }
 
 int			as_get_command(char *line, int i, t_list_byte **code, t_flags *f)
@@ -175,9 +77,8 @@ int			as_get_command(char *line, int i, t_list_byte **code, t_flags *f)
 	if (f->a)
 	{
 		ft_printf(GREEN "operation %s (1 byte):  " RESET, op_tab[j].opname);
-		if ((*code)->byte < 16)
-			ft_printf("0");
-		ft_printf("%x\n", (*code)->byte);
+		as_write_byte(*code);
+		ft_putchar('\n');
 	}
 	return (1);
 }
