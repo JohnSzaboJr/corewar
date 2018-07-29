@@ -52,8 +52,8 @@ static void		as_print_a2(int n, t_list_byte **op_pos, int *m, char *str)
 	i = 0;
 	j = 4;
 	pos = as_get_pos(0, 0);
-	if (((pos == 8 || pos == 9 || pos == 10 || pos == 11) && n == 3) ||
-		(pos == 5 && n == 9))
+	if (((pos == 8 || pos == 9 || pos == 10 || pos == 11 || pos == 14)
+	&& n == 3) || (pos == 5 && n == 9))
 		j = 2;
 	node = *op_pos;
 	while (*op_pos && (*op_pos)->type == n && *m < j)

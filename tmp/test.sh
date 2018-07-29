@@ -1,13 +1,14 @@
 a=0
 array=(zork bigzork turtle fluttershy helltrain bee_gees 42 toto tdc4b \
 tdc3b tdc2b slider2 new2 mortel maxidef matb leeloob lde jumper ex barriere \
-Torpilleb Survivor Octobre_Rouge_V4.2 Gagnant Deathb Car Backwards zork_error2)
+Torpilleb Survivor Octobre_Rouge_V4.2 Gagnant Deathb Car Backwards zork_error2 \
+darksasuke champ)
 
-while [ $a -lt 29 ]
+while [ $a -lt 31 ]
 do
     ARG=${array[a]}
     echo 'testing:'"\033[33m" $ARG.s "\033[0m"
-    ./asm champs/$ARG.s && \
+    ../asm/asm champs/$ARG.s && \
     mv ./champs/$ARG.cor ./champs/$ARG.my.cor && \
     ./asm_given champs/$ARG.s && \
     hexdump -C ./champs/$ARG.my.cor > ./results/$ARG.myresult && \

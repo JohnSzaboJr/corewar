@@ -53,7 +53,7 @@ int		as_gparams_init(int *i, t_list_byte **co, char *l, t_list_byte **enc)
 	as_k(1);
 	as_get_pos((*co)->byte, 1);
 	pos = as_get_pos(0, 0);
-	if (pos != 0 && pos != 8 && pos != 11)
+	if (pos != 0 && pos != 8 && pos != 11 && pos != 14)
 	{
 		if (!(as_add_byte(co, 0, 2)))
 			return (0);
@@ -75,7 +75,7 @@ int		as_pparams_init(int *i, char *line, int *params_size)
 	as_skip_space(line, i);
 	j = as_get_op_pos(line, *i);
 	as_get_pos(op_tab[j].opcode, 1);
-	*params_size = (j != 0 && j != 8 && j != 11) ? (1) : (0);
+	*params_size = (j != 0 && j != 8 && j != 11 && j != 14) ? (1) : (0);
 	as_skip_command(line, i);
 	j = *i;
 	as_skip_space(line, i);
