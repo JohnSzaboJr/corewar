@@ -6,7 +6,7 @@
 #    By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 19:09:41 by jszabo            #+#    #+#              #
-#    Updated: 2018/07/28 14:33:29 by jszabo           ###   ########.fr        #
+#    Updated: 2018/07/29 14:33:29 by jszabo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,4 +78,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all norm clean fclean re
+.PHONY: all clean fclean re
