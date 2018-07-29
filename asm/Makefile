@@ -12,24 +12,22 @@
 
 NAME = asm
 
-GCC_FLAGS = -Werror -Wextra -Wall
+FLAGS = -Werror -Wextra -Wall
 
-OBJS_DIR = objs
-SRCS_DIR = srcs
-SRCS_INCLUDES_DIR = includes
+LIBFT_DIR = ../libft/
+LIBFT = $(LIBFT_DIR)libft.a
 
-LIBFT_DIR = ../libft
-LIBFT_FILE = $(LIBFT_DIR)/libft.a
+SHARED_INCLUDES_DIR = ../shared/includes/
+INCLUDES_DIR = ./includes/
 
-SHARED_DIR = ../shared
-SHARED_INCLUDES_DIR = $(SHARED_DIR)/includes
+HEADER_FILES = as_errors asm_prot asm_struct colors
 
-INCLUDE_DIRS = -I $(SRCS_INCLUDES_DIR) -I $(SHARED_INCLUDES_DIR)
+HEADERS = $(addsuffix .h, $(patsubst %, $(INCLUDES_DIR)%, $(HEADER_FILES)))
+HEADERS += $(SHARED_INCLUDES_DIR)op.h
+HEADERS += $(SHARED_INCLUDES_DIR)libft.h
 
-INCLUDES_FILES = as_errors asm_prot asm_struct colors
-HEADERS = $(addsuffix .h, $(patsubst %, $(SRCS_INCLUDES_DIR)/%, $(INCLUDES_FILES)))
-HEADERS += $(SHARED_INCLUDES_DIR)/op.h
-HEADERS += $(SHARED_INCLUDES_DIR)/libft.h
+OBJS_DIR = ./objs/
+SRCS_DIR = ./srcs/
 
 FILES = as_d_error as_d_param \
 as_error_check as_error_check2 as_error_check3 \
@@ -46,38 +44,37 @@ as_store as_store2 as_store3 \
 as_utility as_utility2 \
 asm op
 
-OBJS_WITH_DIR = $(patsubst %, $(OBJS_DIR)/%.o, $(FILES))
+OBJS = $(patsubst %, $(OBJS_DIR)%.o, $(FILES))
 
-GREEN_COLOR = "\033[0;32m"
-DEFAULT_COLOR = "\033[0m"
+INCLUDES = -I $(INCLUDES_DIR) -I $(SHARED_INCLUDES_DIR)
 
 all: $(NAME)
 
-norm:
-	@norminette $(SRCS_INCLUDES_DIR) $(SRCS_DIR)
+$(NAME): $(LIBFT) $(HEADERS) $(OBJS_DIR) $(OBJS)
+	@cc $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(INCLUDES)
+	@echo '\033[0;32m'*** $(NAME) compiled ***'\033[0m'
 
-$(LIBFT_FILE):
-	@echo "Libft:" $(GREEN_COLOR) Compiling Libft $(DEFAULT_COLOR)
+$(LIBFT):
 	@make -C $(LIBFT_DIR)
 
-$(NAME): $(LIBFT_FILE) $(HEADERS) $(OBJS_DIR) $(OBJS_WITH_DIR)
-	@echo "asm:" $(GREEN_COLOR) $(NAME) $(DEFAULT_COLOR)
-	@cc $(GCC_FLAGS) $(OBJS_WITH_DIR) -o $(NAME) $(LIBFT_FILE) $(INCLUDE_DIRS)
+$(OBJS): $(HEADERS)
 
 $(OBJS_DIR):
 	@mkdir -p $(OBJS_DIR)
 
-$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
-	@echo "asm:" $(GREEN_COLOR) $< $(DEFAULT_COLOR)
-	@cc $(GCC_FLAGS) -c $< -o $@ $(INCLUDE_DIRS)
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
+	@echo '\033[0;32m'*** compiling $< to object ***'\033[0m'
+	@cc $(FLAGS) -c $< -o $@ $(INCLUDES)
 
 clean:
 	@make -C $(LIBFT_DIR)/ clean
 	@rm -rf $(OBJS_DIR)
+	@echo '\033[0;32m'*** $(NAME) object files cleaned ***'\033[0m'
 
-fclean:
+fclean: clean
 	@make -C $(LIBFT_DIR)/ fclean
-	@rm -rf $(OBJS_DIR) $(NAME)
+	@rm -rf $(NAME)
+	@echo '\033[0;32m'*** $(NAME) executable cleaned ***'\033[0m'
 
 re: fclean all
 
