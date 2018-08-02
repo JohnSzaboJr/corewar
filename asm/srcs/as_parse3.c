@@ -29,8 +29,8 @@ int			as_pp_loop(char *l, t_list_label **lab, t_list_error **err, int *ps)
 	!as_r_e(l, &i, err, ps)) || (as_dir(l) && !(ret = as_dlab_e(l, lab, err))))
 		return (0);
 	if (as_dir(l) == 2 && ret != -1 && (as_get_pos(0, 0) == 8 ||
-	as_get_pos(0, 0) == 9 || as_get_pos(0, 0) == 10 || as_get_pos(0, 0) == 11 ||
-	as_get_pos(0, 0) == 14))
+	as_get_pos(0, 0) == 9 || as_get_pos(0, 0) == 10 ||
+	as_get_pos(0, 0) == 11 || as_get_pos(0, 0) == 13 || as_get_pos(0, 0) == 14))
 		*ps = *ps + IND_SIZE;
 	else if (as_dir(l) == 2 && ret != -1)
 		*ps = *ps + DIR_SIZE;
@@ -54,7 +54,12 @@ char *line, t_list_error **error, t_list_label **label, int *bc)
 {
 	static int	sec = 0;
 
-	if (!line[0])
+	if (as_line_nr(0) >= MAX_LINE_NUM)
+	{
+		as_err1(ERROR37, 0, NULL, 0);
+		return (0);
+	}
+	if (!line[0] && sec == 2)
 		as_empty_line_check(error, 1, line);
 	else if (!as_empty_line_check(error, 0, line))
 		return (as_free_line(line));
@@ -66,5 +71,5 @@ char *line, t_list_error **error, t_list_label **label, int *bc)
 		(sec == 0 && !as_pname(line, &sec, error, bc)))
 			return (as_free_line(line));
 	}
-	return (1);
+	return (sec + 1);
 }

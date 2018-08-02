@@ -84,39 +84,47 @@ int			as_p_ops(char *l, t_list_error **err, t_list_label **label, int *bc)
 int			as_pname(char *line, int *section, t_list_error **error, int *bc)
 {
 	int	i;
+	int	ret;
 
-	(*section)++;
-	if (!(ft_strncmp(line, NAME_CMD_STRING,
+	ret = 0;
+	if ((*bc > 4) || (!(ft_strncmp(line, NAME_CMD_STRING,
 		ft_strlen(NAME_CMD_STRING))) &&
 		(ft_isspace(line[ft_strlen(NAME_CMD_STRING)]) ||
-		line[ft_strlen(NAME_CMD_STRING)] == '"'))
+		line[ft_strlen(NAME_CMD_STRING)] == '"')))
 	{
-		if (!as_name_check(&i, line, error, bc))
+		if (!(ret = as_name_check(&i, line, error, bc)))
 			return (0);
+		if (ret == 2)
+			(*section)++;
 		return (1);
 	}
 	*bc = (*bc) + PROG_NAME_LENGTH + 4;
 	if (!as_add_error(error, ERROR1, line, 1))
 		return (0);
+	(*section)++;
 	return (1);
 }
 
 int			as_pcomment(char *line, int *section, t_list_error **error, int *bc)
 {
 	int	i;
+	int ret;
 
-	(*section)++;
-	if (!(ft_strncmp(line, COMMENT_CMD_STRING,
+	ret = 0;
+	if ((*bc > 4 + PROG_NAME_LENGTH) || (!(ft_strncmp(line, COMMENT_CMD_STRING,
 		ft_strlen(COMMENT_CMD_STRING))) &&
 		(ft_isspace(line[ft_strlen(COMMENT_CMD_STRING)]) ||
-		line[ft_strlen(COMMENT_CMD_STRING)] == '"'))
+		line[ft_strlen(COMMENT_CMD_STRING)] == '"')))
 	{
-		if (!as_comment_check(&i, line, error, bc))
+		if (!(ret = as_comment_check(&i, line, error, bc)))
 			return (0);
+		if (ret == 2)
+			(*section)++;
 		return (1);
 	}
 	*bc = (*bc) + COMMENT_LENGTH + 8;
 	if (!as_add_error(error, ERROR7, line, 1))
 		return (0);
+	(*section)++;
 	return (1);
 }

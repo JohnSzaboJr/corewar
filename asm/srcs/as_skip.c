@@ -14,6 +14,7 @@
 #include "op.h"
 #include "asm_struct.h"
 #include "asm_prot.h"
+#include "as_errors.h"
 #include <fcntl.h>
 
 int	as_skip_command(char *line, int *i)
@@ -29,7 +30,11 @@ int	as_skip_name(char *line, int *i, int *j)
 		(*i)++;
 	*j = *i;
 	while (line[*i] && line[*i] != '"')
+	{
+		if ((*i) >= MAX_LINE_LENGTH - 1)
+			return (0);
 		(*i)++;
+	}
 	return (1);
 }
 

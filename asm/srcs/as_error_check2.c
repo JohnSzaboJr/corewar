@@ -20,55 +20,185 @@
 
 static int	as_check_quot(int *i, t_list_error **err, char *line, char *message)
 {
-	if ((!(line[*i]) || line[*i] != '"') &&
-	!as_add_error(err, message, line, (*i) + 1))
+	if (line[*i] != '"')
+	{
+		if (!as_add_error(err, message, line, (*i) + 1))
+			return (0);
+	}
+	else
+	{
+		as_endcomment(line, 1);
+		return (2);
+	}
+	return (1);
+}
+
+static void	as_ccheck_init(int *bc, int *i, int *j, char *line)
+{
+	*bc = (*bc) + COMMENT_LENGTH + 8;
+	*i = ft_strlen(COMMENT_CMD_STRING);
+	*j = *i;
+	as_skip_space(line, i);	
+}
+
+static int	as_set_nline_c(int *i, t_list_error **error, char *line, int *comment)
+{
+	int	ret;
+
+	ret = as_check_quot(i, error, line, ERROR5);
+	if (!ret)
 		return (0);
+	else if (ret == 2)
+		*comment = 1;
+	return (1);
+}
+
+static int	as_ccheck1(char *line, int *i, int *j, t_list_error **error)
+{
+	if (!as_skip_name(line, i, j))
+	{
+		if (!as_add_error(error, ERROR17, line, *j + 1))
+			return (0);
+		return (2);
+	}
+	if ((!((*i) - *j) && line[*i] == '"' && !as_add_warning(error, WARNING5, line, (*i) + 1)))
+		return (0);
+	if (!((*i) - *j) && line[*i] == '"')
+		return (2);
+	return (1);
+}
+
+static int	as_clength_e(int length, t_list_error **error, char *line, int *i)
+{
+	if (((length > COMMENT_LENGTH) &&
+	!as_add_warning(error, WARNING7, line, (*i) + 2)))
+		return (0);
+	if (line[*i + 1] && !as_add_warning(error, WARNING6, line, (*i) + 1))
+		return (0);
+	return (2);
+}
+
+static int	as_ccheck_init2(char *line, int *i, int *j, t_list_error **error)
+{
+	as_endcomment(line, 1);
+	*i = 0;
+	if (!as_skip_name(line, i, j))
+	{
+		if (!as_add_error(error, ERROR17, line, *j + 1))
+			return (0);
+		return (2);
+	}
+	return (1);
+}
+
+static int	as_c_end(int length, t_list_error **error, char *line, int *i)
+{
+	if ((length > COMMENT_LENGTH) &&
+	!as_add_warning(error, WARNING7, line, (*i) + 2))
+		return (0);
+	if (line[*i] && line[*i] == '"' && line[*i + 1] &&
+	!as_add_warning(error, WARNING6, line, (*i) + 2))
+		return (0);
+	if (line[*i] && line[*i] == '"')
+		return (2);
 	return (1);
 }
 
 int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 {
-	int	j;
+	int			j;
+	static int	comment = 0;
+	static int	length = 0;
+	int			ret;
 
-	*bc = (*bc) + COMMENT_LENGTH + 8;
-	*i = ft_strlen(COMMENT_CMD_STRING);
-	j = *i;
-	as_skip_space(line, i);
-	if ((j == *i && !as_add_warning(error, WARNING4, line, j + 1)) ||
-	!as_check_quot(i, error, line, ERROR5))
-		return (0);
-	as_skip_name(line, i, &j);
-	if ((!((*i) - j) && !as_add_warning(error, WARNING5, line, (*i) + 1)) ||
-	!as_check_quot(i, error, line, ERROR6) ||
-	((line[*i] && (line[(*i) + 1])) &&
-	!as_add_warning(error, WARNING6, line, (*i) + 2)) ||
-	((((*i) - j) > PROG_NAME_LENGTH) &&
-	!as_add_warning(error, WARNING7, line, (*i) + 1)))
-		return (0);
-	*i = j;
+	if (!comment)
+	{
+		as_ccheck_init(bc, i, &j, line);
+		if (((j == *i && !as_add_warning(error, WARNING4, line, j + 1))) ||
+		!as_set_nline_c(i, error, line, &comment))
+			return (0);
+		ret = as_ccheck1(line, i, &j, error);
+		if (ret != 1)
+			return (ret);
+		if (((*i) - j) && line[*i] == '"')
+		{
+			length = (*i) - j;
+			return (as_clength_e(length, error, line, i));
+		}
+	}
+	else
+	{
+		ret = as_ccheck_init2(line, i, &j, error);
+		if (ret != 1)
+			return (ret);
+		length = length + (*i) - j + 1;
+		return (as_c_end(length, error, line, i));
+	}
 	return (1);
 }
 
 int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 {
 	int			j;
+	int			ret;
+	static int	name = 0;
+	static int	length = 0;
 
-	*bc = (*bc) + PROG_NAME_LENGTH + 4;
-	*i = ft_strlen(NAME_CMD_STRING);
-	j = *i;
-	as_skip_space(line, i);
-	if ((j == *i && !as_add_warning(error, WARNING1, line, j + 1)) ||
-	!as_check_quot(i, error, line, ERROR2))
-		return (0);
-	as_skip_name(line, i, &j);
-	if ((!((*i) - j) && !as_add_error(error, ERROR3, line, (*i) + 1)) ||
-	!as_check_quot(i, error, line, ERROR4) ||
-	((line[*i] && (line[(*i) + 1])) &&
-	!as_add_warning(error, WARNING2, line, (*i) + 2)) ||
-	((((*i) - j) > PROG_NAME_LENGTH) &&
-	!as_add_warning(error, WARNING3, line, (*i) + 1)))
-		return (0);
-	*i = j;
+	ret = 0;
+	if (!name)
+	{
+		*bc = (*bc) + PROG_NAME_LENGTH + 4;
+		*i = ft_strlen(NAME_CMD_STRING);
+		j = *i;
+		as_skip_space(line, i);
+		if ((j == *i && !as_add_warning(error, WARNING1, line, j + 1)))
+			return (0);
+		ret = as_check_quot(i, error, line, ERROR2);
+		if (!ret)
+			return (0);
+		else if (ret == 2)
+			name = 1;
+		if (!as_skip_name(line, i, &j))
+		{
+			if (!as_add_error(error, ERROR17, line, j + 1))
+				return (0);
+			return (2);
+		}
+		if ((!((*i) - j) && line[*i] == '"' && !as_add_error(error, ERROR3, line, (*i) + 1)))
+			return (0);
+		if (!((*i) - j) && line[*i] == '"')
+			return (2);
+		else if (((*i) - j) && line[*i] == '"')
+		{
+			length = (*i) - j;
+			if (((length > PROG_NAME_LENGTH) &&
+			!as_add_warning(error, WARNING3, line, (*i) + 2)))
+				return (0);
+			if (line[*i + 1] && !as_add_warning(error, WARNING2, line, (*i) + 1))
+				return (0);
+			return (2);
+		}
+	}
+	else
+	{
+		as_endcomment(line, 1);
+		*i = 0;
+		if (!as_skip_name(line, i, &j))
+		{
+			if (!as_add_error(error, ERROR17, line, j + 1))
+				return (0);
+			return (2);
+		}
+		length = length + (*i) - j + 1;
+		if ((length > PROG_NAME_LENGTH) &&
+		!as_add_warning(error, WARNING3, line, (*i) + 2))
+			return (0);
+		if (line[*i] && line[*i] == '"' && line[*i + 1] &&
+		!as_add_warning(error, WARNING2, line, (*i) + 2))
+			return (0);
+		if (line[*i] && line[*i] == '"')
+			return (2);
+	}
 	return (1);
 }
 

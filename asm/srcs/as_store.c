@@ -58,14 +58,33 @@ static int as_store_nc(char *line, int *sec, t_list_byte **c, t_list_byte **s)
 {
 	int			i;
 	int			length;
+	int			ret;
+	static int	suc = 0;
 
-	as_store_name_comment_init(line, &i, *sec, &length);
-	if (!as_store_non_zero(length, line, &i, c) ||
-	!as_store_zero(i, *sec, c))
+	ret = 0;
+	if (!suc)
+	{
+		if (!line[0])
+			return (1);
+		as_store_name_comment_init(line, &i, *sec, &length);
+	}
+	else
+	{
+		i = 0;
+		length = (*sec) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
+	}
+	suc = 1;
+	if (!(ret = as_store_non_zero(length, line, &i, c)))
 		return (0);
-	if (!(*sec))
+	if (ret == 2)
+	{
+		if (!as_store_zero(i, *sec, c))
+			return (0);
+		if (!(*sec))
 		*s = *c;
-	(*sec)++;
+		suc = 0;
+		(*sec)++;
+	}
 	return (1);
 }
 
@@ -102,10 +121,11 @@ int			as_store(int fd, t_list_label **label, char *filename, t_flags *f)
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
 			as_a_line(f, sec, code, line);
-			if ((sec == 2 && !as_store_commands(line, &code, label, f)) ||
-			((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size)))
+			if (sec == 2 && !as_store_commands(line, &code, label, f))
 				return (as_free_line(line));
 		}
+		if ((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size))
+			return (as_free_line(line));
 		as_endcomment(line, 1);
 		free(line);
 	}

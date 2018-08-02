@@ -20,16 +20,23 @@
 
 int			as_store_non_zero(int length, char *line, int *i, t_list_byte **c)
 {
-	int	l;
+	static int	l = 0;
 
-	l = 0;
-	while (l < length && line[*i] != '"')
+	as_endcomment(line, 1);
+	while (l < length && line[*i] && line[*i] != '"')
 	{
 		if (!(as_add_byte(c, line[*i], 5)))
 			return (0);
 		(*i)++;
 		l++;
 	}
+	if (line[*i] == '"')
+	{
+		l = 0;
+		return (2);
+	}
+	else if (!(as_add_byte(c, '\n', 5)))
+		return (0);
 	return (1);
 }
 

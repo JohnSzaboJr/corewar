@@ -1,5 +1,11 @@
-.name "zork"
-.comment "I'M ALIIIIVE"
+.name   ";ignore this! 
+zo
+
+rk"
+
+
+.comment "
+I'M ALIIIIVE"
 
 l2:		ldi %1, %:live, r1
 		and 1, 4984, r1

@@ -47,13 +47,13 @@ static void		as_print_a2(int n, t_list_byte **op_pos, int *m, char *str)
 	t_list_byte	*node;
 	int			i;
 	int			j;
-	int			pos;
+	int			p;
 
 	i = 0;
 	j = 4;
-	pos = as_get_pos(0, 0);
-	if (((pos == 8 || pos == 9 || pos == 10 || pos == 11 || pos == 14)
-	&& n == 3) || (pos == 5 && n == 9))
+	p = as_get_pos(0, 0);
+	if (((p == 8 || p == 9 || p == 10 || p == 11 || p == 13 || p == 14)
+	&& n == 3) || (p == 5 && n == 9))
 		j = 2;
 	node = *op_pos;
 	while (*op_pos && (*op_pos)->type == n && *m < j)

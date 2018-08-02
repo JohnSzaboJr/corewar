@@ -42,11 +42,12 @@ static int	as_parse(int fd, t_list_label **label, char *fn, t_flags *flags)
 	t_list_error	*error;
 	int				bc;
 	int				i;
+	int				ret;
 
 	i = as_parse_init(&line, &error, &bc);
 	while (as_empty_line(get_next_line(fd, &line)) && line)
 	{
-		if (!as_parse_loop(line, &error, label, &bc))
+		if (!(ret = as_parse_loop(line, &error, label, &bc)))
 			return (0);
 		if (line[0] != COMMENT_CHAR)
 			i++;
@@ -56,6 +57,10 @@ static int	as_parse(int fd, t_list_label **label, char *fn, t_flags *flags)
 		free(line);
 		as_line_nr(1);
 	}
+	if (ret == 1 && !as_add_error(&error, ERROR4, line, i + 1))
+		return (0);
+	if (ret == 2 && !as_add_error(&error, ERROR6, line, i + 1))
+		return (0);
 	if (!as_empty_line_check(&error, 2, line))
 		return (as_free_line(line));
 	if (!as_lc(line, fn) || !as_ec(&line, &error, bc, i) ||

@@ -13,7 +13,8 @@
 #ifndef AS_ERRORS_H
 # define AS_ERRORS_H
 
-#define MAX_LINE_LENGTH 100
+#define MAX_LINE_LENGTH 1000
+#define MAX_LINE_NUM 300
 #define MAX_ERROR_SIZE 40
 #define LABEL_SIZE 20
 #define D_LENGTH_CHECK 0
@@ -57,6 +58,7 @@
 #define ERROR34      "could not close file due to an error: "
 #define ERROR35      " no valid code in file\n"
 #define ERROR36      " file couldn't be created: "
+#define ERROR37      " line number exceeds maximum\n"
 #define WARNING1    " no space after name specifier\n"
 #define WARNING2    " invalid character(s) after name\n"
 #define WARNING3    " name too long\n"
