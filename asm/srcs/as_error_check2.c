@@ -219,23 +219,3 @@ int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 	}
 	return (1);
 }
-
-int	as_check_valid_params(t_list_error **error, char *line)
-{
-	return (line[as_j(0, 0)] != 'r' && !as_dir(line) && !as_ind(line) &&
-	!as_add_error(error, ERROR11, line, as_j(0, 0) + 1)) ? (0) : (1);
-}
-
-int	as_check_spaces_line(char *line, t_list_error **error)
-{
-	int	i;
-
-	i = 0;
-	if (as_skip_space(line, &i) == (int)ft_strlen(line))
-    {
-        if (!as_endcomment(line, 2) && !as_add_warning2(error, WARNING16, line, i + 1))
-            return (-1);
-        return (1);
-    }
-	return (0);
-}
