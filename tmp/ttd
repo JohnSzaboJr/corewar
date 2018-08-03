@@ -1,7 +1,8 @@
 1. Rendszerezes + Norm (as_error3 done) 
 2. Hibak *
 
-- if != comment_char --> i++ ????
+- akkor is azt irja h after comment, ha nem volt comment nyito..
+- it thinks there is a comment when there is only name, and then some spaces on next line... same issue with name...
 - Dav champjai es tesztje
 - dev random...
 - missing name... what does it do?
