@@ -1,14 +1,7 @@
-1. Rendszerezes
-2. Hibak*
+1. Rendszerezes + Norm (as_error3 done) *
+2. Hibak 
 
-- lengthbol eleg egy error messgae
-- can register be 28??? (over max?)
-- ha kilep max length miatt, akkor utana nem tudja h comment jon (misaka)
-- unnecessary empty lines a legelejen,
-ill name es comment kozott
-- multiline .name && .comment
-- Ha name es commentben " utan van ; vagy # akkor az nem comment!?
-- tesztbol kiderulo hibak...
+- if != comment_char --> i++ ????
 - Dav champjai es tesztje
 - dev random...
 - missing name... what does it do?
