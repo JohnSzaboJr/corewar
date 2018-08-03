@@ -34,33 +34,33 @@ static void	as_bw_sparams(char *line, int *i)
 	as_k(2);
 }
 
-int			as_get_params(char *line, t_list_label **label, t_list_byte **code, t_flags *f)
+int			as_get_par(char *l, t_list_label **lab, t_list_byte **c, t_flags *f)
 {
 	int			i;
 	t_list_byte	*encoding;
 	t_list_byte	*op_pos;
 	int			byte_pos;
 
-	op_pos = *code;
-	byte_pos = as_code_size(*code) - 1;
-	if (!as_gparams_init(&i, code, line, &encoding))
+	op_pos = *c;
+	byte_pos = as_code_size(*c) - 1;
+	if (!as_gparams_init(&i, c, l, &encoding))
 		return (0);
-	while (line[i])
+	while (l[i])
 	{
-		as_bw_sparams(line, &i);
-		if ((((line[as_j(0, 0)] == 'r') && !as_sr(code, &encoding, line))) || 
-		((as_dir(line) == 2 && as_enc(&encoding, 2) &&
-		!as_dlabel(line, label, byte_pos, code)) ||
-		(as_dir(line) == 1 && as_enc(&encoding, 2) && !as_sd(line, code)) ||
-		(as_ind(line) == 2 && as_enc(&encoding, 5) &&
-		!as_ilabel(line, label, byte_pos, code)) ||
-		(as_ind(line) == 1 && as_enc(&encoding, 5) && !as_si(line, code))))
+		as_bw_sparams(l, &i);
+		if ((((l[as_j(0, 0)] == 'r') && !as_sr(c, &encoding, l))) ||
+		((as_dir(l) == 2 && as_enc(&encoding, 2) &&
+		!as_dlabel(l, lab, byte_pos, c)) ||
+		(as_dir(l) == 1 && as_enc(&encoding, 2) && !as_sd(l, c)) ||
+		(as_ind(l) == 2 && as_enc(&encoding, 5) &&
+		!as_ilabel(l, lab, byte_pos, c)) ||
+		(as_ind(l) == 1 && as_enc(&encoding, 5) && !as_si(l, c))))
 			return (0);
-		as_skip_space(line, &i);
-		if (line[i])
+		as_skip_space(l, &i);
+		if (l[i])
 			i++;
 	}
-	return (as_pa(f, code, encoding, &op_pos));
+	return (as_pa(f, c, encoding, &op_pos));
 }
 
 int			as_get_command(char *line, int i, t_list_byte **code, t_flags *f)
@@ -80,5 +80,23 @@ int			as_get_command(char *line, int i, t_list_byte **code, t_flags *f)
 		as_write_byte(*code);
 		ft_putchar('\n');
 	}
+	return (1);
+}
+
+int			as_store_magic(t_list_byte **code)
+{
+	int			magic;
+	int			i;
+
+	i = 4;
+	magic = COREWAR_EXEC_MAGIC;
+	while (i)
+	{
+		if (!(as_add_byte(code, magic % 256, 0)))
+			return (0);
+		magic = (magic - (magic % (256))) / (256);
+		i--;
+	}
+	as_rlist(code);
 	return (1);
 }

@@ -6,7 +6,7 @@
 #    By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 19:09:41 by jszabo            #+#    #+#              #
-#    Updated: 2018/07/29 14:33:29 by jszabo           ###   ########.fr        #
+#    Updated: 2018/08/03 14:33:29 by jszabo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,11 +30,11 @@ OBJS_DIR = ./objs/
 SRCS_DIR = ./srcs/
 
 FILES = as_d_error as_d_param \
-as_error_check as_error_check2 as_error_check3 \
+as_error_check as_error_check2 as_error_check3 as_error_check4 as_error_check5 \
 as_error_print as_error_print2 as_error_print3 as_error_print4 as_error_print5 \
 as_error_tracking as_error_tracking2 \
-as_error as_error2 as_error3 as_error4\
-as_free as_i_error as_i_param as_init \
+as_error as_error2 as_error3 as_error4 \
+as_free as_i_error as_i_param as_init as_init2 \
 as_output as_output2 as_output3 \
 as_param \
 as_parse as_parse2 as_parse3 \

@@ -53,23 +53,30 @@ int			as_parse_loop(
 char *line, t_list_error **error, t_list_label **label, int *bc)
 {
 	static int	sec = 0;
+	static int	suc = 0;
+	int			save;
 
 	if (as_line_nr(0) >= MAX_LINE_NUM)
 	{
 		as_err1(ERROR37, 0, NULL, 0);
 		return (0);
 	}
-	if (!line[0] && sec == 2)
+	if (!line[0] && !suc)
 		as_empty_line_check(error, 1, line);
 	else if (!as_empty_line_check(error, 0, line))
 		return (as_free_line(line));
 	as_endcomment(line, 0);
 	if (line[0] && line[0] != COMMENT_CHAR)
 	{
+		save = sec;
 		if ((sec == 2 && !as_p_ops(line, error, label, bc)) ||
 		(sec == 1 && !as_pcomment(line, &sec, error, bc)) ||
 		(sec == 0 && !as_pname(line, &sec, error, bc)))
 			return (as_free_line(line));
+		if (sec > save)
+			suc = 0;
+		else if (sec == 0 || sec == 1)
+			suc = 1;
 	}
 	return (sec + 1);
 }

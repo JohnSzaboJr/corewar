@@ -18,24 +18,15 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-static int	as_ssize(t_list_byte **size, t_list_byte *code)
+static int	as_store_end(t_list_byte **s, t_list_byte **code, int p, char *fn)
 {
-	int	s;
-	int	i;
-
-	i = 0;
-	s = as_code_size(code) - PROG_NAME_LENGTH - COMMENT_LENGTH - 16;
-	while (i < 4)
-    {
-		(*size)->type = 6;
-        (*size)->byte = (s >> (8 * i)) & 0xff;
-        (*size) = (*size)->next;
-        i++;
-    }
+	if (!as_ssize(s, *code) || !as_rlist(code) ||
+	(p && !as_plist(*code)) || !as_wfile(code, fn) || !as_free(code))
+		return (0);
 	return (1);
 }
 
-static int as_store_commands(char *l, t_list_byte **code, t_list_label **label, t_flags *f)
+static int	as_scom(char *l, t_list_byte **c, t_list_label **la, t_flags *f)
 {
 	int				i;
 	int				j;
@@ -46,15 +37,25 @@ static int as_store_commands(char *l, t_list_byte **code, t_list_label **label, 
 	as_skip_space(l, &i);
 	if (!l[i])
 		return (1);
-	j = as_get_command(l, i, code, f);
+	j = as_get_command(l, i, c, f);
 	if (!j)
 		return (0);
-	if (j != -1 && !as_get_params(l, label, code, f))
+	if (j != -1 && !as_get_par(l, la, c, f))
 		return (0);
 	return (1);
 }
 
-static int as_store_nc(char *line, int *sec, t_list_byte **c, t_list_byte **s)
+static void	as_store_nc_suc(int *suc, int *i, int *length, int *sec)
+{
+	if (*suc)
+	{
+		*i = 0;
+		*length = (*sec) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
+	}
+	*suc = 1;
+}
+
+static int	as_store_nc(char *line, int *sec, t_list_byte **c, t_list_byte **s)
 {
 	int			i;
 	int			length;
@@ -68,12 +69,7 @@ static int as_store_nc(char *line, int *sec, t_list_byte **c, t_list_byte **s)
 			return (1);
 		as_store_name_comment_init(line, &i, *sec, &length);
 	}
-	else
-	{
-		i = 0;
-		length = (*sec) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
-	}
-	suc = 1;
+	as_store_nc_suc(&suc, &i, &length, sec);
 	if (!(ret = as_store_non_zero(length, line, &i, c)))
 		return (0);
 	if (ret == 2)
@@ -81,28 +77,10 @@ static int as_store_nc(char *line, int *sec, t_list_byte **c, t_list_byte **s)
 		if (!as_store_zero(i, *sec, c))
 			return (0);
 		if (!(*sec))
-		*s = *c;
+			*s = *c;
 		suc = 0;
 		(*sec)++;
 	}
-	return (1);
-}
-
-int			as_store_magic(t_list_byte **code)
-{
-	int			magic;
-	int			i;
-
-	i = 4;
-	magic = COREWAR_EXEC_MAGIC;
-	while (i)
-	{
-		if (!(as_add_byte(code, magic % 256, 0)))
-        	return (0);
-		magic = (magic - (magic % (256))) / (256);
-		i--;
-	}
-	as_rlist(code);
 	return (1);
 }
 
@@ -121,7 +99,7 @@ int			as_store(int fd, t_list_label **label, char *filename, t_flags *f)
 		if (line[0] && line[0] != COMMENT_CHAR)
 		{
 			as_a_line(f, sec, code, line);
-			if (sec == 2 && !as_store_commands(line, &code, label, f))
+			if (sec == 2 && !as_scom(line, &code, label, f))
 				return (as_free_line(line));
 		}
 		if ((sec == 0 || sec == 1) && !as_store_nc(line, &sec, &code, &size))
@@ -130,8 +108,5 @@ int			as_store(int fd, t_list_label **label, char *filename, t_flags *f)
 		free(line);
 	}
 	free(line);
-	if (!as_ssize(&size, code) || !as_rlist(&code) ||
-	(f->p && !as_plist(code)) || !as_wfile(&code, filename) || !as_free(&code))
-		return (0);
-	return (1);
+	return (as_store_end(&size, &code, f->p, filename));
 }

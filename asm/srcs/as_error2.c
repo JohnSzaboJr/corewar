@@ -75,7 +75,7 @@ int		as_add_error_noline(t_list_error **error, char *message)
 	return (1);
 }
 
-int	as_add_label_error(t_list_error **error, char *line, int column_nr, int j)
+int		as_add_label_error(t_list_error **error, char *line, int cnr, int j)
 {
 	t_list_error	*new;
 	char			c;
@@ -87,13 +87,13 @@ int	as_add_label_error(t_list_error **error, char *line, int column_nr, int j)
 		return (as_malloc_error1(error, 4));
 	ft_strcpy(new->line, line);
 	line[j] = '\0';
-	if (!(new->message = ft_strnew(ft_strlen(line + column_nr))))
+	if (!(new->message = ft_strnew(ft_strlen(line + cnr))))
 		return (as_malloc_error1(error, 4));
-	ft_strcpy(new->message, line + column_nr);
+	ft_strcpy(new->message, line + cnr);
 	line[j] = c;
 	new->type = 4;
 	new->line_nr = as_line_nr(0);
-	new->column_nr = column_nr;
+	new->column_nr = cnr;
 	new->next = *error;
 	*error = new;
 	as_endcomment(line, 0);

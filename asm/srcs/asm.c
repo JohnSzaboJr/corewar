@@ -21,6 +21,7 @@
 static int	as_open_close(char *filename, int *fd, int a)
 {
 	int	l;
+
 	if (a)
 	{
 		if (close(*fd) < 0)

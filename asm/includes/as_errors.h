@@ -13,7 +13,7 @@
 #ifndef AS_ERRORS_H
 # define AS_ERRORS_H
 
-#define MAX_LINE_LENGTH 1000
+#define MAX_LINE_LENGTH 300
 #define MAX_LINE_NUM 300
 #define MAX_ERROR_SIZE 40
 #define LABEL_SIZE 20

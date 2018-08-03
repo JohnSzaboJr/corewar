@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/18 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/08/02 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/08/03 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,147 +18,15 @@
 #include "colors.h"
 #include <fcntl.h>
 
-static int	as_check_quot(int *i, t_list_error **err, char *line, char *message)
-{
-	if (line[*i] != '"')
-	{
-		if (!as_add_error(err, message, line, (*i) + 1))
-			return (0);
-	}
-	else
-	{
-		as_endcomment(line, 1);
-		return (2);
-	}
-	return (1);
-}
-
-static void	as_ccheck_init(int *bc, int *i, int *j, char *line)
-{
-	*bc = (*bc) + COMMENT_LENGTH + 8;
-	*i = ft_strlen(COMMENT_CMD_STRING);
-	*j = *i;
-	as_skip_space(line, i);	
-}
-
-static void	as_ncheck_init(int *bc, int *i, int *j, char *line)
-{
-	*bc = (*bc) + PROG_NAME_LENGTH + 4;
-	*i = ft_strlen(NAME_CMD_STRING);
-	*j = *i;
-	as_skip_space(line, i);
-}
-
-static int	as_set_nline_c(int *i, t_list_error **error, char *line, int *comment)
-{
-	int	ret;
-
-	ret = as_check_quot(i, error, line, ERROR5);
-	if (!ret)
-		return (0);
-	else if (ret == 2)
-		*comment = 1;
-	return (1);
-}
-
-static int	as_set_nline_n(int *i, t_list_error **error, char *line, int *comment)
-{
-	int	ret;
-
-	ret = as_check_quot(i, error, line, ERROR2);
-	if (!ret)
-		return (0);
-	else if (ret == 2)
-		*comment = 1;
-	return (1);
-}
-
-static int	as_ccheck1(char *line, int *i, int *j, t_list_error **error)
-{
-	if (!as_skip_name(line, i, j))
-	{
-		if (!as_add_error(error, ERROR17, line, *j + 1))
-			return (0);
-		return (2);
-	}
-	if ((!((*i) - *j) && line[*i] == '"' && !as_add_warning(error, WARNING5, line, (*i) + 1)))
-		return (0);
-	if (!((*i) - *j) && line[*i] == '"')
-		return (2);
-	return (1);
-}
-
-static int	as_ncheck1(char *line, int *i, int *j, t_list_error **error)
-{
-	if (!as_skip_name(line, i, j))
-	{
-		if (!as_add_error(error, ERROR17, line, *j + 1))
-			return (0);
-		return (2);
-	}
-	if ((!((*i) - *j) && line[*i] == '"' && !as_add_error(error, ERROR3, line, (*i) + 1)))
-		return (0);
-	if (!((*i) - *j) && line[*i] == '"')
-		return (2);
-	return (1);
-}
-
-static int	as_clength_e(int length, t_list_error **error, char *line, int *i)
-{
-	if (((length > COMMENT_LENGTH) &&
-	!as_add_warning(error, WARNING7, line, (*i) + 2)))
-		return (0);
-	if (line[*i + 1] && !as_add_warning(error, WARNING6, line, (*i) + 1))
-		return (0);
-	return (2);
-}
-
-static int	as_nlength_e(int length, t_list_error **error, char *line, int *i)
-{
-	if (((length > COMMENT_LENGTH) &&
-	!as_add_warning(error, WARNING3, line, (*i) + 2)))
-		return (0);
-	if (line[*i + 1] && !as_add_warning(error, WARNING2, line, (*i) + 1))
-		return (0);
-	return (2);
-}
-
-static int	as_ccheck_init2(char *line, int *i, int *j, t_list_error **error)
+static int	as_ccheck_init2(char *line, int *i, int *j)
 {
 	as_endcomment(line, 1);
 	*i = 0;
 	if (!as_skip_name(line, i, j))
 	{
-		if (!as_add_error(error, ERROR17, line, *j + 1))
-			return (0);
-		return (2);
+		as_err1(ERROR17, as_line_nr(0), line, *j + 1);
+		return (0);
 	}
-	return (1);
-}
-
-static int	as_c_end(int length, t_list_error **error, char *line, int *i)
-{
-	if ((length > COMMENT_LENGTH) &&
-	!as_add_warning(error, WARNING7, line, (*i) + 2))
-		return (0);
-	if (line[*i] && line[*i] == '"' && line[*i + 1] &&
-	!as_add_warning(error, WARNING6, line, (*i) + 2))
-		return (0);
-	if (line[*i] && line[*i] == '"')
-		return (2);
-	return (1);
-}
-
-static int	as_n_end(int length, t_list_error **error, char *line, int *i)
-{
-	if ((length > COMMENT_LENGTH) &&
-	!as_add_warning(error, WARNING3, line, (*i) + 2))
-		return (0);
-	if (line[*i] && line[*i] == '"' && line[*i + 1] &&
-	!as_add_warning(error, WARNING2, line, (*i) + 2))
-		return (0);
-	if (line[*i] && line[*i] == '"')
-		return (2);
 	return (1);
 }
 
@@ -183,7 +51,7 @@ int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 	}
 	else
 	{
-		if ((ret = as_ccheck_init2(line, i, &j, error)) != 1)
+		if ((ret = as_ccheck_init2(line, i, &j)) != 1)
 			return (ret);
 		length = length + (*i) - j + 1;
 		return (as_c_end(length, error, line, i));
@@ -212,7 +80,7 @@ int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 	}
 	else
 	{
-		if ((ret = as_ccheck_init2(line, i, &j, error)) != 1)
+		if ((ret = as_ccheck_init2(line, i, &j)) != 1)
 			return (ret);
 		length = length + (*i) - j + 1;
 		return (as_n_end(length, error, line, i));

@@ -18,10 +18,10 @@
 #include "colors.h"
 #include <fcntl.h>
 
-static int as_d_chars(char *line, int i, int j, t_list_error **error)
+static int	as_d_chars(char *line, int i, int j, t_list_error **error)
 {
-	char    c;
-	int     k;
+	char	c;
+	int		k;
 
 	k = i;
 	while (line[i] != DIRECT_CHAR && !ft_isspace(line[i]))
@@ -46,7 +46,7 @@ static int as_d_chars(char *line, int i, int j, t_list_error **error)
 	return (1);
 }
 
-static int as_d_length(char *line, int i, int j, t_list_error **error)
+static int	as_d_length(char *line, int i, int j, t_list_error **error)
 {
 	char c;
 
@@ -65,7 +65,7 @@ static int as_d_length(char *line, int i, int j, t_list_error **error)
 	return (1);
 }
 
-static int as_d_value(char *line, int *i, int j, t_list_error **error)
+static int	as_d_value(char *line, int *i, int j, t_list_error **error)
 {
 	int ret;
 
@@ -95,7 +95,7 @@ static int	as_d_val_type(char *line, int *i, int *ret, t_list_error **error)
 	return (1);
 }
 
-int	as_d_e(char *line, int *i, t_list_error **error, int *ps)
+int			as_d_e(char *line, int *i, t_list_error **error, int *ps)
 {
 	int j;
 	int ret;

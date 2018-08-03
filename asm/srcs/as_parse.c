@@ -95,13 +95,17 @@ int			as_pname(char *line, int *section, t_list_error **error, int *bc)
 		if (!(ret = as_name_check(&i, line, error, bc)))
 			return (0);
 		if (ret == 2)
+		{
 			(*section)++;
+			as_length_e(0);
+		}
 		return (1);
 	}
 	*bc = (*bc) + PROG_NAME_LENGTH + 4;
 	if (!as_add_error(error, ERROR1, line, 1))
 		return (0);
 	(*section)++;
+	as_length_e(0);
 	return (1);
 }
 
@@ -119,12 +123,16 @@ int			as_pcomment(char *line, int *section, t_list_error **error, int *bc)
 		if (!(ret = as_comment_check(&i, line, error, bc)))
 			return (0);
 		if (ret == 2)
+		{
 			(*section)++;
+			as_length_e(0);
+		}
 		return (1);
 	}
 	*bc = (*bc) + COMMENT_LENGTH + 8;
 	if (!as_add_error(error, ERROR7, line, 1))
 		return (0);
 	(*section)++;
+	as_length_e(0);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/19 14:31:23 by jszabo            #+#    #+#             */
-/*   Updated: 2018/07/20 14:35:38 by jszabo           ###   ########.fr       */
+/*   Updated: 2018/08/03 14:35:38 by jszabo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,21 @@
 #include "as_errors.h"
 #include "colors.h"
 #include <fcntl.h>
+
+int	as_check_quot(int *i, t_list_error **err, char *line, char *message)
+{
+	if (line[*i] != '"')
+	{
+		if (!as_add_error(err, message, line, (*i) + 1))
+			return (0);
+	}
+	else
+	{
+		as_endcomment(line, 1);
+		return (2);
+	}
+	return (1);
+}
 
 int	as_type_e(int co, int k, int a)
 {
@@ -54,10 +69,11 @@ int	as_check_spaces_line(char *line, t_list_error **error)
 
 	i = 0;
 	if (as_skip_space(line, &i) == (int)ft_strlen(line))
-    {
-        if (!as_endcomment(line, 2) && !as_add_warning2(error, WARNING16, line, i + 1))
-            return (-1);
-        return (1);
-    }
+	{
+		if (!as_endcomment(line, 2) &&
+		!as_add_warning2(error, WARNING16, line, i + 1))
+			return (-1);
+		return (1);
+	}
 	return (0);
 }

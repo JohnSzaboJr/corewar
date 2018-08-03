@@ -21,7 +21,7 @@
 int	as_add_error(t_list_error **error, char *message, char *line, int column_nr)
 {
 	t_list_error	*new;
-	
+
 	as_endcomment(line, 1);
 	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
 	!(new->line = ft_strnew(ft_strlen(line))) ||
@@ -78,7 +78,7 @@ int	as_add_warning2(t_list_error **error, char *message, char *line, int cnr)
 	return (1);
 }
 
-int as_add_note(t_list_error **error, char *message, int cnr)
+int	as_add_note(t_list_error **error, char *message, int cnr)
 {
 	t_list_error	*new;
 
