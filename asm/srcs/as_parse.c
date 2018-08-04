@@ -115,24 +115,12 @@ int			as_pcomment(char *line, int *section, t_list_error **error, int *bc)
 	int ret;
 
 	ret = 0;
-	if ((*bc > 4 + PROG_NAME_LENGTH) || (!(ft_strncmp(line, COMMENT_CMD_STRING,
-		ft_strlen(COMMENT_CMD_STRING))) &&
-		(ft_isspace(line[ft_strlen(COMMENT_CMD_STRING)]) ||
-		line[ft_strlen(COMMENT_CMD_STRING)] == '"')))
-	{
-		if (!(ret = as_comment_check(&i, line, error, bc)))
-			return (0);
-		if (ret == 2)
-		{
-			(*section)++;
-			as_length_e(0);
-		}
-		return (1);
-	}
-	*bc = (*bc) + COMMENT_LENGTH + 8;
-	if (!as_add_error(error, ERROR7, line, 1))
+	if (!(ret = as_comment_check(&i, line, error, bc)))
 		return (0);
-	(*section)++;
-	as_length_e(0);
+	if (ret == 2)
+	{
+		(*section)++;
+		as_length_e(0);
+	}
 	return (1);
 }

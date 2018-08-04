@@ -30,6 +30,20 @@ static int	as_ccheck_init2(char *line, int *i, int *j)
 	return (1);
 }
 
+static int	as_comment_spec(char *line, t_list_error **error)
+{
+	if (!(!(ft_strncmp(line, COMMENT_CMD_STRING,
+	ft_strlen(COMMENT_CMD_STRING))) &&
+	(ft_isspace(line[ft_strlen(COMMENT_CMD_STRING)]) ||
+	line[ft_strlen(COMMENT_CMD_STRING)] == '"')))
+	{
+		if (!as_add_error(error, ERROR7, line, 1))
+			return (0);
+		return (2);
+	}
+	return (1);
+}
+
 int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 {
 	int			j;
@@ -40,6 +54,8 @@ int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 	if (!comment)
 	{
 		as_ccheck_init(bc, i, &j, line);
+		if ((ret = as_comment_spec(line, error)) != 1)
+			return (ret);
 		if (((j == *i && !as_add_warning(error, WARNING4, line, j + 1))) ||
 		!as_set_nline_c(i, error, line, &comment))
 			return (0);
