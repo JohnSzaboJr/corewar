@@ -43,7 +43,9 @@ int	as_unexp_check(t_list_error **error, char *line)
 {
 	if (as_empty_line(3) == 2 &&
 	(!as_add_error(error, ERROR33, line, ft_strlen(line)) ||
-	!as_add_note(error, NOTE2, ft_strlen(line))))
+	!as_add_note(
+	error, " add a new line to the end of the file to silence this warning\n",
+	ft_strlen(line))))
 		return (as_free_line(line));
 	return (1);
 }
@@ -65,12 +67,12 @@ int	as_empty_line_check(t_list_error **error, int a, char *line)
 	return (1);
 }
 
-int	as_ec(char **line, t_list_error **error, int bc, int i)
+int	as_ec(char **line, t_list_error **error, int bc)
 {
 	int	code_length;
 
 	code_length = bc - PROG_NAME_LENGTH - COMMENT_LENGTH - 16;
-	if (i < 3 && !as_add_error_noline(error, ERROR29))
+	if (code_length <= 0 && !as_add_error_noline(error, ERROR29))
 		return (as_free_line(*line));
 	if (code_length >= CHAMP_MAX_SIZE && !as_add_error_noline(error, ERROR32))
 		return (as_free_line(*line));

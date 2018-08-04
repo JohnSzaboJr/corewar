@@ -22,31 +22,29 @@ int			as_pp_loop(char *l, t_list_label **lab, t_list_error **err, int *ps)
 {
 	int ret;
 	int i;
+	int	p;
 
+	p = as_get_pos(0, 0);
 	ret = 0;
 	i = as_i(0, 0);
 	if (!as_bw_params(&i, l, err) || ((l[as_j(0, 0)] == 'r') &&
-	!as_r_e(l, &i, err, ps)) || (as_dir(l) && !(ret = as_dlab_e(l, lab, err))))
+	!as_r_e(l, &i, err, ps)) || (as_d(l) && !(ret = as_dlab_e(l, lab, err))))
 		return (0);
-	if (as_dir(l) == 2 && ret != -1 && (as_get_pos(0, 0) == 8 ||
-	as_get_pos(0, 0) == 9 || as_get_pos(0, 0) == 10 ||
-	as_get_pos(0, 0) == 11 || as_get_pos(0, 0) == 13 || as_get_pos(0, 0) == 14))
+	if (as_d(l) == 2 && ret != -1 && ((p > 7 && p < 12) || p == 13 || p == 14))
 		*ps = *ps + IND_SIZE;
-	else if (as_dir(l) == 2 && ret != -1)
-		*ps = *ps + DIR_SIZE;
-	else if (as_dir(l) && ret == -1 && !as_d_e(l, &i, err, ps))
+	*ps = (as_d(l) == 2 && ret != -1 &&
+	!((p > 7 && p < 12) || p == 13 || p == 14)) ? (*ps + DIR_SIZE) : (*ps);
+	if ((as_d(l) == 1 && ret == -1 && !as_d_e(l, &i, err, ps)) ||
+	(as_ind(l) == 2 && (((-1 == as_type_e(p, as_k(0), 8)) &&
+	(!as_add_error(err, ERROR15, l, as_j(0, 0) + 1) ||
+	!as_ant(err, as_get_err_par(p, as_k(0)), l, as_j(0, 0) + 1))) ||
+	!as_lab_e(as_j(0, 0) + 1, l, err, lab))))
 		return (0);
-	if (as_ind(l) == 2 && (((-1 == as_type_e(as_get_pos(0, 0), as_k(0), 8)) &&
-	!as_add_error(err, ERROR15, l, as_j(0, 0) + 1)) ||
-	!as_lab_e(as_j(0, 0) + 1, l, err, lab)))
-		return (0);
-	if (as_ind(l) == 2)
-		*ps = *ps + 2;
+	*ps = (as_ind(l) == 2) ? (*ps + 2) : (*ps);
 	if ((as_ind(l) == 1 && !as_i_e(l, &i, err, ps)) ||
 	(!as_check_valid_params(err, l) || !as_skip_to_next_param(l, err, &i)))
 		return (0);
-	as_i(i, 1);
-	return (1);
+	return (as_i(i, 1) + 1);
 }
 
 int			as_parse_loop(
@@ -57,10 +55,7 @@ char *line, t_list_error **error, t_list_label **label, int *bc)
 	int			save;
 
 	if (as_line_nr(0) >= MAX_LINE_NUM)
-	{
-		as_err1(ERROR37, 0, NULL, 0);
-		return (0);
-	}
+		return (as_err1(ERROR37, 0, NULL, 0) - 1);
 	if (!line[0] && !suc)
 		as_empty_line_check(error, 1, line);
 	else if (!as_empty_line_check(error, 0, line))

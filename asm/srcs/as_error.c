@@ -95,7 +95,7 @@ int	as_add_note(t_list_error **error, char *message, int cnr)
 	return (1);
 }
 
-int	as_add_note_type(t_list_error **error, char *message, char *line, int cnr)
+int	as_ant(t_list_error **error, char *message, char *line, int cnr)
 {
 	t_list_error	*new;
 

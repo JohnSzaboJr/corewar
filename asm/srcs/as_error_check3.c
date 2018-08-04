@@ -24,6 +24,7 @@ int	as_check_quot(int *i, t_list_error **err, char *line, char *message)
 	{
 		if (!as_add_error(err, message, line, (*i) + 1))
 			return (0);
+		return (2);
 	}
 	else
 	{
@@ -59,7 +60,7 @@ int	as_check_max_length(char *line, t_list_error **error)
 
 int	as_check_valid_params(t_list_error **error, char *line)
 {
-	return (line[as_j(0, 0)] != 'r' && !as_dir(line) && !as_ind(line) &&
+	return (line[as_j(0, 0)] != 'r' && !as_d(line) && !as_ind(line) &&
 	!as_add_error(error, ERROR11, line, as_j(0, 0) + 1)) ? (0) : (1);
 }
 

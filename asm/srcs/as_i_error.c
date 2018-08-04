@@ -79,7 +79,7 @@ int			as_i_e(char *line, int *i, t_list_error **error, int *params_size)
 	{
 		if (!as_add_error(error, ERROR15, line, j))
 			return (0);
-		if (!as_add_note_type(error, as_get_err_par(pos, as_k(0)), line, j))
+		if (!as_ant(error, as_get_err_par(pos, as_k(0)), line, j))
 			return (0);
 	}
 	if (ret != -1)

@@ -71,7 +71,7 @@ int	as_dlabel(char *l, t_list_label **label, int byte_pos, t_list_byte **code)
 	return (1);
 }
 
-int	as_dir(char *line)
+int	as_d(char *line)
 {
 	int j;
 	int ret;

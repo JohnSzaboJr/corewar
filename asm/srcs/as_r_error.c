@@ -97,7 +97,7 @@ int			as_r_e(char *line, int *i, t_list_error **error, int *params_size)
 		if (!(ret = as_r_value(line, i, j - 1, error)) ||
 		(((ret = as_type_e(pos, as_k(0), 0)) == -1) &&
 		(!as_add_error(error, ERROR15, line, j) ||
-		!as_add_note_type(error, as_get_err_par(pos, as_k(0)), line, j))))
+		!as_ant(error, as_get_err_par(pos, as_k(0)), line, j))))
 			return (0);
 	}
 	if (ret != -1)

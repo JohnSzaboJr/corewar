@@ -35,7 +35,7 @@ int		as_ssize(t_list_byte **size, t_list_byte *code);
 
 int		as_sd(char *line, t_list_byte **code);
 int		as_dlabel(char *line, t_list_label **lab, int bp, t_list_byte **c);
-int		as_dir(char *line);
+int		as_d(char *line);
 
 /*
 **      Functions to store indirect parameters
@@ -105,7 +105,7 @@ void	as_label_error(char *message, int lnr, char *line, int cnr);
 int		as_add_error(t_list_error **err, char *message, char *l, int cnr);
 int		as_add_warning(t_list_error **err, char *message, char *l, int cnr);
 int		as_add_warning2(t_list_error **err, char *message, char *l, int cnr);
-int		as_add_note_type(t_list_error **err, char *message, char *l, int cnr);
+int		as_ant(t_list_error **err, char *message, char *l, int cnr);
 int		as_add_label_error(t_list_error **err, char *l, int cnr, int j);
 int		as_add_error_noline(t_list_error **err, char *message);
 int		as_add_note_cmd(t_list_error **err, char *message, char *l, int cnr);
@@ -125,7 +125,7 @@ int		as_add_note(t_list_error **error, char *message, int cnr);
 **      as_error_check5.c
 */
 
-int		as_ec(char **line, t_list_error **error, int bc, int i);
+int		as_ec(char **line, t_list_error **error, int bc);
 int		as_lc(char *line, char *filename);
 int		as_empty_line_check(t_list_error **error, int a, char *line);
 int		as_unexp_check(t_list_error **error, char *line);

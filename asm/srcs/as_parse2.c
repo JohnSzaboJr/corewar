@@ -73,7 +73,7 @@ int		as_dlab_e(char *line, t_list_label **label, t_list_error **error)
 	{
 		if ((-1 == as_type_e(pos, as_k(0), 4)) &&
 		(!as_add_error(error, ERROR15, line, j + 1) ||
-		!as_add_note_type(error, as_get_err_par(pos, as_k(0)), line, j)))
+		!as_ant(error, as_get_err_par(pos, as_k(0)), line, j)))
 			return (0);
 		return (as_lab_e(j + 2, line, error, label));
 	}

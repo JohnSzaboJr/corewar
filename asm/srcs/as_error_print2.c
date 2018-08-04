@@ -27,7 +27,7 @@ int	as_malloc_error1(t_list_error **error, int a)
 	else if (a == 2)
 		ft_putstr_fd(WHITE " (as_add_warning)\n" RESET, 2);
 	else if (a == 3)
-		ft_putstr_fd(WHITE " (as_add_note_type)\n" RESET, 2);
+		ft_putstr_fd(WHITE " (as_ant)\n" RESET, 2);
 	else if (a == 4)
 		ft_putstr_fd(WHITE " (as_add_label_error)\n" RESET, 2);
 	else if (a == 5)

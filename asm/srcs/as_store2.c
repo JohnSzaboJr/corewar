@@ -49,9 +49,9 @@ int			as_get_par(char *l, t_list_label **lab, t_list_byte **c, t_flags *f)
 	{
 		as_bw_sparams(l, &i);
 		if ((((l[as_j(0, 0)] == 'r') && !as_sr(c, &encoding, l))) ||
-		((as_dir(l) == 2 && as_enc(&encoding, 2) &&
+		((as_d(l) == 2 && as_enc(&encoding, 2) &&
 		!as_dlabel(l, lab, byte_pos, c)) ||
-		(as_dir(l) == 1 && as_enc(&encoding, 2) && !as_sd(l, c)) ||
+		(as_d(l) == 1 && as_enc(&encoding, 2) && !as_sd(l, c)) ||
 		(as_ind(l) == 2 && as_enc(&encoding, 5) &&
 		!as_ilabel(l, lab, byte_pos, c)) ||
 		(as_ind(l) == 1 && as_enc(&encoding, 5) && !as_si(l, c))))

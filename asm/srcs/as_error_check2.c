@@ -30,12 +30,17 @@ static int	as_ccheck_init2(char *line, int *i, int *j)
 	return (1);
 }
 
-static int	as_comment_spec(char *line, t_list_error **error)
+static int	as_cnspec(char *line, t_list_error **error, int a)
 {
-	if (!(!(ft_strncmp(line, COMMENT_CMD_STRING,
-	ft_strlen(COMMENT_CMD_STRING))) &&
-	(ft_isspace(line[ft_strlen(COMMENT_CMD_STRING)]) ||
-	line[ft_strlen(COMMENT_CMD_STRING)] == '"')))
+	if (a == 0 && !(!(ft_strncmp(line, NAME_CMD_STRING,
+	ft_strlen(NAME_CMD_STRING)))))
+	{
+		if (!as_add_error(error, ERROR1, line, 1))
+			return (0);
+		return (2);
+	}
+	if (a == 1 && !(!(ft_strncmp(line, COMMENT_CMD_STRING,
+	ft_strlen(COMMENT_CMD_STRING)))))
 	{
 		if (!as_add_error(error, ERROR7, line, 1))
 			return (0);
@@ -51,10 +56,13 @@ int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 	static int	length = 0;
 	int			ret;
 
+	if (comment && ((ret = as_ccheck_init2(line, i, &j)) != 1))
+		return (ret);
+	length = (comment) ? length + (*i) - j + 1 : length;
 	if (!comment)
 	{
 		as_ccheck_init(bc, i, &j, line);
-		if ((ret = as_comment_spec(line, error)) != 1)
+		if ((ret = as_cnspec(line, error, 1)) != 1)
 			return (ret);
 		if (((j == *i && !as_add_warning(error, WARNING4, line, j + 1))) ||
 		!as_set_nline_c(i, error, line, &comment))
@@ -66,12 +74,7 @@ int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 			return (as_clength_e(length, error, line, i));
 	}
 	else
-	{
-		if ((ret = as_ccheck_init2(line, i, &j)) != 1)
-			return (ret);
-		length = length + (*i) - j + 1;
 		return (as_c_end(length, error, line, i));
-	}
 	return (1);
 }
 
@@ -82,9 +85,14 @@ int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 	static int	length = 0;
 	int			ret;
 
+	if (name && ((ret = as_ccheck_init2(line, i, &j)) != 1))
+		return (ret);
+	length = (name) ? length + (*i) - j + 1 : length;
 	if (!name)
 	{
 		as_ncheck_init(bc, i, &j, line);
+		if ((ret = as_cnspec(line, error, 0)) != 1)
+			return (ret);
 		if (((j == *i && !as_add_warning(error, WARNING1, line, j + 1))) ||
 		!as_set_nline_n(i, error, line, &name))
 			return (0);
@@ -95,11 +103,6 @@ int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 			return (as_nlength_e(length, error, line, i));
 	}
 	else
-	{
-		if ((ret = as_ccheck_init2(line, i, &j)) != 1)
-			return (ret);
-		length = length + (*i) - j + 1;
 		return (as_n_end(length, error, line, i));
-	}
 	return (1);
 }

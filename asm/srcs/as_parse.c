@@ -87,25 +87,13 @@ int			as_pname(char *line, int *section, t_list_error **error, int *bc)
 	int	ret;
 
 	ret = 0;
-	if ((*bc > 4) || (!(ft_strncmp(line, NAME_CMD_STRING,
-		ft_strlen(NAME_CMD_STRING))) &&
-		(ft_isspace(line[ft_strlen(NAME_CMD_STRING)]) ||
-		line[ft_strlen(NAME_CMD_STRING)] == '"')))
-	{
-		if (!(ret = as_name_check(&i, line, error, bc)))
-			return (0);
-		if (ret == 2)
-		{
-			(*section)++;
-			as_length_e(0);
-		}
-		return (1);
-	}
-	*bc = (*bc) + PROG_NAME_LENGTH + 4;
-	if (!as_add_error(error, ERROR1, line, 1))
+	if (!(ret = as_name_check(&i, line, error, bc)))
 		return (0);
-	(*section)++;
-	as_length_e(0);
+	if (ret == 2)
+	{
+		(*section)++;
+		as_length_e(0);
+	}
 	return (1);
 }
 

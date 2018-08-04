@@ -90,7 +90,7 @@ static int	as_d_val_type(char *line, int *i, int *ret, t_list_error **error)
 		return (0);
 	if ((-1 == (*ret = as_type_e(pos, as_k(0), 4))) &&
 	(!as_add_error(error, ERROR15, line, j) ||
-	!as_add_note_type(error, as_get_err_par(pos, as_k(0)), line, j)))
+	!as_ant(error, as_get_err_par(pos, as_k(0)), line, j)))
 		return (0);
 	return (1);
 }
