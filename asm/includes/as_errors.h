@@ -14,7 +14,7 @@
 # define AS_ERRORS_H
 
 # define MAX_LINE_LENGTH 1000
-# define MAX_LINE_NUM 300
+# define MAX_LINE_NUM 500
 # define MAX_ERROR_SIZE 40
 # define LABEL_SIZE 20
 # define D_LENGTH_CHECK 0
@@ -73,6 +73,8 @@
 # define WARNING14    " unnecessary empty lines at the end of the file\n"
 # define WARNING15    " unnecessary spaces at the end of the line\n"
 # define WARNING16    " line only consists of unnecessary spaces\n"
+# define WARNING17    " unnecessary spaces before name specifier\n"
+# define WARNING18    " unnecessary spaces before comment specifier\n"
 # define NOTE1        " file should end with a single new line\n"
 
 #endif

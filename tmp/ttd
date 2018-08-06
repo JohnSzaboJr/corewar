@@ -1,11 +1,23 @@
-1. Rendszerezes + Norm (as_init2 done)
-2. Hibak *
+1. Rendszerezes + Norm (as_init2 done) *
+2. Hibak 
 
-- Dav champjai es tesztje
+- .name and .comment can be switched!
+- Vesszo a sor vegen (csak dir karakter utan?) - nem ad hibat
+- invalid param column nr incorrect
 - dev random...
 - missing name... what does it do?
 - norm
 
+//
+0ik parsing:
+    - ha normalis order, vagy mast talal -> 0
+    - ha switched -> 1
+1 parsing:
+    - ha switched: parseloop2, ahol fel van cserelve 0 es 1 ertek melletti function.
+2 parsing (storing):
+    - ha switched: as_store_nc2, ahol at van irva ugy, hogy a 0 es 1 felcserelve
+    - emellett amikor 1, es vege, akkor megcsereli oket a code-ban.
+//
 
 
 

@@ -32,14 +32,22 @@ static int	as_ccheck_init2(char *line, int *i, int *j)
 
 static int	as_cnspec(char *line, t_list_error **error, int a)
 {
-	if (a == 0 && !(!(ft_strncmp(line, NAME_CMD_STRING,
-	ft_strlen(NAME_CMD_STRING)))))
+	int i;
+
+	i = 0;
+	as_skip_space(line, &i);
+	if (i > 0 && a == 0 && !as_add_warning2(error, WARNING17, line, i))
+		return (0);
+	if (i > 0 && a == 1 && !as_add_warning2(error, WARNING18, line, i))
+		return (0);
+	if (a == 0 && ft_strncmp(line + i, NAME_CMD_STRING,
+	ft_strlen(NAME_CMD_STRING)))
 	{
 		if (!as_add_error(error, ERROR1, line, 1))
 			return (0);
 		return (2);
 	}
-	if (a == 1 && !(!(ft_strncmp(line, COMMENT_CMD_STRING,
+	if (a == 1 && !(!(ft_strncmp(line + i, COMMENT_CMD_STRING,
 	ft_strlen(COMMENT_CMD_STRING)))))
 	{
 		if (!as_add_error(error, ERROR7, line, 1))

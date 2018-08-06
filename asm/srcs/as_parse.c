@@ -87,6 +87,7 @@ int			as_pname(char *line, int *section, t_list_error **error, int *bc)
 	int	ret;
 
 	ret = 0;
+	i = 0;
 	if (!(ret = as_name_check(&i, line, error, bc)))
 		return (0);
 	if (ret == 2)

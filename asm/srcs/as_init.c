@@ -20,8 +20,10 @@
 
 void	as_store_name_comment_init(char *line, int *i, int section, int *length)
 {
-	*i = (section) ? ft_strlen(COMMENT_CMD_STRING) :
-	ft_strlen(NAME_CMD_STRING);
+	*i = 0;
+	as_skip_space(line, i);
+	*i = (section) ? *i + ft_strlen(COMMENT_CMD_STRING) :
+	*i + ft_strlen(NAME_CMD_STRING);
 	*length = (section) ? COMMENT_LENGTH : PROG_NAME_LENGTH;
 	*i = *i + as_skip_space(line, i) + 1;
 }

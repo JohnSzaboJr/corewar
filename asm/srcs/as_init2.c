@@ -21,7 +21,9 @@
 void	as_ccheck_init(int *bc, int *i, int *j, char *line)
 {
 	*bc = (*bc) + COMMENT_LENGTH + 8;
-	*i = ft_strlen(COMMENT_CMD_STRING);
+	*i = 0;
+	as_skip_space(line, i);
+	*i = *i + ft_strlen(COMMENT_CMD_STRING);
 	*j = *i;
 	as_skip_space(line, i);
 }
@@ -29,7 +31,9 @@ void	as_ccheck_init(int *bc, int *i, int *j, char *line)
 void	as_ncheck_init(int *bc, int *i, int *j, char *line)
 {
 	*bc = (*bc) + PROG_NAME_LENGTH + 4;
-	*i = ft_strlen(NAME_CMD_STRING);
+	*i = 0;
+	as_skip_space(line, i);
+	*i = *i + ft_strlen(NAME_CMD_STRING);
 	*j = *i;
 	as_skip_space(line, i);
 }
