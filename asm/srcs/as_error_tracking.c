@@ -40,7 +40,7 @@ int	as_get_pos(unsigned char byte, int a)
 
 	if (a == 1)
 		pos = 0;
-	while (a == 1 && byte != op_tab[pos].opcode)
+	while (a == 1 && byte != g_op_tab[pos].opcode)
 		pos++;
 	return (pos);
 }

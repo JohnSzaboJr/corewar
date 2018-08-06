@@ -92,6 +92,7 @@ int		as_note_reg(int line_nr, int column_nr);
 int		as_note_type(int line_nr, int column_nr, char *message);
 int		as_note_label(int line_nr, int column_nr, char *message);
 void	as_label_error(char *message, int lnr, char *line, int cnr);
+int		as_writing_error(t_list_byte **code, char *nn);
 
 /*
 **      Functions to store errors before printing them

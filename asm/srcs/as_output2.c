@@ -64,7 +64,7 @@ static void		as_print_a2(int n, t_list_byte **op_pos, int *m, char *str)
 	if (*m == 1)
 		return ;
 	ft_printf(MAGENTA "%s" RESET, str);
-	as_putnspace(ft_strlen(op_tab[as_get_pos(0, 0)].opname));
+	as_putnspace(ft_strlen(g_op_tab[as_get_pos(0, 0)].opname));
 	if (n == 3)
 		ft_printf("  ");
 	ft_printf(MAGENTA "   (%d bytes): " RESET, *m);
@@ -77,7 +77,7 @@ static void		as_print_a1(int n, t_list_byte *code)
 		ft_printf(CYAN "encoding" RESET);
 	if (n == 2)
 		ft_printf(MAGENTA "register" RESET);
-	as_putnspace(ft_strlen(op_tab[as_get_pos(0, 0)].opname));
+	as_putnspace(ft_strlen(g_op_tab[as_get_pos(0, 0)].opname));
 	if (n == 1)
 		ft_printf(CYAN "   (1 byte):  " RESET);
 	if (n == 2)

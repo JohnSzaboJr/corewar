@@ -32,11 +32,11 @@ static void	as_print_msg(int t, t_list_error *e, t_list_label **l, t_flags *f)
 		as_label_error(as_label_sug(e->message, *l), lnr, e->line, cnr + 1);
 	if (t == 5)
 		as_err1(e->message, lnr, NULL, 0);
-	if (t == 2 && !(f->w))
+	if (t == 2 && !(f->v))
 		w = as_war1(e->message, lnr, e->line, cnr);
-	if (t == 9 && (w || f->W || (e->message)[1] == 'a'))
+	if (t == 9 && (w || f->v || (e->message)[1] == 'a'))
 		w = as_write_err(e->message, lnr, cnr, 2);
-	if (t == 10 && f->W && !(f->w))
+	if (t == 10 && f->v && !(f->v))
 		as_war1(e->message, lnr, e->line, cnr);
 	if (t == 3)
 		as_note_type(lnr, cnr, e->message);
@@ -64,7 +64,7 @@ static void	as_error_count(t_list_error *error, int *ec, int *wc, t_flags *f)
 		t = error->type;
 		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7) ?
 		(*ec + 1) : (*ec);
-		if ((t == 2 && !(f->w)) || (t == 10 && !(f->w) && f->W))
+		if ((t == 2 && !(f->v)) || (t == 10 && !(f->v) && f->v))
 			(*wc)++;
 		error = error->next;
 	}

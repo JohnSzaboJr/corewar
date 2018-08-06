@@ -41,11 +41,11 @@ int	as_type_e(int co, int k, int a)
 	T_DIR, T_REG + T_DIR, T_IND + T_DIR, T_REG + T_DIR + T_IND,
 	T_IND, T_REG + T_IND, T_DIR + T_IND, T_REG + T_DIR + T_IND};
 
-	if (k <= op_tab[co].param_count &&
-	op_tab[co].param_type[k - 1] != tab[a] &&
-	op_tab[co].param_type[k - 1] != tab[a + 1] &&
-	op_tab[co].param_type[k - 1] != tab[a + 2] &&
-	op_tab[co].param_type[k - 1] != tab[a + 3])
+	if (k <= g_op_tab[co].param_count &&
+	g_op_tab[co].param_type[k - 1] != tab[a] &&
+	g_op_tab[co].param_type[k - 1] != tab[a + 1] &&
+	g_op_tab[co].param_type[k - 1] != tab[a + 2] &&
+	g_op_tab[co].param_type[k - 1] != tab[a + 3])
 		return (-1);
 	return (1);
 }

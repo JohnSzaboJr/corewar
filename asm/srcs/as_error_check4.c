@@ -65,7 +65,7 @@ int	as_ncheck1(char *line, int *i, int *j, t_list_error **error)
 		return (0);
 	}
 	if ((!((*i) - *j) && line[*i] == '"' &&
-	!as_add_error(error, ERROR3, line, (*i) + 1)))
+	!as_add_warning(error, WARNING19, line, (*i) + 1)))
 		return (0);
 	if (!((*i) - *j) && line[*i] == '"')
 		return (2);

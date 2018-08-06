@@ -72,11 +72,11 @@ int			as_get_command(char *line, int i, t_list_byte **code, t_flags *f)
 	j = as_get_op_pos(line, i);
 	if (j < 0)
 		return (j);
-	if (!(as_add_byte(code, (unsigned char)op_tab[j].opcode, 1)))
+	if (!(as_add_byte(code, (unsigned char)g_op_tab[j].opcode, 1)))
 		return (0);
 	if (f->a)
 	{
-		ft_printf(GREEN "operation %s (1 byte):  " RESET, op_tab[j].opname);
+		ft_printf(GREEN "operation %s (1 byte):  " RESET, g_op_tab[j].opname);
 		as_write_byte(*code);
 		ft_putchar('\n');
 	}

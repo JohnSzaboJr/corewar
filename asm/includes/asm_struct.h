@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ASM_H
-# define ASM_H
+#ifndef ASM_STRUCT_H
+# define ASM_STRUCT_H
 
 typedef struct				s_list_byte
 {
@@ -52,11 +52,11 @@ typedef struct				s_op
 typedef struct				s_flags
 {
 	int						w;
-	int						W;
+	int						v;
 	int						p;
 	int						a;
 }							t_flags;
 
-extern t_op					op_tab[17];
+extern t_op					g_op_tab[17];
 
 #endif

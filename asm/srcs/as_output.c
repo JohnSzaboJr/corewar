@@ -21,30 +21,27 @@
 int			as_wfile(t_list_byte **code, char *filename)
 {
 	int			fd;
-	char		*newname;
+	char		*nn;
 	int			l;
 	t_list_byte	*node;
 
 	node = *code;
 	l = ft_strlen(filename);
-	if (!(newname = ft_strnew(l + 2)))
+	if (!(nn = ft_strnew(l + 2)))
 		return (as_malloc_error2(code, 1));
-	ft_strncpy(newname, filename, l - 1);
-	ft_strcpy(newname + l - 1, "cor");
-	fd = open(newname, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR | S_IWUSR |
-	S_IRGRP | S_IROTH);
+	ft_strncpy(nn, filename, l - 1);
+	ft_strcpy(nn + l - 1, "cor");
+	fd = open(nn, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
+	S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
-	{
-		as_free(code);
-		return (as_err2(ERROR36, newname));
-	}
+		as_writing_error(code, nn);
 	while (*code)
 	{
 		write(fd, &((*code)->byte), 1);
 		(*code) = (*code)->next;
 	}
-	ft_printf("Writing output program to %s\n", newname);
-	free(newname);
+	ft_printf("Writing output program to %s\n", nn);
+	free(nn);
 	*code = node;
 	return (1);
 }
@@ -57,7 +54,7 @@ static void	as_print_zeros(int *j, int *l, t_list_byte **list, t_list_byte **n)
 	if (*j > 16)
 		ft_printf(WHITE "*\n" RESET);
 	while (*j > 16)
-		*j -=16;
+		*j -= 16;
 	*list = *n;
 	*l = *l - *j;
 	while (*l)
@@ -115,7 +112,7 @@ static void	as_print_loop(t_list_byte **list, int *i)
 
 int			as_plist(t_list_byte *list)
 {
-	int	i;
+	int			i;
 	t_list_byte	*node;
 
 	i = 0;

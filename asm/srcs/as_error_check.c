@@ -28,9 +28,9 @@ int	as_check_enough_params(t_list_error **error, char *line, int i)
 	k = as_k(0);
 	if (!k && !as_add_error(error, ERROR9, line, i + 1))
 		return (0);
-	if (k && k < op_tab[pos].param_count)
+	if (k && k < g_op_tab[pos].param_count)
 	{
-		if (!(msg = as_param_error(op_tab[pos].param_count, k, error)))
+		if (!(msg = as_param_error(g_op_tab[pos].param_count, k, error)))
 			return (0);
 		if (!as_add_error(error, msg, line, i + 1))
 			return (as_free_line(msg));

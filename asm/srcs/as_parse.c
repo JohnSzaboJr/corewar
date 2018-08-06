@@ -23,6 +23,7 @@ static int	as_pparams(char *l, t_list_label **lab, t_list_error **err, int *bc)
 	int	i;
 	int	params;
 	int	params_size;
+	int j;
 
 	params = as_pparams_init(&i, l, &params_size);
 	if (params == 2 && !as_add_warning2(err, WARNING11, l, i + 1))
@@ -34,6 +35,11 @@ static int	as_pparams(char *l, t_list_label **lab, t_list_error **err, int *bc)
 			return (0);
 		i = as_i(0, 0);
 	}
+	j = as_j(0, 0);
+	while (l[j] && l[j] != SEPARATOR_CHAR)
+		j++;
+	if (l[j] == SEPARATOR_CHAR && !as_add_error(err, ERROR4, l, j + 1))
+		return (0);
 	if (!as_check_enough_params(err, l, i))
 		return (0);
 	*bc = *bc + params_size;
@@ -46,7 +52,7 @@ static int	as_p_op(char *line, int i, t_list_error **error, int *byte_count)
 	int k;
 
 	j = as_get_op_pos(line, i);
-	k = i + ft_strlen(op_tab[j].opname);
+	k = i + ft_strlen(g_op_tab[j].opname);
 	if (j == -1 || (!ft_isspace(line[k]) && line[k]))
 		return (!as_add_note_cmd(error, ERROR8, line, i + 1)) ? (0) : (-1);
 	(*byte_count)++;

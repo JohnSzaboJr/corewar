@@ -42,19 +42,19 @@ int			as_flags_loop(t_flags **flags, int argc, char **argv, int *pos)
 	while (i < argc)
 	{
 		if ((argv[i][0] != '-' || ft_strlen(argv[i]) != 2) && i != (*pos))
-			return (as_err3(USAGE U2 U3 U4 U5));
+			return (as_err3(USAGE));
 		if (argv[i][0] == '-')
 		{
-			if (argv[i][1] == 'w' && !((*flags)->w))
-				(*flags)->w = 1;
-			else if (argv[i][1] == 'W' && !((*flags)->W))
-				(*flags)->W = 1;
+			if (argv[i][1] == 'w' && !((*flags)->v))
+				(*flags)->v = 1;
+			else if (argv[i][1] == 'W' && !((*flags)->v))
+				(*flags)->v = 1;
 			else if (argv[i][1] == 'p' && !((*flags)->p))
 				(*flags)->p = 1;
 			else if (argv[i][1] == 'a' && !((*flags)->a))
 				(*flags)->a = 1;
 			else
-				return (as_err3(USAGE U2 U3 U4 U5));
+				return (as_err3(USAGE));
 		}
 		i++;
 	}

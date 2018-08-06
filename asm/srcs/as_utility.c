@@ -18,7 +18,7 @@
 #include "colors.h"
 #include <fcntl.h>
 
-int as_code_size(t_list_byte *code)
+int	as_code_size(t_list_byte *code)
 {
 	int i;
 
@@ -94,10 +94,11 @@ int	as_get_op_pos(char *line, int i)
 
 	j = 15;
 	while (j >= 0)
-    {
-        if (!ft_strncmp(op_tab[j].opname, line + i, ft_strlen(op_tab[j].opname)))
-            break ;
-        j--;
-    }
+	{
+		if (!ft_strncmp(
+		g_op_tab[j].opname, line + i, ft_strlen(g_op_tab[j].opname)))
+			break ;
+		j--;
+	}
 	return (j);
 }

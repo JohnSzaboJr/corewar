@@ -20,10 +20,10 @@
 
 void	as_write_bytes(t_list_byte **code, int info, int n)
 {
-	int	i;
-	t_list_byte *node;
-	node = *code;
+	int			i;
+	t_list_byte	*node;
 
+	node = *code;
 	i = 0;
 	while (i < n)
 	{
@@ -50,13 +50,7 @@ int		as_add_byte(t_list_byte **code, unsigned char byte, int type)
 	t_list_byte	*new;
 
 	if (!(new = (t_list_byte *)malloc(sizeof(*new))))
-	{
-		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-		ft_printf(BOLDWHITE ERROR0 RESET);
-		ft_printf(WHITE " (as_add_byte)\n" RESET);
-		as_free(code);
-		return (0);
-	}
+		return (as_malloc_error2(code, 4));
 	new->next = *code;
 	*code = new;
 	(*code)->byte = byte;
@@ -70,28 +64,22 @@ int		as_add_label(t_list_label **label, char *line, int i, int pos)
 
 	if (!(new = (t_list_label *)malloc(sizeof(*new))))
 	{
-		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-		ft_printf(BOLDWHITE ERROR0 RESET);
-		ft_printf(WHITE " (as_add_label)\n" RESET);
 		as_free_lab_fla(label, NULL);
-		return (0);
+		return (as_malloc_error2(NULL, 3));
 	}
 	new->next = *label;
 	*label = new;
 	if (!((*label)->name = ft_strnew(i)))
 	{
-		ft_printf(BOLDYELLOW "\nsystem error:" RESET);
-		ft_printf(BOLDWHITE ERROR0 RESET);
-		ft_printf(WHITE " (as_add_label)\n" RESET);
 		as_free_lab_fla(label, NULL);
-		return (0);
+		return (as_malloc_error2(NULL, 3));
 	}
 	ft_strncpy((*label)->name, line, i);
 	(*label)->pos = pos;
 	return (1);
 }
 
-int	as_cmd_comp(char *cmd, char *str)
+int		as_cmd_comp(char *cmd, char *str)
 {
 	int	i;
 	int	j;

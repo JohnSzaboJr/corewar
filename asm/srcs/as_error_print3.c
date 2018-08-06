@@ -83,7 +83,7 @@ int		as_note_cmd(int line_nr, char *line, int column_nr)
 	while (j >= 0)
 	{
 		if ((save =
-		as_cmd_comp(op_tab[j].opname, line + column_nr - 1)) > highest)
+		as_cmd_comp(g_op_tab[j].opname, line + column_nr - 1)) > highest)
 		{
 			pos = j;
 			highest = save;
@@ -93,7 +93,7 @@ int		as_note_cmd(int line_nr, char *line, int column_nr)
 	if (highest > 1)
 	{
 		as_write_err(" did you mean '", line_nr, column_nr, 2);
-		ft_putstr_fd(op_tab[pos].opname, 2);
+		ft_putstr_fd(g_op_tab[pos].opname, 2);
 		ft_putstr_fd("'?\n", 2);
 	}
 	return (1);

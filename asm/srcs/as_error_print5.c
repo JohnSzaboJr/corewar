@@ -18,6 +18,12 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
+int		as_writing_error(t_list_byte **code, char *nn)
+{
+	as_free(code);
+	return (as_err2(ERROR36, nn));
+}
+
 void	as_errnbr(int n)
 {
 	char c;
@@ -56,6 +62,10 @@ int		as_malloc_error2(t_list_byte **code, int a)
 		ft_putstr_fd(WHITE " (as_wfile)\n" RESET, 2);
 	else if (a == 2)
 		ft_putstr_fd(WHITE " (as_flags_init)\n" RESET, 2);
+	else if (a == 3)
+		ft_putstr_fd(WHITE " (as_add_label)\n" RESET, 2);
+	else if (a == 4)
+		ft_putstr_fd(WHITE " (as_add_byte)\n" RESET, 2);
 	as_free(code);
 	return (0);
 }

@@ -19,15 +19,15 @@
 # define LABEL_SIZE 20
 # define D_LENGTH_CHECK 0
 # define I_LENGTH_CHECK 0
-# define USAGE      "./asm [-w -W -p -a] <sourcefile.s> \n"
+# define U1      "./asm [-w -W -p -a] <sourcefile.s> \n"
 # define U2      "    -w : Disables warnings\n"
 # define U3      "    -W : Displays warnings about improper spaces\n"
 # define U4      "    -p : Displays the compiled machine code, color-coded\n"
 # define U5      "    -a : Displays an annotated version of the code\n"
-# define ERROR0      " malloc failure"
+# define USAGE       U1 U2 U3 U4 U5
 # define ERROR1      " name specifier string incorrect\n"
 # define ERROR2      " missing quotation mark before name\n"
-# define ERROR3      " missing name\n"
+# define ERROR4      " unnecessary separator character after last parameter\n"
 # define ERROR5      " missing quotation mark before comment\n"
 # define ERROR7      " comment specifier string incorrect\n"
 # define ERROR8      " unknown operation\n"
@@ -75,6 +75,7 @@
 # define WARNING16    " line only consists of unnecessary spaces\n"
 # define WARNING17    " unnecessary spaces before name specifier\n"
 # define WARNING18    " unnecessary spaces before comment specifier\n"
+# define WARNING19    " missing name\n"
 # define NOTE1        " file should end with a single new line\n"
 
 #endif

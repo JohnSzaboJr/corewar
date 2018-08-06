@@ -102,15 +102,15 @@ int		as_add_label_error(t_list_error **error, char *line, int cnr, int j)
 
 char	*as_get_err_par(int co, int k)
 {
-	if (op_tab[co].param_type[k - 1] == T_DIR)
+	if (g_op_tab[co].param_type[k - 1] == T_DIR)
 		return (BOLDWHITE " direct" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_DIR + T_IND)
+	else if (g_op_tab[co].param_type[k - 1] == T_DIR + T_IND)
 		return (BOLDWHITE " direct or indirect" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_REG)
+	else if (g_op_tab[co].param_type[k - 1] == T_REG)
 		return (BOLDWHITE " register" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_IND + T_REG)
+	else if (g_op_tab[co].param_type[k - 1] == T_IND + T_REG)
 		return (BOLDWHITE " indirect or register" RESET);
-	else if (op_tab[co].param_type[k - 1] == T_DIR + T_REG)
+	else if (g_op_tab[co].param_type[k - 1] == T_DIR + T_REG)
 		return (BOLDWHITE " direct or register" RESET);
 	return (NULL);
 }

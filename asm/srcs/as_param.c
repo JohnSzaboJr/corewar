@@ -18,12 +18,12 @@
 #include "as_errors.h"
 #include <fcntl.h>
 
-int	as_bw_params(int *i, char *line, t_list_error **error)
+int			as_bw_params(int *i, char *line, t_list_error **error)
 {
 	as_j(1, *i);
 	as_skip_to_sep(line, i);
 	as_k(2);
-	if (as_k(0) > op_tab[as_get_pos(0, 0)].param_count &&
+	if (as_k(0) > g_op_tab[as_get_pos(0, 0)].param_count &&
 	!as_add_error(error, ERROR16, line, as_j(0, 0) + 1))
 		return (0);
 	if (line[*i] == SEPARATOR_CHAR && ft_isspace(line[*i - 1]) &&
@@ -32,7 +32,7 @@ int	as_bw_params(int *i, char *line, t_list_error **error)
 	return (1);
 }
 
-int	as_enc(t_list_byte **enc, int start)
+int			as_enc(t_list_byte **enc, int start)
 {
 	int			k;
 	int			pos;
@@ -40,12 +40,12 @@ int	as_enc(t_list_byte **enc, int start)
 
 	k = as_k(0);
 	pos = as_get_pos(0, 0);
-	if (k <= op_tab[pos].param_count && *enc)
+	if (k <= g_op_tab[pos].param_count && *enc)
 		(*enc)->byte = (*enc)->byte + (unsigned char)(arr[start + k]);
 	return (1);
 }
 
-int	as_cmp_label(t_list_label *label, char *line, int k)
+int			as_cmp_label(t_list_label *label, char *line, int k)
 {
 	while (label)
 	{
@@ -63,12 +63,12 @@ static int	as_lab_value(char *l, int *i, t_list_error **e, t_list_label **lab)
 	as_del_label_errors(e, l, *i);
 	c = l[*i];
 	l[*i] = '\0';
-    if (as_cmp_label(*lab, l, 0))
-    {
+	if (as_cmp_label(*lab, l, 0))
+	{
 		l[*i] = c;
-        if (!as_add_error(e, ERROR24, l, 1))
-            return (0);
-    }
+		if (!as_add_error(e, ERROR24, l, 1))
+			return (0);
+	}
 	else if (!as_add_label(lab, l, *i, 0))
 	{
 		l[*i] = c;
@@ -79,14 +79,14 @@ static int	as_lab_value(char *l, int *i, t_list_error **e, t_list_label **lab)
 	return (1);
 }
 
-int	as_slabel(char *line, int *i, t_list_error **error, t_list_label **label)
+int			as_slabel(char *l, int *i, t_list_error **err, t_list_label **label)
 {
-	if (as_skip_label2(line, i) && line[*i] == LABEL_CHAR && *i <= LABEL_SIZE)
-		as_lab_value(line, i, error, label);
+	if (as_skip_label2(l, i) && l[*i] == LABEL_CHAR && *i <= LABEL_SIZE)
+		as_lab_value(l, i, err, label);
 	else if ((*i) > LABEL_SIZE)
 	{
-        if (!as_add_error(error, ERROR10, line, *i + 1))
-            return (0);
+		if (!as_add_error(err, ERROR10, l, *i + 1))
+			return (0);
 		(*i)++;
 	}
 	else

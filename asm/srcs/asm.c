@@ -66,14 +66,14 @@ static int	as_flags_init(t_flags **flags, int argc, char **argv, int *pos)
 {
 	if (!(*flags = (t_flags *)(malloc(sizeof(**flags)))))
 		return (as_malloc_error2(NULL, 2));
-	(*flags)->w = 0;
-	(*flags)->W = 0;
+	(*flags)->v = 0;
+	(*flags)->v = 0;
 	(*flags)->p = 0;
 	(*flags)->a = 0;
 	while (*pos < argc && argv[*pos][0] == '-')
 		(*pos)++;
 	if (argc < 2 || (*pos) == argc)
-		return (as_err3(USAGE U2 U3 U4 U5));
+		return (as_err3(USAGE));
 	return (as_flags_loop(flags, argc, argv, pos));
 }
 

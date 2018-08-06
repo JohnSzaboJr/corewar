@@ -35,11 +35,11 @@ static int	as_lab_e2(t_list_error **err, char *line, int k, int j)
 	return (as_labend_e(k, j, line, err));
 }
 
-int		as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab)
+int			as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab)
 {
 	int		k;
 	char	c;
-	
+
 	k = j;
 	as_skip_space(line, &j);
 	if (j > k && line[j] && line[j] != SEPARATOR_CHAR)
@@ -62,7 +62,7 @@ int		as_lab_e(int j, char *line, t_list_error **err, t_list_label **lab)
 	return (as_labend_e(k, j, line, err));
 }
 
-int		as_dlab_e(char *line, t_list_label **label, t_list_error **error)
+int			as_dlab_e(char *line, t_list_label **label, t_list_error **error)
 {
 	int	j;
 	int pos;
