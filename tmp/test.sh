@@ -11,9 +11,9 @@ ultima terminator sam_2.0 salamahenagalabadoun run_Kitty_RUN \
 overwatch mise_a_jour_windows95 meowluigi mandragore live littlepuppy \
 justin_bee jinx gedeon dubo corelol casimir big_feet _honeybadger \
 Varimathras THUNDER Rainbow_dash MarineKing Machine-gun Explosive_Kitty \
-Wall)
+Wall bjork)
 
-while [ $a -lt 80 ]
+while [ $a -lt 81 ]
 do
     ARG=${array[a]}
     echo 'testing:'"\033[33m" $ARG.s "\033[0m"
