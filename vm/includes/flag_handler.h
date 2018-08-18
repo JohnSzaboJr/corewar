@@ -14,6 +14,11 @@
 # define FLAG_HANDLER_H
 # include "vm.h"
 
+# define USE "Usage: ./corewar [-dump/-v cycle_nbr] [[-n nbr] x.cor] [-m]"
+# define DUMP (1 << 3)
+# define VIS (1 << 21)
+# define MATRIX (1 << 12)
+
 void	fl_get(int ac, char **av, t_vm *vm);
 int		fl_champ(char **av, t_vm *vm, int *i, int ac);
 int		fl_n(char **av, t_vm *vm, int *i, int ac);

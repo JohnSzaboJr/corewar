@@ -11,12 +11,14 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "flag_handler.h"
 
 void	op_live(t_vm *vm, t_champ *champ)
 {
 	champ->params = init_params(vm);
 	champ->pc_tmp = champ->pc;
 	get_direct(vm, champ, &(champ->params->p1));
-	printf("PLAYER %d IS ALIVE\n", champ->params->p1);
+	if (!(vm->flags & MATRIX))
+		printf("PLAYER %d IS ALIVE\n", champ->params->p1);
 //	usleep(1000000);
 }

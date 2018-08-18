@@ -19,10 +19,19 @@ static int	fl_v(char **av, t_vm *vm, int *i, int ac)
 
 	if (!ft_strcmp(av[*i], "-v"))
 	{
-		if (v_ct > 0)
+		if (vm->flags & DUMP || v_ct > 0)
 			error_exit(vm, USE);
 		v_ct++;
-		vm->flags += 1024;
+		vm->flags += 2097152;
+		(*i)++;
+		if (*i == ac || !ft_isnumber(av[*i]) || ft_isspace(av[*i][0]) ||
+		av[*i][0] == '-' || av[*i][0] == '+')
+			error_exit(vm, USE);
+		if (ft_strlen(av[*i]) > 5)
+			error_exit(vm, "cycle number has to be under 100000");
+		vm->offset = ft_atoi(av[*i]);
+		if (vm->offset < 1)
+			error_exit(vm, USE);
 		(*i)++;
 	}
 	if (*i == ac)
@@ -39,7 +48,7 @@ static int	fl_m(char **av, t_vm *vm, int *i, int ac)
 		if (m_ct > 0)
 			error_exit(vm, USE);
 		m_ct++;
-		vm->flags += 524288;
+		vm->flags += 4096;
 		(*i)++;
 	}
 	if (*i == ac)
@@ -50,13 +59,13 @@ static int	fl_m(char **av, t_vm *vm, int *i, int ac)
 static int	fl_dump(char **av, t_vm *vm, int *i, int ac)
 {
 	static int	dump_ct = 0;
-
+	
 	if (!ft_strcmp(av[*i], "-dump"))
 	{
-		if (dump_ct > 0)
+		if (vm->flags & VIS || dump_ct > 0)
 			error_exit(vm, USE);
 		dump_ct++;
-		vm->flags += 268435456;
+		vm->flags += 8;
 		(*i)++;
 		if (*i == ac || !ft_isnumber(av[*i]) || ft_isspace(av[*i][0]) ||
 		av[*i][0] == '-' || av[*i][0] == '+')

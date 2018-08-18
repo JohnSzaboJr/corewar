@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "flag_handler.h"
 
 /*
 **	Get a register value, stored in a single octet.
@@ -18,7 +19,8 @@
 
 void			get_reg(t_vm *vm, t_champ *champ, intmax_t *j)
 {
-	printf("get reg\n");
+	if (!(vm->flags & MATRIX))
+		printf("get reg\n");
 	*j = (unsigned char)vm->memory[champ->pc_tmp];
 	move_pc(&(champ->pc_tmp), 1);
 }
@@ -30,12 +32,14 @@ void			get_reg(t_vm *vm, t_champ *champ, intmax_t *j)
 
 void			get_direct(t_vm *vm, t_champ *champ, intmax_t *j)
 {
-	printf("get direct\n");
+	if (!(vm->flags & MATRIX))
+		printf("get direct\n");
 	if ((g_op_tab[champ->opcode - 1].half_size) == 1)
 		*j = (short)add_next_octets(vm, &(champ->pc_tmp), DIR_SIZE / 2);
 	else
 		*j = (int)add_next_octets(vm, &(champ->pc_tmp), DIR_SIZE);
-	printf("j: %lld\n", *j);
+	if (!(vm->flags & MATRIX))
+		printf("j: %lld\n", *j);
 }
 
 /*
@@ -44,7 +48,8 @@ void			get_direct(t_vm *vm, t_champ *champ, intmax_t *j)
 
 void			get_indirect(t_vm *vm, t_champ *champ, intmax_t *j)
 {
-	printf("get indirect\n");
+	if (!(vm->flags & MATRIX))
+		printf("get indirect\n");
 	*j = (short)add_next_octets(vm, &(champ->pc_tmp), IND_SIZE);
 }
 

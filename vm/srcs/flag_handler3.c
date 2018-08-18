@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "flag_handler.h"
 
 static void	fl_write_opcode(int fd, t_vm *vm)
 {
@@ -91,9 +92,11 @@ void		fl_write_matrix(t_vm *vm)
 	static int	fd = 0;
 	static int	i = 0;
 
-	// return if flag is not included here!
+	if (!(vm->flags & MATRIX))
+		return ;
 	if (!i)
 	{
+		ft_putstr("The Matrix is loading...");
 		fd = open("./matrix/memory.js", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
 		S_IWUSR | S_IRGRP | S_IROTH);
 		fl_write_champ(fd, vm);
@@ -108,6 +111,7 @@ void		fl_write_matrix(t_vm *vm)
 		system("open -a \"Google Chrome\" ./matrix/matrix.html");
 	}
 	i++;
+	ft_putchar('.');
 }
 
 int			champs_num(t_champ *champ)

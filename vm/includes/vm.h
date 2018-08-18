@@ -21,7 +21,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-# define USE "Usage: ./corewar [-dump nr_cycles] [[-n nr] champ.cor] [-v] [-m]"
 # define READ_BUFF_SIZE	40
 
 # define CLEAR			"\x1b[H\x1b[2J"

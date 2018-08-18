@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "flag_handler.h"
 
 void	get_opcode(t_vm *vm, t_champ *champ)
 {
@@ -37,7 +38,6 @@ void	print_encoding(int n, int i)
 		pos = "Second param";
 	else if (i == 2)
 		pos = "Third param";
-	printf("%s: %s\n", pos, type[n - 1]);
 }
 
 void	run_champs(t_vm *vm)

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "vm.h"
+#include "flag_handler.h"
 
 t_byte	*create_byte(t_vm *vm)
 {
