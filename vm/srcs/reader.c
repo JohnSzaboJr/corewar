@@ -42,38 +42,6 @@ void	read_bytes(t_vm *vm, t_champ *champ, char *buff, int len)
 	}
 }
 
-static int	determine_no(t_vm *vm, int no)
-{
-	int		i;
-	t_champ	*tmp;
-
-	i = 1;
-	tmp = vm->champs;
-	while (tmp)
-	{
-		if (tmp->number == i || tmp->number == -i ||
-		tmp->number == -no)
-		{
-			tmp = vm->champs;
-			i++;
-			if (i > MAX_PLAYERS)
-				i = 1;
-		}
-		tmp = tmp->next;
-	}
-	if (no != 0)
-	{
-		tmp = vm->champs;
-		while (tmp)
-		{
-			if (tmp->number == -no)
-				tmp->number = i;
-			tmp = tmp->next;
-		}
-	}
-	return (no == 0) ? (i) : (no);
-}
-
 int		reader(t_vm *vm, int no, char *path)
 {
 	int		fd;
