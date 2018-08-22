@@ -29,44 +29,38 @@ SRCS = $(addprefix $(SRCS_PATH),$(SRC_FILES))
 FLAGS = -Werror -Wextra -Wall
 
 OBJS_PATH = objects/
-OBJS_NAME = $(SRC_FILES:.c=.o)
-OBJS = $(addprefix $(OBJS_PATH),$(OBJS_NAME))
+OBJS_NAME  = $(patsubst %.c, $(OBJS_PATH)%.o, $(SRC_FILES))
 
+HEADER_FILES = flag_handler.h op.h vm.h
 INCLUDES_PATH = includes/
+INCL = $(addprefix $(INCLUDES_PATH),$(INCLUDES_NAMES))
 
-INCLUDES_NAME = vm.h op.h flag_handler.h
-INCLUDES = $(addprefix $(INCLUDES_PATH),$(INCLUDE_NAME))
-
-LIBFT_PATH = libft
-LIB = $(addprefix $(LIBFT_PATH)/,libft.a)
-
-FT_PRINTF = libft/ft_printf/libftprintf.a
-
-PRINTF_PATH = libft/ft_printf/
-PRINTF_NAME = libftprintf.a
-PRINTF_A = $(addprefix $(PRINTF_PATH),$(PRINTF_NAME))
-PRINTF_H = $(addprefix $(PRINTF_PATH),includes/ft_printf.h)
+LIBFT_PATH = libft/
+LIB = $(addprefix $(LIBFT_PATH),libft.a)
 
 .SILENT: all, clean, fclean, re
 .PHONY: all, clean, fclean, re
 
-all: libftcomp $(NAME)
-
-printfcomp:
-	@make -C libft/ft_printf/ all
+all: $(NAME)
 
 libftcomp:
 	@make -C libft/ all
 
-$(NAME): $(OBJS)
-	@gcc -o $(NAME) $(OBJS) libft/libft.a
+$(NAME): libftcomp $(OBJS_PATH) $(OBJS_NAME)
+	@gcc -o $(NAME) $(OBJS_PATH)*.o libft/libft.a
 	@echo '\033[0;32m'***Compiled***'\033[0m'
 
-$(OBJS): $(SRCS) $(INCLUDES_PATH)
-	@echo '\033[0;34m'***Compiling Virtual Machine***'\033[0m'
-	@gcc $(FLAGS) -I$(INCLUDES_PATH) -c $(SRCS)
+$(OBJS_PATH):
 	@mkdir $(OBJS_PATH) 2> /dev/null || true
-	@mv $(OBJS_NAME) $(OBJS_PATH)
+
+$(OBJS_PATH)%.o: $(SRCS_PATH)%.c $(INCL)
+			@$(CC) $(FLAGS) -c $< -o $@ -I $(INCLUDES_PATH)
+
+#$(OBJS): $(SRCS) $(INCLUDES_PATH)
+#	@echo '\033[0;34m'***Compiling Virtual Machine***'\033[0m'
+#	@gcc $(FLAGS) -I$(INCLUDES_PATH) -c $(SRCS)
+#	@mkdir $(OBJS_PATH) 2> /dev/null || true
+#	@mv $(OBJS_NAME) $(OBJS_PATH)
 
 clean:
 	@/bin/rm -rf $(OBJS_PATH)
