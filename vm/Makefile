@@ -12,7 +12,7 @@
 
 NAME = corewar
 
-SRC_FILES = main.c create_vm.c create_champ.c add_champ.c error_handler.c \
+FILES = main.c create_vm.c create_champ.c add_champ.c error_handler.c \
 			check_magic_number.c reader.c parse_bytes.c order_champs.c \
 			get_name.c get_comment.c get_size.c dump_memory.c \
 			load_process.c run_champs.c op.c op_sti.c move_pc.c init_params.c \
@@ -23,44 +23,41 @@ SRC_FILES = main.c create_vm.c create_champ.c add_champ.c error_handler.c \
 			judgement_day.c kill_process.c op_aff.c \
 			flag_handler.c flag_handler2.c flag_handler3.c flag_handler4.c \
 			matrix.c matrix2.c
-SRCS_PATH = srcs/
-SRCS = $(addprefix $(SRCS_PATH),$(SRC_FILES))
 
 FLAGS = -Werror -Wextra -Wall
 
-OBJS_PATH = objects/
-OBJS_NAME  = $(patsubst %.c, $(OBJS_PATH)%.o, $(SRC_FILES))
+LIBFT_DIR = ./libft/
+LIBFT = $(LIBFT_DIR)libft.a
+INCLUDES_DIR = ./includes/
 
-HEADER_FILES = flag_handler.h op.h vm.h
-INCLUDES_PATH = includes/
-INCL = $(addprefix $(INCLUDES_PATH),$(INCLUDES_NAMES))
+HEADER_FILES = flag_handler op vm
 
-LIBFT_PATH = libft/
-LIB = $(addprefix $(LIBFT_PATH),libft.a)
+HEADERS = $(addsuffix .h, $(patsubst %, $(INCLUDES_DIR)%, $(HEADER_FILES)))
 
-.SILENT: all, clean, fclean, re
-.PHONY: all, clean, fclean, re
+OBJS_DIR = ./objs/
+SRCS_DIR = ./srcs/
+
+OBJS = $(patsubst %.c, $(OBJS_DIR)%.o, $(FILES))
+
+INCLUDES = -I $(INCLUDES_DIR)
 
 all: $(NAME)
 
-libftcomp:
-	@make -C libft/ all
+$(NAME): $(LIBFT) $(HEADERS) $(OBJS_DIR) $(OBJS)
+	@cc $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(INCLUDES)
+	@echo '\033[0;32m'*** $(NAME) compiled ***'\033[0m'
 
-$(NAME): libftcomp $(OBJS_PATH) $(OBJS_NAME)
-	@gcc -o $(NAME) $(OBJS_PATH)*.o libft/libft.a
-	@echo '\033[0;32m'***Compiled***'\033[0m'
+$(LIBFT):
+	@make -C $(LIBFT_DIR)
 
-$(OBJS_PATH):
-	@mkdir $(OBJS_PATH) 2> /dev/null || true
+$(OBJS): $(HEADERS)
 
-$(OBJS_PATH)%.o: $(SRCS_PATH)%.c $(INCL)
-			@$(CC) $(FLAGS) -c $< -o $@ -I $(INCLUDES_PATH)
+$(OBJS_DIR):
+	@mkdir -p $(OBJS_DIR)
 
-#$(OBJS): $(SRCS) $(INCLUDES_PATH)
-#	@echo '\033[0;34m'***Compiling Virtual Machine***'\033[0m'
-#	@gcc $(FLAGS) -I$(INCLUDES_PATH) -c $(SRCS)
-#	@mkdir $(OBJS_PATH) 2> /dev/null || true
-#	@mv $(OBJS_NAME) $(OBJS_PATH)
+$(OBJS_DIR)%.o: $(SRCS_DIR)%.c
+	@echo '\033[0;32m'*** compiling $< to object ***'\033[0m'
+	@cc $(FLAGS) -c $< -o $@ $(INCLUDES)
 
 clean:
 	@/bin/rm -rf $(OBJS_PATH)
@@ -73,3 +70,6 @@ fclean: clean
 	@echo '\033[0;31m'***Deleted objects and library***'\033[0m'
 
 re: fclean all
+
+.SILENT: all, clean, fclean, re
+.PHONY: all, clean, fclean, re
