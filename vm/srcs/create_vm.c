@@ -6,7 +6,7 @@
 /*   By: yabdulha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/07/24 18:56:13 by yabdulha          #+#    #+#             */
-/*   Updated: 2018/08/06 22:11:41 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/16 22:16:01 by yabdulha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ t_vm	*create_vm(int ac, char **av)
 	ft_bzero(new, sizeof(t_vm));
 	new->ac = ac;
 	new->av = av;
+	new->cycles_to_die = CYCLE_TO_DIE;
 	return (new);
 }

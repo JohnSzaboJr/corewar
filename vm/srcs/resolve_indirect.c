@@ -6,7 +6,7 @@
 /*   By: yabdulha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/15 04:31:37 by yabdulha          #+#    #+#             */
-/*   Updated: 2018/08/15 15:59:06 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/22 18:06:27 by yabdulha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,11 @@ static void	get_ind(t_vm *vm, t_champ *champ, intmax_t *ptr)
 	int		tmp;
 
 	tmp = champ->pc;
-	move_pc(&tmp, ((int)*ptr) % IDX_MOD);
+	if (champ->opcode == 13 || champ->opcode == 14 || champ->opcode == 15
+			|| champ->opcode == 10 || champ->opcode == 11)
+		move_pc(&tmp, ((int)*ptr));
+	else
+		move_pc(&tmp, ((int)*ptr) % IDX_MOD);
 	*ptr = add_next_octets(vm, &tmp, REG_SIZE);
 }
 

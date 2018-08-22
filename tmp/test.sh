@@ -17,14 +17,14 @@ while [ $a -lt 81 ]
 do
     ARG=${array[a]}
     echo 'testing:'"\033[33m" $ARG.s "\033[0m"
-    ../asm/asm champs/$ARG.s && \
-    mv ./champs/$ARG.cor ./champs/$ARG.my.cor && \
-    ./asm_given champs/$ARG.s && \
-    hexdump -C ./champs/$ARG.my.cor > ./results/$ARG.myresult && \
-    hexdump -C ./champs/$ARG.cor > ./results/$ARG.hisresult && \
-    echo "checking difference..." && \
+    valgrind ../asm_dir/asm champs/$ARG.s && \
+    # mv ./champs/$ARG.cor ./champs/$ARG.my.cor && \
+    # ./asm_given champs/$ARG.s && \
+    # hexdump -C ./champs/$ARG.my.cor > ./results/$ARG.myresult && \
+    # hexdump -C ./champs/$ARG.cor > ./results/$ARG.hisresult && \
+    # echo "checking difference..." && \
     echo "\033[31m" && \
-    diff ./results/$ARG.hisresult ./results/$ARG.myresult && \
+    # diff ./results/$ARG.hisresult ./results/$ARG.myresult && \
     echo "\033[0m"
     echo "\033[32m""done" "\033[0m"
     echo "-----------------------------------------"
