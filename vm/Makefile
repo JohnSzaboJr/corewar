@@ -60,7 +60,7 @@ $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@cc $(FLAGS) -c $< -o $@ $(INCLUDES)
 
 clean:
-	@/bin/rm -rf $(OBJS_PATH)
+	@/bin/rm -rf $(OBJS_DIR)
 	@make -C libft/ clean 2> /dev/null || true
 	@echo '\033[0;31m'***Deleted objects***'\033[0m'
 
