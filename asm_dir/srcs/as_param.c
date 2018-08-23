@@ -23,11 +23,11 @@ int			as_bw_params(int *i, char *line, t_list_error **error)
 	as_j(1, *i);
 	as_skip_to_sep(line, i);
 	as_k(2);
-	if (as_k(0) > g_op_tab[as_get_pos(0, 0)].param_count &&
-	!as_add_error(error, ERROR16, line, as_j(0, 0) + 1))
+	if (as_k(0) > g_op_tab[as_get_pos(0, 0)].param_count
+	&& !as_add_error(error, ERROR16, line, as_j(0, 0) + 1))
 		return (0);
-	if (line[*i] == SEPARATOR_CHAR && ft_isspace(line[*i - 1]) &&
-	!as_add_warning2(error, WARNING8, line, *i))
+	if (line[*i] == SEPARATOR_CHAR && ft_isspace(line[*i - 1])
+	&& !as_add_warning2(error, WARNING8, line, *i))
 		return (0);
 	return (1);
 }

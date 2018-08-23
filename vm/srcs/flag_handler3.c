@@ -96,7 +96,12 @@ void		fl_write_matrix(t_vm *vm)
 		return ;
 	if (!i)
 	{
+<<<<<<< HEAD
 		fd = open("./vm/matrix/memory.js", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
+=======
+		ft_printf(CLEAR);
+		fd = open("./matrix/memory.js", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
+>>>>>>> 8026c8148f357653a7a792234a1cea7311073a81
 		S_IWUSR | S_IRGRP | S_IROTH);
 		fl_write_champ(fd, vm);
 	}

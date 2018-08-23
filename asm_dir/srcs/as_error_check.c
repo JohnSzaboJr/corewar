@@ -41,9 +41,9 @@ int	as_check_enough_params(t_list_error **error, char *line, int i)
 
 int	as_unexp_check(t_list_error **error, char *line)
 {
-	if (as_empty_line(3) == 2 &&
-	(!as_add_error(error, ERROR33, line, ft_strlen(line)) ||
-	!as_add_note(
+	if (as_empty_line(3) == 2
+	&& (!as_add_error(error, ERROR33, line, ft_strlen(line))
+	|| !as_add_note(
 	error, " add a new line to the end of the file to silence this warning\n",
 	ft_strlen(line))))
 		return (as_free_line(line));

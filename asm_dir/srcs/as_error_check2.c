@@ -72,8 +72,8 @@ int			as_comment_check(int *i, char *line, t_list_error **error, int *bc)
 		as_ccheck_init(bc, i, &j, line);
 		if ((ret = as_cnspec(line, error, 1)) != 1)
 			return (ret);
-		if (((j == *i && !as_add_warning(error, WARNING4, line, j + 1))) ||
-		!as_set_nline_c(i, error, line, &comment))
+		if (((j == *i && !as_add_warning(error, WARNING4, line, j + 1)))
+		|| !as_set_nline_c(i, error, line, &comment))
 			return (0);
 		if ((ret = as_ccheck1(line, i, &j, error)) != 1)
 			return (ret);
@@ -101,8 +101,8 @@ int			as_name_check(int *i, char *line, t_list_error **error, int *bc)
 		as_ncheck_init(bc, i, &j, line);
 		if ((ret = as_cnspec(line, error, 0)) != 1)
 			return (ret);
-		if (((j == *i && !as_add_warning(error, WARNING1, line, j + 1))) ||
-		!as_set_nline_n(i, error, line, &name))
+		if (((j == *i && !as_add_warning(error, WARNING1, line, j + 1)))
+		|| !as_set_nline_n(i, error, line, &name))
 			return (0);
 		if ((ret = as_ncheck1(line, i, &j, error)) != 1)
 			return (ret);

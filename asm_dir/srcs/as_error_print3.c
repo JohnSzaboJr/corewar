@@ -82,8 +82,8 @@ int		as_note_cmd(int line_nr, char *line, int column_nr)
 	pos = -1;
 	while (j >= 0)
 	{
-		if ((save =
-		as_cmd_comp(g_op_tab[j].opname, line + column_nr - 1)) > highest)
+		if ((save = as_cmd_comp(g_op_tab[j].opname, line + column_nr - 1))
+		> highest)
 		{
 			pos = j;
 			highest = save;

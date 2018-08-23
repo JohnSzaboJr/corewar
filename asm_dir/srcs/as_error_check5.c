@@ -52,8 +52,8 @@ int	as_c_end(int length, t_list_error **error, char *line, int *i)
 		if (!as_add_warning(error, WARNING7, line, (*i) + 2))
 			return (0);
 	}
-	if (line[*i] && line[*i] == '"' && line[*i + 1] &&
-	!as_add_warning(error, WARNING6, line, (*i) + 2))
+	if (line[*i] && line[*i] == '"' && line[*i + 1]
+	&& !as_add_warning(error, WARNING6, line, (*i) + 2))
 		return (0);
 	*i = 0;
 	while (line[*i] && line[*i] != '"')
@@ -71,8 +71,8 @@ int	as_n_end(int length, t_list_error **error, char *line, int *i)
 		if (!as_add_warning(error, WARNING3, line, (*i) + 2))
 			return (0);
 	}
-	if (line[*i] && line[*i] == '"' && line[*i + 1] &&
-	!as_add_warning(error, WARNING2, line, (*i) + 2))
+	if (line[*i] && line[*i] == '"' && line[*i + 1]
+	&& !as_add_warning(error, WARNING2, line, (*i) + 2))
 		return (0);
 	*i = 0;
 	while (line[*i] && line[*i] != '"')

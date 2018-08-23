@@ -28,9 +28,9 @@ char	*as_param_error(int a, int b, t_list_error **error)
 	len = 65 + ft_numlen(a) + ft_numlen(b);
 	a_str = NULL;
 	b_str = NULL;
-	if (!(msg = ft_strnew(len)) ||
-	!(a_str = ft_itoa(a)) ||
-	!(b_str = ft_itoa(b)))
+	if (!(msg = ft_strnew(len))
+	|| !(a_str = ft_itoa(a))
+	|| !(b_str = ft_itoa(b)))
 	{
 		as_malloc_error1(error, 8);
 		return (NULL);
