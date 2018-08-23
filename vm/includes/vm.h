@@ -12,12 +12,11 @@
 
 #ifndef VM_H
 # define VM_H
+
 # include "op.h"
 # include "../libft/includes/libft.h"
 
 # include <fcntl.h>
-# include <stdio.h>
-//remove
 # include <stdlib.h>
 # include <unistd.h>
 
@@ -28,25 +27,24 @@
 # define HIDE_CURSOR	"\x1b[H\x1b[?25h"
 # define SHOW_CURSOR	"\x1b[?12;25h"
 
-#define BLK		"\x1B[30m"
-#define RED		"\x1B[31m"
-#define GRN		"\x1B[32m"
-#define YEL		"\x1B[33m"
-#define BLU		"\x1B[34m"
-#define MAG		"\x1B[35m"
-#define CYN		"\x1B[36m"
-#define WHT		"\x1B[37m"
-#define RESET	"\x1B[0m"
+# define BLK		"\x1B[30m"
+# define RED		"\x1B[31m"
+# define GRN		"\x1B[32m"
+# define YEL		"\x1B[33m"
+# define BLU		"\x1B[34m"
+# define MAG		"\x1B[35m"
+# define CYN		"\x1B[36m"
+# define WHT		"\x1B[37m"
+# define RESET	"\x1B[0m"
 
-#define BRESET	"\x1B[40m"
-#define BRED	"\x1B[41m"
-#define BGRN	"\x1B[42m"
-#define BYEL	"\x1B[43m"
-#define BBLU	"\x1B[44m"
-#define BMAG	"\x1B[45m"
-#define BCYN	"\x1B[46m"
-#define BWHT	"\x1B[47m"
-
+# define BRESET	"\x1B[40m"
+# define BRED	"\x1B[41m"
+# define BGRN	"\x1B[42m"
+# define BYEL	"\x1B[43m"
+# define BBLU	"\x1B[44m"
+# define BMAG	"\x1B[45m"
+# define BCYN	"\x1B[46m"
+# define BWHT	"\x1B[47m"
 
 typedef struct		s_byte
 {
@@ -107,7 +105,7 @@ typedef struct		s_vm
 
 }					t_vm;
 
-typedef struct				s_op
+typedef struct		s_op
 {
 	char					*opname;
 	int						param_count;
@@ -117,7 +115,7 @@ typedef struct				s_op
 	char					*description;
 	int						acb;
 	int						half_size;
-}							t_op;
+}					t_op;
 
 extern t_op			g_op_tab[17];
 
@@ -129,8 +127,7 @@ void				kill_process(t_vm *vm, t_champ *champ);
 void				error_exit(t_vm *vm, char *msg);
 void				check_magic_number(t_vm *vm, t_champ *champ, char *buff);
 
-//	TODO: REMOVE
-void				print_champs(t_vm *vm);		
+void				print_champs(t_vm *vm);
 void				cycle_check(t_vm *vm);
 void				order_champs(t_vm *vm);
 void				judgement_day(t_vm *vm);
@@ -151,7 +148,8 @@ void				move_pc(int *pc, int n);
 t_champ				*find_champ(t_vm *vm, int nb);
 void				get_params(t_vm *vm, t_champ *champ);
 int					check_reg(int reg);
-void				put_reg(t_vm *vm, t_champ *champ, int reg_no, intmax_t value);
+void				put_reg(t_vm *vm, t_champ *champ,
+		int reg_no, intmax_t value);
 int					add_two_octets(t_vm *vm, int pc);
 intmax_t			add_next_octets(t_vm *vm, int *pc, int no);
 t_params			*init_params(t_vm *vm);
