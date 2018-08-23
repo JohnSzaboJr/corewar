@@ -6,7 +6,7 @@
 /*   By: jszabo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/18 18:04:49 by jszabo            #+#    #+#             */
-/*   Updated: 2018/08/23 07:21:24 by ghaddad          ###   ########.fr       */
+/*   Updated: 2018/08/23 08:33:30 by ghaddad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,8 @@ void		fl_write_matrix(t_vm *vm)
 		return ;
 	if (!i)
 	{
-<<<<<<< HEAD
-		fd = open("./vm/matrix/memory.js", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
-=======
 		ft_printf(CLEAR);
-		fd = open("./matrix/memory.js", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
->>>>>>> 8026c8148f357653a7a792234a1cea7311073a81
+		fd = open("./vm/matrix/memory.js", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
 		S_IWUSR | S_IRGRP | S_IROTH);
 		fl_write_champ(fd, vm);
 	}
