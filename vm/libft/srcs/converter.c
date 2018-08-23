@@ -6,7 +6,7 @@
 /*   By: yabdulha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/09 14:18:55 by yabdulha          #+#    #+#             */
-/*   Updated: 2018/08/21 13:39:39 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/23 10:55:57 by yabdulha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ char			*convert_c(va_list ap, t_printf *specs)
 		ret[0] = c;
 	}
 	if (c == 0)
+	{
+		free(ret);
 		ret = NULL;
+	}
 	ret = padding(ret, specs);
 	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: yabdulha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/30 17:26:50 by yabdulha          #+#    #+#             */
-/*   Updated: 2018/08/21 13:39:50 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/23 10:48:22 by yabdulha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,11 @@ int			empty_string(t_printf *specs, int count)
 	{
 		ft_putchar('\0');
 		count += ft_putstr(s);
+		free(s);
 		return (count + 1);
 	}
 	count += ft_putstr(s);
+	free(s);
 	ft_putchar('\0');
 	return (count + 1);
 }
