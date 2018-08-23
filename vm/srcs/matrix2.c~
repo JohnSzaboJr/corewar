@@ -6,12 +6,28 @@
 /*   By: jszabo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/18 16:30:08 by jszabo            #+#    #+#             */
-/*   Updated: 2018/08/23 09:38:55 by ghaddad          ###   ########.fr       */
+/*   Updated: 2018/08/23 07:18:02 by ghaddad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vm.h"
 #include "flag_handler.h"
+
+static int	check_players2(t_vm *vm)
+{
+	int	i;
+	int	counter;
+
+	i = 0;
+	counter = 0;
+	while (i < MAX_PLAYERS + 1)
+	{
+		if (vm->processes_counter[i] > 0)
+			counter++;
+		i++;
+	}
+	return (counter);
+}
 
 void		fl_write_compr(int l, t_vm *vm, int fd, int val)
 {
@@ -31,7 +47,8 @@ void		fl_matrix_end(t_vm *vm, int fd, int **memory2)
 {
 	char *winner;
 
-	if (vm->processes <= 0 || vm->cycles_to_die <= 0)
+	if (((vm->cycles - vm->cycles_to_die) == 0 && check_players2(vm) < 2)
+	|| (vm->processes <= 0 || vm->cycles_to_die <= 0))
 	{
 		ft_printf(SHOW_CURSOR);
 		write(fd, "];\n", 3);
@@ -47,7 +64,6 @@ void		fl_matrix_end(t_vm *vm, int fd, int **memory2)
 		system("open -a \"Google Chrome\" ./vm/matrix/matrix.html");
 		if (*memory2)
 			free(*memory2);
-		error_exit(vm, "OK");
 		exit(1);
 	}
 }

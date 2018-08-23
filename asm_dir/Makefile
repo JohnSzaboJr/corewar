@@ -44,13 +44,13 @@ OBJS = $(patsubst %, $(OBJS_DIR)%.o, $(FILES))
 
 INCLUDES = -I $(INCLUDES_DIR)
 
-all: $(NAME)
+all: libftcomp $(NAME)
 
 $(NAME): $(LIBFT) $(HEADERS) $(OBJS_DIR) $(OBJS)
 	@cc $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(INCLUDES)
 	@echo '\033[0;32m'*** $(NAME) compiled ***'\033[0m'
 
-$(LIBFT):
+libftcomp:
 	@make -C $(LIBFT_DIR)
 
 $(OBJS): $(HEADERS)
