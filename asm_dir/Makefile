@@ -6,7 +6,7 @@
 #    By: jszabo <jszabo@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 19:09:41 by jszabo            #+#    #+#              #
-#    Updated: 2018/08/03 14:33:29 by jszabo           ###   ########.fr        #
+#    Updated: 2018/08/23 11:47:39 by yabdulha         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,7 @@ INCLUDES = -I $(INCLUDES_DIR)
 all: libftcomp $(NAME)
 
 $(NAME): $(LIBFT) $(HEADERS) $(OBJS_DIR) $(OBJS)
-	@cc $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(INCLUDES)
+	@gcc $(FLAGS) -o $(NAME) $(OBJS) $(LIBFT) $(INCLUDES)
 	@echo '\033[0;32m'*** $(NAME) compiled ***'\033[0m'
 
 libftcomp:
@@ -60,7 +60,7 @@ $(OBJS_DIR):
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c
 	@echo '\033[0;32m'*** compiling $< to object ***'\033[0m'
-	@cc $(FLAGS) -c $< -o $@ $(INCLUDES)
+	@gcc $(FLAGS) -c $< -o $@ $(INCLUDES)
 
 clean:
 	@make -C $(LIBFT_DIR)/ clean
