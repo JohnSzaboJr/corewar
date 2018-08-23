@@ -6,7 +6,7 @@
 /*   By: jszabo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/18 16:30:08 by jszabo            #+#    #+#             */
-/*   Updated: 2018/08/22 18:56:48 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/23 07:18:02 by ghaddad          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		fl_matrix_end(t_vm *vm, int fd, int **memory2)
 		free(winner);
 		write(fd, "\";\n", 3);
 		close(fd);
-		system("open -a \"Google Chrome\" ./matrix/matrix.html");
+		system("open -a \"Google Chrome\" ./vm/matrix/matrix.html");
 		if (*memory2)
 			free(*memory2);
 		exit(1);
