@@ -6,7 +6,7 @@
 /*   By: yabdulha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/07 18:41:34 by yabdulha          #+#    #+#             */
-/*   Updated: 2018/08/22 17:42:10 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/23 09:18:23 by yabdulha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,15 @@
 static t_champ	*copy_champ(t_vm *vm, t_champ *champ)
 {
 	t_champ	*new;
+	int		i;
 
 	new = create_champ(vm);
-	ft_memcpy((void*)new->reg, (void*)champ->reg, REG_NUMBER);
+	i = 0;
+	while (i < REG_NUMBER)
+	{
+		new->reg[i] = champ->reg[i];
+		i++;
+	}
 	if (!(new->name = ft_strnew(ft_strlen(champ->name))))
 		error_exit(vm, "Malloc fail in copy_champ");
 	ft_strcpy(new->name, champ->name);

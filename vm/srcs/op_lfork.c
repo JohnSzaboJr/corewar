@@ -6,7 +6,7 @@
 /*   By: yabdulha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/19 20:03:59 by yabdulha          #+#    #+#             */
-/*   Updated: 2018/08/22 19:56:56 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/23 09:22:42 by yabdulha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,16 @@
 
 static t_champ	*copy_champ(t_vm *vm, t_champ *champ)
 {
+	int		i;
 	t_champ	*new;
 
 	new = create_champ(vm);
-	ft_memcpy((void*)new->reg, (void*)champ->reg, REG_NUMBER);
+	i = 0;
+	while (i < REG_NUMBER)
+	{
+		new->reg[i] = champ->reg[i];
+		i++;
+	}
 	if (!(new->name = ft_strnew(ft_strlen(champ->name))))
 		error_exit(vm, "Malloc fail in copy_champ");
 	ft_strcpy(new->name, champ->name);
@@ -35,11 +41,6 @@ static t_champ	*copy_champ(t_vm *vm, t_champ *champ)
 	new->next = NULL;
 	return (new);
 }
-
-/*
-**	Have to move back the pc of the new process by 1, to account for the move-
-**	ment in run_champs.
-*/
 
 void			op_lfork(t_vm *vm, t_champ *champ)
 {
