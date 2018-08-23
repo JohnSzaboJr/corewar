@@ -122,7 +122,8 @@ int			get_next_line(const int fd, char **line)
 		list = list->next;
 	if (!list)
 	{
-		list = (t_list *)malloc(sizeof(*list));
+		if (!(list = (t_list *)malloc(sizeof(*list))))
+			return (0);
 		list->content = NULL;
 		list->content_size = fd;
 		list->next = NULL;

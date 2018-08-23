@@ -111,15 +111,15 @@ FT_PF_O_FILES = $(patsubst %,%.o, $(PRINTF_SRC))
 all: $(NAME)
 
  $(FT_PF_O_FILES): $(FT_PF_C_FILES)
-	@gcc $(FLAGS) -c $(FT_PF_C_FILES)
+	@gcc $(FLAGS) -c $(FT_PF_C_FILES) -I ../includes
 	@echo '\033[0;32m'*** ft_printf objects created ***'\033[0m'
 
-$(NAME): $(O_FILES) $(FT_PF_O_FILES) libft.h
+$(NAME): $(O_FILES) $(FT_PF_O_FILES) ../includes/libft.h
 	@ar -rc $(NAME) $(FT_PF_O_FILES) $(O_FILES)
 	@echo '\033[0;32m'*** libft library compiled ***'\033[0m'
 
 $(O_FILES): $(C_FILES)
-	@gcc -Wall -Werror -Wextra -c $(C_FILES)
+	@gcc -Wall -Werror -Wextra -c $(C_FILES) -I ../includes
 	@echo '\033[0;32m'*** libft objects created ***'\033[0m'
 
 clean:

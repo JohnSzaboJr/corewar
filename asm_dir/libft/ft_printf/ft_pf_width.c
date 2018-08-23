@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 #include "../ft_printf.h"
 
 int	ft_pf_width_fl_zeros_left(char **str, char **spaces, t_print *features)

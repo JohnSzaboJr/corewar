@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 #include "../ft_printf.h"
 
 int		ft_pf_handle_c(va_list args, t_print *features, int *ret)

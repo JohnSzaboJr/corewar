@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "libft.h"
 #include "../ft_printf.h"
 
 int		ft_pf_hex_sign(char **str)
