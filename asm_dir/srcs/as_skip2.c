@@ -37,8 +37,8 @@ int		as_skip_to_next_param(char *line, t_list_error **error, int *i)
 	int s;
 
 	s = as_skip_space(line, i);
-	if (!line[*i] && s && !as_endcomment(line, 2) &&
-	!as_add_warning2(error, WARNING10, line, (*i)))
+	if (!line[*i] && s && !as_endcomment(line, 2)
+	&& !as_add_warning2(error, WARNING10, line, (*i)))
 		return (0);
 	if (line[*i])
 		(*i)++;

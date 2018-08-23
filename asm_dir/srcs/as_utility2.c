@@ -89,8 +89,8 @@ int		as_cmd_comp(char *cmd, char *str)
 	ret = 0;
 	j = 0;
 	k = 0;
-	while ((j < 5 && str[j] && !ft_isspace(str[j]) && str[j] != cmd[k]) ||
-	(str[j] && str[j + 1] && str[j + 1] == cmd[k]))
+	while ((j < 5 && str[j] && !ft_isspace(str[j]) && str[j] != cmd[k])
+	|| (str[j] && str[j + 1] && str[j + 1] == cmd[k]))
 		j++;
 	i = ft_strlen(cmd);
 	while (i && str[j] && !ft_isspace(str[j]))

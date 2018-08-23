@@ -22,8 +22,8 @@ static int	as_labend_e(int k, int j, char *line, t_list_error **err)
 {
 	k = j;
 	as_skip_space(line, &j);
-	if (j > k && line[j] && line[j] != SEPARATOR_CHAR &&
-	!as_add_error(err, ERROR20, line, j))
+	if (j > k && line[j] && line[j] != SEPARATOR_CHAR
+	&& !as_add_error(err, ERROR20, line, j))
 		return (0);
 	return (1);
 }
@@ -71,9 +71,9 @@ int			as_dlab_e(char *line, t_list_label **label, t_list_error **error)
 	pos = as_get_pos(0, 0);
 	if (line[j + 1] == LABEL_CHAR)
 	{
-		if ((-1 == as_type_e(pos, as_k(0), 4)) &&
-		(!as_add_error(error, ERROR15, line, j + 1) ||
-		!as_ant(error, as_get_err_par(pos, as_k(0)), line, j)))
+		if ((-1 == as_type_e(pos, as_k(0), 4))
+		&& (!as_add_error(error, ERROR15, line, j + 1)
+		|| !as_ant(error, as_get_err_par(pos, as_k(0)), line, j)))
 			return (0);
 		return (as_lab_e(j + 2, line, error, label));
 	}

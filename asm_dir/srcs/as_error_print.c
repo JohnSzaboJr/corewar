@@ -62,8 +62,8 @@ static void	as_error_count(t_list_error *error, int *ec, int *wc, t_flags *f)
 	while (error)
 	{
 		t = error->type;
-		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7) ?
-		(*ec + 1) : (*ec);
+		(*ec) = (t == 1 || t == 4 || t == 5 || t == 6 || t == 7)
+		? (*ec + 1) : (*ec);
 		if ((t == 2 && !(f->v)) || (t == 10 && !(f->v) && f->v))
 			(*wc)++;
 		error = error->next;

@@ -20,8 +20,8 @@
 
 static int	as_sr(t_list_byte **code, t_list_byte **encoding, char *line)
 {
-	if (as_enc(encoding, -1) &&
-	!(as_add_byte(code, (unsigned char)ft_atoi(line + as_j(0, 0) + 1), 8)))
+	if (as_enc(encoding, -1)
+	&& !(as_add_byte(code, (unsigned char)ft_atoi(line + as_j(0, 0) + 1), 8)))
 		return (0);
 	return (1);
 }
@@ -48,13 +48,13 @@ int			as_get_par(char *l, t_list_label **lab, t_list_byte **c, t_flags *f)
 	while (l[i])
 	{
 		as_bw_sparams(l, &i);
-		if ((((l[as_j(0, 0)] == 'r') && !as_sr(c, &encoding, l))) ||
-		((as_d(l) == 2 && as_enc(&encoding, 2) &&
-		!as_dlabel(l, lab, byte_pos, c)) ||
-		(as_d(l) == 1 && as_enc(&encoding, 2) && !as_sd(l, c)) ||
-		(as_ind(l) == 2 && as_enc(&encoding, 5) &&
-		!as_ilabel(l, lab, byte_pos, c)) ||
-		(as_ind(l) == 1 && as_enc(&encoding, 5) && !as_si(l, c))))
+		if ((((l[as_j(0, 0)] == 'r') && !as_sr(c, &encoding, l)))
+		|| ((as_d(l) == 2 && as_enc(&encoding, 2)
+		&& !as_dlabel(l, lab, byte_pos, c))
+		|| (as_d(l) == 1 && as_enc(&encoding, 2) && !as_sd(l, c))
+		|| (as_ind(l) == 2 && as_enc(&encoding, 5)
+		&& !as_ilabel(l, lab, byte_pos, c))
+		|| (as_ind(l) == 1 && as_enc(&encoding, 5) && !as_si(l, c))))
 			return (0);
 		as_skip_space(l, &i);
 		if (l[i])

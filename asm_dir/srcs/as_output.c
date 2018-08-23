@@ -31,8 +31,8 @@ int			as_wfile(t_list_byte **code, char *filename)
 		return (as_malloc_error2(code, 1));
 	ft_strncpy(nn, filename, l - 1);
 	ft_strcpy(nn + l - 1, "cor");
-	fd = open(nn, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
-	S_IWUSR | S_IRGRP | S_IROTH);
+	fd = open(nn, O_CREAT | O_RDWR | O_TRUNC, S_IRUSR
+	| S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
 		as_writing_error(code, nn);
 	while (*code)
@@ -92,9 +92,10 @@ static int	as_print_star(t_list_byte **list, int i)
 
 static void	as_print_loop(t_list_byte **list, int *i)
 {
-	static char *colors[10] =
-	{WHITE, WHITE, CYAN, MAGENTA, GREEN, GREEN, YELLOW, BOLDBLACK,
-	MAGENTA, MAGENTA};
+	static char *colors[10] = {
+		WHITE, WHITE, CYAN, MAGENTA,
+		GREEN, GREEN, YELLOW, BOLDBLACK, MAGENTA, MAGENTA
+		};
 
 	ft_printf(colors[(*list)->type]);
 	as_write_byte(*list);
@@ -119,9 +120,9 @@ int			as_plist(t_list_byte *list)
 	node = list;
 	while (list)
 	{
-		if ((i >= 4 + PROG_NAME_LENGTH && i < 8 + PROG_NAME_LENGTH) ||
-		(i >= 12 + PROG_NAME_LENGTH + COMMENT_LENGTH &&
-		i < 16 + PROG_NAME_LENGTH + COMMENT_LENGTH))
+		if ((i >= 4 + PROG_NAME_LENGTH && i < 8 + PROG_NAME_LENGTH)
+		|| (i >= 12 + PROG_NAME_LENGTH + COMMENT_LENGTH
+		&& i < 16 + PROG_NAME_LENGTH + COMMENT_LENGTH))
 			list->type = 7;
 		i++;
 		list = list->next;

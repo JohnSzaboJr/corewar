@@ -56,8 +56,8 @@ static int	as_parse(int fd, t_list_label **label, char *fn, t_flags *flags)
 	}
 	if (!as_empty_line_check(&error, 2, line))
 		return (as_free_line(line));
-	if (!as_lc(line, fn) || !as_ec(&line, &error, bc) ||
-	as_print_error(&error, label, flags) || as_free_error(&error))
+	if (!as_lc(line, fn) || !as_ec(&line, &error, bc)
+	|| as_print_error(&error, label, flags) || as_free_error(&error))
 		return (0);
 	return (1);
 }
@@ -88,13 +88,13 @@ int			main(int argc, char **argv)
 	pos = 1;
 	label = NULL;
 	flags = NULL;
-	if (!as_flags_init(&flags, argc, argv, &pos) ||
-	!as_open_close(argv[pos], &fd, 0) ||
-	!as_parse(fd, &label, argv[pos], flags) ||
-	!as_open_close(argv[pos], &fd, 1) ||
-	!as_open_close(argv[pos], &fd, 0) ||
-	!as_store(fd, &label, argv[pos], flags) ||
-	!as_open_close(argv[pos], &fd, 1))
+	if (!as_flags_init(&flags, argc, argv, &pos)
+	|| !as_open_close(argv[pos], &fd, 0)
+	|| !as_parse(fd, &label, argv[pos], flags)
+	|| !as_open_close(argv[pos], &fd, 1)
+	|| !as_open_close(argv[pos], &fd, 0)
+	|| !as_store(fd, &label, argv[pos], flags)
+	|| !as_open_close(argv[pos], &fd, 1))
 		return (as_free_lab_fla(&label, flags));
 	as_free_lab_fla(&label, flags);
 	return (0);

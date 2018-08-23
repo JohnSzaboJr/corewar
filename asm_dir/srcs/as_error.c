@@ -23,9 +23,9 @@ int	as_add_error(t_list_error **error, char *message, char *line, int column_nr)
 	t_list_error	*new;
 
 	as_endcomment(line, 1);
-	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
-	!(new->line = ft_strnew(ft_strlen(line))) ||
-	!(new->message = ft_strnew(ft_strlen(message))))
+	if (!(new = (t_list_error *)malloc(sizeof(*new)))
+	|| !(new->line = ft_strnew(ft_strlen(line)))
+	|| !(new->message = ft_strnew(ft_strlen(message))))
 		return (as_malloc_error1(error, 1));
 	ft_strcpy(new->line, line);
 	ft_strcpy(new->message, message);
@@ -43,9 +43,9 @@ int	as_add_warning(t_list_error **error, char *message, char *line, int cnr)
 	t_list_error	*new;
 
 	as_endcomment(line, 1);
-	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
-	!(new->line = ft_strnew(ft_strlen(line))) ||
-	!(new->message = ft_strnew(ft_strlen(message))))
+	if (!(new = (t_list_error *)malloc(sizeof(*new)))
+	|| !(new->line = ft_strnew(ft_strlen(line)))
+	|| !(new->message = ft_strnew(ft_strlen(message))))
 		return (as_malloc_error1(error, 2));
 	ft_strcpy(new->line, line);
 	ft_strcpy(new->message, message);
@@ -63,9 +63,9 @@ int	as_add_warning2(t_list_error **error, char *message, char *line, int cnr)
 	t_list_error	*new;
 
 	as_endcomment(line, 1);
-	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
-	!(new->line = ft_strnew(ft_strlen(line))) ||
-	!(new->message = ft_strnew(ft_strlen(message))))
+	if (!(new = (t_list_error *)malloc(sizeof(*new)))
+	|| !(new->line = ft_strnew(ft_strlen(line)))
+	|| !(new->message = ft_strnew(ft_strlen(message))))
 		return (as_malloc_error1(error, 10));
 	ft_strcpy(new->line, line);
 	ft_strcpy(new->message, message);
@@ -82,8 +82,8 @@ int	as_add_note(t_list_error **error, char *message, int cnr)
 {
 	t_list_error	*new;
 
-	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
-	!(new->message = ft_strnew(ft_strlen(message))))
+	if (!(new = (t_list_error *)malloc(sizeof(*new)))
+	|| !(new->message = ft_strnew(ft_strlen(message))))
 		return (as_malloc_error1(error, 9));
 	ft_strcpy(new->message, message);
 	new->line = NULL;
@@ -100,9 +100,9 @@ int	as_ant(t_list_error **error, char *message, char *line, int cnr)
 	t_list_error	*new;
 
 	as_endcomment(line, 1);
-	if (!(new = (t_list_error *)malloc(sizeof(*new))) ||
-	!(new->line = ft_strnew(ft_strlen(line))) ||
-	!(new->message = ft_strnew(ft_strlen(message))))
+	if (!(new = (t_list_error *)malloc(sizeof(*new)))
+	|| !(new->line = ft_strnew(ft_strlen(line)))
+	|| !(new->message = ft_strnew(ft_strlen(message))))
 		return (as_malloc_error1(error, 3));
 	ft_strcpy(new->line, line);
 	ft_strcpy(new->message, message);

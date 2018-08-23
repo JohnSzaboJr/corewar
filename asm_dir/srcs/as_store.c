@@ -20,8 +20,8 @@
 
 static int	as_store_end(t_list_byte **s, t_list_byte **code, int p, char *fn)
 {
-	if (!as_ssize(s, *code) || !as_rlist(code) ||
-	(p && !as_plist(*code)) || !as_wfile(code, fn) || !as_free(code))
+	if (!as_ssize(s, *code) || !as_rlist(code)
+	|| (p && !as_plist(*code)) || !as_wfile(code, fn) || !as_free(code))
 		return (0);
 	return (1);
 }

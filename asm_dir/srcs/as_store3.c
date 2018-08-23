@@ -64,8 +64,8 @@ int			as_store_non_zero(int length, char *line, int *i, t_list_byte **c)
 int			as_store_zero(int i, int section, t_list_byte **code)
 {
 	i = (section) ?
-	(COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 16) :
-	(PROG_NAME_LENGTH - as_code_size(*code) + 12);
+	(COMMENT_LENGTH - (as_code_size(*code) - PROG_NAME_LENGTH) + 16)
+	: (PROG_NAME_LENGTH - as_code_size(*code) + 12);
 	while (i > 0)
 	{
 		if (!(as_add_byte(code, 0, 5)))
