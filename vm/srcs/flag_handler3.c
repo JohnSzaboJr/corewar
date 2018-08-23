@@ -96,6 +96,7 @@ void		fl_write_matrix(t_vm *vm)
 		return ;
 	if (!i)
 	{
+		ft_printf(CLEAR);
 		fd = open("./matrix/memory.js", O_CREAT | O_RDWR | O_TRUNC, S_IRUSR |
 		S_IWUSR | S_IRGRP | S_IROTH);
 		fl_write_champ(fd, vm);
