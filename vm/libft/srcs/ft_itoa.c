@@ -6,7 +6,7 @@
 /*   By: yabdulha <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/28 16:30:59 by yabdulha          #+#    #+#             */
-/*   Updated: 2017/12/03 22:28:12 by yabdulha         ###   ########.fr       */
+/*   Updated: 2018/08/23 10:21:47 by yabdulha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 char			*ft_itoa(int n)
 {
 	char	*str;
+	char	*ret;
 	int		i;
 	int		neg;
 
@@ -35,5 +36,7 @@ char			*ft_itoa(int n)
 	if (neg || !i)
 		i++;
 	str[i] = '\0';
-	return (ft_strrev(str));
+	ret = ft_strrev(str);
+	free(str);
+	return (ret);
 }
